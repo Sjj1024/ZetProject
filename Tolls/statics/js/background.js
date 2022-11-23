@@ -1,7 +1,7 @@
 console.log("this is background.js");
 chrome.runtime.onInstalled.addListener(() => {
   chrome.action.setBadgeText({
-    text: "OFF",
+    text: "宋江",
   });
 });
 
@@ -9,6 +9,7 @@ const extensions = 'https://developer.chrome.com/docs/extensions'
 const webstore = 'https://developer.chrome.com/docs/webstore'
 
 chrome.action.onClicked.addListener(async (tab) => {
+  console.log('tab------', tab);
   if (tab.url.startsWith(extensions) || tab.url.startsWith(webstore)) {
     // Retrieve the action badge to check if the extension is 'ON' or 'OFF'
     const prevState = await chrome.action.getBadgeText({ tabId: tab.id });
