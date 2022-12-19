@@ -6,12 +6,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>使用Store</title>
   <link rel="stylesheet" href="static/css/popup.css"></link>
-  <script src="static/js/popup.js"></script>
+  <script src="static/js/jquery.js"></script>
+  <script src="static/js/popup.js" defer></script>
 </head>
 <body class="main">
-  <h2>总金额：<span id="money">0</span></h2>
+  <h2>总金额：<span id="money">0</span> &nbsp;&nbsp; <button id="clear-btn">清空</button></h2>
   <div>
-    <span>请输入消费金额:</span><input type="text"> <button id="save">存储</button>
+    <span>请输入消费金额:</span><input type="text" id="sail"> <button id="save">存储</button>
+  </div>
+  <div>
+    <button id="btn-1024">获取1024地址</button>
+    <div id="home-box">
+      <!-- <a href="saaaa" class="home1024">aaaaaa</a>
+      <a href="saaaa" class="home1024">aaaaaa</a>
+      <a href="saaaa" class="home1024">aaaaaa</a> -->
+    </div>
   </div>
 </body>
 </html>

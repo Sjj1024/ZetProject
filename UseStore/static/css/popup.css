@@ -8,3 +8,13 @@
   height: 600px;
   padding: 20px;
 }
+
+#btn-1024{
+  margin:10px 0;
+}
+
+.home1024{
+  font-size: 14px;
+  margin-right: 20px;
+  text-decoration: none;
+}
