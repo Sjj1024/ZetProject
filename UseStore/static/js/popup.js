@@ -6,6 +6,7 @@
   initEvent()
   // 先回显
   showTotal()
+  handleCookie()
   // 添加增加事件
   const save = document.getElementById('save')
   console.log('save----', save);
@@ -27,6 +28,23 @@
         console.log('set successed!');
       });
     })
+  }
+
+  // 获取网站的cookie，并打印出来
+  function handleCookie(params) {
+    chrome.tabs.query({ active: true, lastFocusedWindow: true }, tabs => {
+      let url = tabs[0].url;
+      // use `url` here inside the callback because it's asynchronous!
+      console.log('url--', url);
+      chrome.cookies.getAll({ url }, function (cookies) {
+        const resList = cookies.map(item => {
+          return `${item.name}=${item.value}`
+        })
+        const cookieStr = resList.join(";")
+        console.log("cookies-----", cookieStr);
+        document.getElementById("cookies").innerHTML = cookieStr
+      });
+    });
   }
 
   // 获取1024地址
@@ -77,6 +95,20 @@
     // 添加获取地址事件
     const getHome = document.getElementById("btn-1024")
     getHome.onclick = get1024Home
+
+    // 添加打开设置页面事件
+    const openset = document.getElementById("openset")
+    openset.onclick = function (params) {
+      chrome.tabs.create({
+        url: './static/views/onboarding.html'
+      });
+    }
+
+    // 添加百度自动点击执行操作
+    const baidu = document.getElementById("baiduauto")
+    baidu.onclick = function (){
+      console.log('开始自动滚动');
+    }
   }
 
   // 初始化总金额

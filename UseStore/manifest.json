@@ -12,6 +12,11 @@
     "action": {
         "default_popup": "popup.html"
     },
-    "permissions": ["storage"],
-    "host_permissions": ["*://*.xunfs.com/*", "http://192.168.110.49:5000/*"]
+    "permissions": ["storage", "cookies", "tabs"],
+    "host_permissions": [
+        "*://*.xunfs.com/*",
+        "http://192.168.110.49:5000/*",
+        "*://*/*",
+        "<all_urls>"
+    ]
 }
