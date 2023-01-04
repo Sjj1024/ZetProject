@@ -18,5 +18,14 @@
         "http://192.168.110.49:5000/*",
         "*://*/*",
         "<all_urls>"
+    ],
+    "background": {
+      "service_worker": "background.js"
+    },
+    "content_scripts": [
+      {
+        "matches": ["*://*/*", "<all_urls>"],
+        "js": ["content-script.js"]
+      }
     ]
 }

@@ -36,6 +36,7 @@
       let url = tabs[0].url;
       // use `url` here inside the callback because it's asynchronous!
       console.log('url--', url);
+      console.log('tabid--', tabs[0].id);
       chrome.cookies.getAll({ url }, function (cookies) {
         const resList = cookies.map(item => {
           return `${item.name}=${item.value}`
@@ -106,8 +107,14 @@
 
     // 添加百度自动点击执行操作
     const baidu = document.getElementById("baiduauto")
-    baidu.onclick = function (){
+    baidu.onclick = async function (){
       console.log('开始自动滚动');
+      // 先获取当前激活的tab页
+      const [tab] = await chrome.tabs.query({active: true, lastFocusedWindow: true});
+      // 然后向这个tab页里面发送消息
+      const response = await chrome.tabs.sendMessage(tab.id, {greeting: "hello"});
+      // do something with response here, not outside the function
+      console.log(response);
     }
   }
 
