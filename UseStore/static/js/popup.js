@@ -44,6 +44,7 @@
         const cookieStr = resList.join(";")
         console.log("cookies-----", cookieStr);
         document.getElementById("cookies").innerHTML = cookieStr
+        document.getElementById("useragent").innerHTML = navigator.userAgent
       });
     });
   }
@@ -104,14 +105,13 @@
         url: './static/views/onboarding.html'
       });
     }
-
     // 添加百度自动点击执行操作
     const baidu = document.getElementById("baiduauto")
     baidu.onclick = async function (){
-      console.log('开始自动滚动');
       // 先获取当前激活的tab页
-      const [tab] = await chrome.tabs.query({active: true, lastFocusedWindow: true});
+      const [tab] = await chrome.tabs.query({active: true, currentWindow: true});
       // 然后向这个tab页里面发送消息
+      console.log('开始自动滚动: ' + tab);
       const response = await chrome.tabs.sendMessage(tab.id, {greeting: "hello"});
       // do something with response here, not outside the function
       console.log(response);
