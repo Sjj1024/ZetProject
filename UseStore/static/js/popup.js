@@ -4,7 +4,9 @@
   // 请求地址
   // get1024Home()
   initEvent()
-  // 先回显
+  // 获取我的IP地址
+  getMyaddress()
+  // 数据存储先回显
   showTotal()
   handleCookie()
   // 添加增加事件
@@ -30,14 +32,20 @@
     })
   }
 
+  // 当前激活的tabUrl
+  let tabUrl = null
+  let tabCookies = null
+
   // 获取网站的cookie，并打印出来
-  function handleCookie(params) {
+  function handleCookie() {
     chrome.tabs.query({ active: true, lastFocusedWindow: true }, tabs => {
-      let url = tabs[0].url;
+      let url = tabUrl || tabs[0].url;
+      tabUrl = url;
       // use `url` here inside the callback because it's asynchronous!
       console.log('url--', url);
-      console.log('tabid--', tabs[0].id);
       chrome.cookies.getAll({ url }, function (cookies) {
+        console.log('得到的Cookie是：', cookies);
+        tabCookies = cookies;
         const resList = cookies.map(item => {
           return `${item.name}=${item.value}`
         })
@@ -47,6 +55,16 @@
         document.getElementById("useragent").innerHTML = navigator.userAgent
       });
     });
+  }
+
+  // 获取网站的cookie，并打印出来
+  function removeCookie() {
+    console.log('removeCookieurl--', tabUrl, tabCookies);
+    tabCookies.forEach(item => {
+      console.log('removeCookie删除的Cookie:', item.name);
+      chrome.cookies.remove({ url: tabUrl, name: item.name })
+    });
+    handleCookie()
   }
 
   // 获取1024地址
@@ -76,6 +94,21 @@
     });
   }
 
+  // 获取当前IP地址
+  function getMyaddress() {
+    console.log('获取我的IP地址');
+    var settings = {
+      "url": "http://myip.ipip.net",
+      "method": "GET",
+      "timeout": 0,
+    };
+    $.ajax(settings).done(function (response) {
+      console.log("response---", response);
+      const ipbox = document.getElementById("ipbox")
+      ipbox.innerHTML = response
+    });
+  }
+
   function getHomeA(home) {
     var a2 = document.createElement("a")
     a2.href = `https://${home}/`
@@ -98,6 +131,24 @@
     const getHome = document.getElementById("btn-1024")
     getHome.onclick = get1024Home
 
+    // 清空cookie
+    const removeCookitBtn = document.getElementById("removeCookie")
+    removeCookitBtn.onclick = removeCookie
+
+    //点击后进行复制功能
+    $('#copyCookie').click(function () {
+      $('#hide').val(document.getElementById("cookies").innerText);//把要复制的内容给到这里
+      $('#hide').select();
+      try { var state = document.execCommand('copy'); } catch (err) { var state = false; }
+      console.log('state----', state);
+      if (state) {
+        $("#copyCookie").text('Cookie已复制')
+      }else{
+        $("#copyCookie").text('Cookie复制失败')
+      }
+    })
+
+
     // 添加打开设置页面事件
     const openset = document.getElementById("openset")
     openset.onclick = function (params) {
@@ -107,12 +158,12 @@
     }
     // 添加百度自动点击执行操作
     const baidu = document.getElementById("baiduauto")
-    baidu.onclick = async function (){
+    baidu.onclick = async function () {
       // 先获取当前激活的tab页
-      const [tab] = await chrome.tabs.query({active: true, currentWindow: true});
+      const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
       // 然后向这个tab页里面发送消息
       console.log('开始自动滚动: ' + tab);
-      const response = await chrome.tabs.sendMessage(tab.id, {greeting: "hello"});
+      const response = await chrome.tabs.sendMessage(tab.id, { greeting: "hello" });
       // do something with response here, not outside the function
       console.log(response);
     }
