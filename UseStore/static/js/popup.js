@@ -49,7 +49,7 @@
         const resList = cookies.map(item => {
           return `${item.name}=${item.value}`
         })
-        const cookieStr = resList.join(";")
+        const cookieStr = resList.join("; ")
         console.log("cookies-----", cookieStr);
         document.getElementById("cookies").innerHTML = cookieStr
         document.getElementById("useragent").innerHTML = navigator.userAgent
@@ -57,7 +57,7 @@
     });
   }
 
-  // 获取网站的cookie，并打印出来
+  // 清空网站cookie
   function removeCookie() {
     console.log('removeCookieurl--', tabUrl, tabCookies);
     tabCookies.forEach(item => {
@@ -143,11 +143,10 @@
       console.log('state----', state);
       if (state) {
         $("#copyCookie").text('Cookie已复制')
-      }else{
+      } else {
         $("#copyCookie").text('Cookie复制失败')
       }
     })
-
 
     // 添加打开设置页面事件
     const openset = document.getElementById("openset")

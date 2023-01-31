@@ -12,7 +12,21 @@
     "action": {
         "default_popup": "popup.html"
     },
-    "permissions": ["storage", "cookies", "tabs"],
+    "permissions": [
+        "storage",
+        "cookies",
+        "tabs",
+        "declarativeNetRequest",
+        "declarativeNetRequestWithHostAccess",
+        "declarativeNetRequestFeedback"
+    ],
+    "declarative_net_request": {
+      "rule_resources": [{
+        "id": "1",
+        "enabled": false,
+        "path": "rules_1.json"
+      }]
+    },
     "host_permissions": [
         "*://*.xunfs.com/*",
         "http://192.168.110.49:5000/*",
@@ -20,12 +34,12 @@
         "<all_urls>"
     ],
     "background": {
-      "service_worker": "background.js"
+        "service_worker": "background.js"
     },
     "content_scripts": [
-      {
-        "matches": ["*://*/*", "<all_urls>"],
-        "js": ["content-script.js"]
-      }
+        {
+            "matches": ["*://*/*", "<all_urls>"],
+            "js": ["content-script.js"]
+        }
     ]
 }

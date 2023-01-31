@@ -1,13 +1,14 @@
 console.log('这是内容脚本执行的');
 
 // 选中csdn的调研卡片隐藏
-window.onload = function(){
+window.onload = function () {
   const npsBox = document.getElementById("nps-box");
   if (npsBox) {
     npsBox.style.display = "none"
     console.log('npsBox----', npsBox);
   }
 }
+
 
 chrome.runtime.onMessage.addListener(
   function (request, sender, sendResponse) {
