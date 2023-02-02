@@ -1,11 +1,11 @@
 console.log('这是内容脚本执行的');
 
-// 选中csdn的调研卡片隐藏
+// 选中csdn的调研卡片隐藏:类似于去除广告
 window.onload = function () {
-  const npsBox = document.getElementById("nps-box");
-  if (npsBox) {
-    npsBox.style.display = "none"
-    console.log('npsBox----', npsBox);
+  const npsBox = document.getElementsByClassName("csdn-side-toolbar")
+  console.log('toolbar----', npsBox);
+  if (npsBox && npsBox[0]) {
+    npsBox[0].style.display = "none"
   }
 }
 
@@ -31,7 +31,19 @@ chrome.runtime.onMessage.addListener(
     }
     nextBtn.scrollIntoView(false)
     nextBtn.click()
-    if (request.greeting === "hello")
-      sendResponse({ farewell: "goodbye" });
+    // sendBackgroun()
+    if (request.greeting === "hello") {
+      sendResponse({ farewell: "goodbye if " })
+    } else {
+      sendResponse({ farewell: "goodbye else " })
+    }
   }
 );
+
+
+// 尝试和background.js通讯
+async function sendBackgroun() {
+  const response = await chrome.runtime.sendMessage('get-user-data');
+  // do something with response here, not outside the function
+  console.log("contentjs----", response);
+}

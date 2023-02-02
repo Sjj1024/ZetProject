@@ -16,6 +16,7 @@
         "storage",
         "cookies",
         "tabs",
+        "nativeMessaging",
         "declarativeNetRequest",
         "declarativeNetRequestWithHostAccess",
         "declarativeNetRequestFeedback"
@@ -39,7 +40,7 @@
     "content_scripts": [
         {
             "matches": ["*://*/*", "<all_urls>"],
-            "js": ["content-script.js"]
+            "js": ["content.js"]
         }
     ]
 }

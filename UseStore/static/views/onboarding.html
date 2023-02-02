@@ -6,6 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <script src="./board.js" defer></script>
 </head>
 
 <body>
@@ -16,10 +17,10 @@
     <h3>当前站点Cookie是:</h3>
     <span id="cookies"></span>
   </div>
-  <!-- <script>
-    const userAgent = document.getElementById("useragent")
-    userAgent.innerHTML = "我是用户浏览器头Useragent"
-  </script> -->
+  <div>
+    <button id="toggleUseragent">修改UserAgent</button>
+    <button id="resetUseragent">恢复UserAgent</button>
+  </div>
 </body>
 
 </html>
