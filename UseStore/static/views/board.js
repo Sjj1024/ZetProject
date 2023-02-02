@@ -30,4 +30,27 @@ function initEvent() {
     // do something with response here, not outside the function
     console.log("resetUserAgentReceiveResponse:", response);
   }
+
+  // 修改Cookie
+  const editBtn = document.getElementById("editCookie")
+  editBtn.onclick = function () {
+    let cookieStr = document.getElementById("cookieVal").value
+    const cookie = cookieStr.replaceAll("'", "").replaceAll("ismob=1", "ismob=0")
+    console.log('获取cookieVal---', cookie, typeof cookie);
+    if (!cookie) {
+      return
+    }
+    const cookieList = cookie.split(";")
+    cookieList.forEach(item => {
+      const keyVal = item.trim().split("=")
+      setCookie("https://cl.6273x.xyz", keyVal[0], keyVal[1])
+    })
+    console.log('修改成功');
+  }
+
+}
+
+function setCookie(url, key, val) {
+  const configCookie = { "url": url, "name": key, "value": val}
+  chrome.cookies.set(configCookie);
 }

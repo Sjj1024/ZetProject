@@ -9,7 +9,7 @@ window.onload = function () {
   }
 }
 
-
+// 运行时监听消息
 chrome.runtime.onMessage.addListener(
   function (request, sender, sendResponse) {
     console.log('这是ContentScript脚本执行内容');

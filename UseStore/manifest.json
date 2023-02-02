@@ -30,7 +30,6 @@
     },
     "host_permissions": [
         "*://*.xunfs.com/*",
-        "http://192.168.110.49:5000/*",
         "*://*/*",
         "<all_urls>"
     ],
