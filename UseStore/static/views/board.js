@@ -120,11 +120,15 @@ function asyncSetData(key, value){
 
 function clearData(key){
   if (key) {
-    chrome.storage.sync.remove(key)
-    console.log('清空一个值');
+    chrome.storage.sync.remove(key).then(()=>{
+      console.log('清空一个值');
+      asyncGetData()
+    })
   }else{
-    chrome.storage.sync.clear()
-    console.log('清空所有的值');
+    chrome.storage.sync.clear().then(()=>{
+      console.log('清空所有的值');
+      document.getElementById("asyncDataBox").innerHTML = "数据全部清空了"
+    })
   }
 }
 
