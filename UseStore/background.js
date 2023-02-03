@@ -6,10 +6,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   console.log('这是background脚本onMessage', message);
   if (message === 'editUserAgent') {
     addRules(2)
-    chrome.tabs.reload()
+    // chrome.tabs.reload()
   } else if (message === 'resetUserAgent') {
     delRules(2)
-    chrome.tabs.reload()
+    // chrome.tabs.reload()
   } else {
     console.log('background脚本onMessage: else', message);
     sendContent(message)

@@ -6,17 +6,24 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <link rel="stylesheet" href="board.css">
+  <script src="../js/jquery.js"></script>
   <script src="./board.js" defer></script>
 </head>
 
 <body>
-  这是设置页面
+  <div>
+    <button id="btn-1024">获取1024地址</button>
+    <div id="home-box">
+    </div>
+  </div>
   <div class="site-cookie">
     <h3>当前站点UserAgent是:</h3>
     <span id="useragent"></span>
     <h3>当前站点Cookie是:</h3>
     <span id="cookies"></span>
   </div>
+  <br>
   <div>
     <button id="toggleUseragent">修改UserAgent</button>
     <button id="resetUseragent">恢复UserAgent</button>
@@ -25,7 +32,14 @@
   <div>
     <button id="editCookie">修改Cookie</button>
     <span>请输入Cookie：</span>
-    <textarea name="cookie" id="cookieVal" cols="200" rows="3"></textarea>
+    <textarea name="cookie" id="cookieVal" cols="150" rows="3"></textarea>
+  </div>
+  <br>
+  <div>
+    <button id="asyncBtn">同步数据</button> <button id="asyncGetBtn">获取数据</button>  <button id="clearAsyncBtn">清空数据</button>
+    <div class="dataBox"><span>同步的内容：</span></span><span id="asyncDataBox"></span></div>
+    <span>key:</span><input id="dataKey" type="text" style="width: 80px;" value="data"> 
+    <span>value:</span><input id="asyncData" type="text" style="width: 600px;">
   </div>
 </body>
 

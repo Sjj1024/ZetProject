@@ -36,7 +36,7 @@
   let tabUrl = null
   let tabCookies = null
 
-  // 获取网站的cookie，并打印出来
+  // 获取网站的cookie和useragent，并打印出来
   function handleCookie() {
     chrome.tabs.query({ active: true, lastFocusedWindow: true }, tabs => {
       let url = tabUrl || tabs[0].url;
@@ -150,7 +150,7 @@
 
     // 添加打开设置页面事件
     const openset = document.getElementById("openset")
-    openset.onclick = function (params) {
+    openset.onclick = function () {
       chrome.tabs.create({
         url: './static/views/onboarding.html'
       });
