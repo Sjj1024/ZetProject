@@ -7,7 +7,7 @@ initEvent()
 initConfig()
 
 
-function initConfig(){
+function initConfig() {
   console.log('系统初始化');
   document.getElementById("useragent").innerHTML = navigator.userAgent
 }
@@ -86,7 +86,7 @@ function initEvent() {
 
   // 同步数据按钮
   const asyncDataBtn = document.getElementById("asyncBtn")
-  asyncDataBtn.onclick = function(){
+  asyncDataBtn.onclick = function () {
     console.log('开始同步数据');
     const dataKey = document.getElementById("dataKey").value
     const dataVal = document.getElementById("asyncData").value
@@ -94,7 +94,7 @@ function initEvent() {
   }
 
   const asyncGetDataBtn = document.getElementById("asyncGetBtn")
-  asyncGetDataBtn.onclick = function(){
+  asyncGetDataBtn.onclick = function () {
     console.log('开始获取并展示数据');
     const dataKey = document.getElementById("dataKey").value
     asyncGetData(dataKey)
@@ -102,7 +102,7 @@ function initEvent() {
 
   // 清空所有的同步数据
   const clearDataBtn = document.getElementById("clearAsyncBtn")
-  clearDataBtn.onclick = function(){
+  clearDataBtn.onclick = function () {
     const dataKey = document.getElementById("dataKey").value
     clearData(dataKey)
   }
@@ -110,7 +110,7 @@ function initEvent() {
 }
 
 // 同步数据到账户中
-function asyncSetData(key, value){
+function asyncSetData(key, value) {
   chrome.storage.sync.set({ [key]: value }).then(() => {
     console.log("Value is set to " + value);
     document.getElementById("asyncDataBox").innerHTML = "同步成功！"
@@ -118,14 +118,14 @@ function asyncSetData(key, value){
 }
 
 
-function clearData(key){
+function clearData(key) {
   if (key) {
-    chrome.storage.sync.remove(key).then(()=>{
+    chrome.storage.sync.remove(key).then(() => {
       console.log('清空一个值');
       asyncGetData()
     })
-  }else{
-    chrome.storage.sync.clear().then(()=>{
+  } else {
+    chrome.storage.sync.clear().then(() => {
       console.log('清空所有的值');
       document.getElementById("asyncDataBox").innerHTML = "数据全部清空了"
     })
@@ -133,7 +133,7 @@ function clearData(key){
 }
 
 // 获取数据
-async function asyncGetData(key){
+async function asyncGetData(key) {
   // 获取单个key的值
   // chrome.storage.sync.get([key]).then((result) => {
   //   console.log("Value currently is ", result);
