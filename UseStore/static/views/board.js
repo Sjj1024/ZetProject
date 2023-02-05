@@ -41,11 +41,12 @@ function initEvent() {
     const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
     // 然后向这个tab页里面发送消息
     console.log('开始toggleUserAgent: ', tab);
-    const response = await chrome.runtime.sendMessage("editUserAgent");
+    const userAgent = document.getElementById("userAgentVal").value
+    const response = await chrome.runtime.sendMessage(`editUserAgent:${userAgent}`);
     // const response = await chrome.tabs.sendMessage(tab.id, { greeting: "hello" });
     // do something with response here, not outside the function
     // 切换
-    document.getElementById("useragent").innerHTML = "Mozilla/5.0 (iPhone; CPU iPhone OS 6_0 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10A5376e Safari/8536.25"
+    document.getElementById("useragent").innerHTML = userAgent
     console.log("toggleReceiveResponse:", response);
   }
 
