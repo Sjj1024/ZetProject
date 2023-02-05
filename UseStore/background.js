@@ -4,8 +4,49 @@ console.log('这是background脚本执行内容');
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   // 2. A page requested user data, respond with a copy of `user`
   console.log('这是background脚本onMessage', message);
-  if (message === 'editUserAgent') {
-    addRules(2)
+  if (message.includes("editUserAgent")) {
+    const userAgent = message.split(":")[1]
+    configRules[0].action.requestHeaders.values = userAgent
+    console.log('background---useragent---', userAgent, configRules);
+    const rules = {
+      addRules: [
+        {
+          id: 2,
+          priority: 2,
+          action: {
+            type: 'modifyHeaders',
+            requestHeaders: [
+              {
+                header: 'user-agent',
+                operation: 'set',
+                value: userAgent,
+              },
+            ],
+          },
+          condition: {
+            urlFilter: '|https*',
+            resourceTypes: [
+              "csp_report",
+              "font",
+              "image",
+              "main_frame",
+              "media",
+              "object",
+              "other",
+              "ping",
+              "script",
+              "stylesheet",
+              "sub_frame",
+              "webbundle",
+              "websocket",
+              "webtransport",
+              "xmlhttprequest"
+            ],
+          },
+        },
+      ]
+    }
+    addRules(rules)
     // chrome.tabs.reload()
   } else if (message === 'resetUserAgent') {
     delRules(2)
@@ -50,22 +91,21 @@ const configRules = [
 ]
 
 // 添加规则
-async function addRules(ruleId) {
-  console.log('添加ruleId', ruleId);
-  const rule = configRules.find(item => item.id === ruleId)
-  if (!rule) {
-    console.log('没有找到对应的ruleID', ruleId);
-    return
-  }
-  const rules = { addRules: [rule] }
+async function addRules(rules) {
+  // console.log('添加ruleId', ruleId);
+  // const rule = configRules.find(item => item.id === ruleId)
+  // if (!rule) {
+  //   console.log('没有找到对应的ruleID', ruleId);
+  //   return
+  // }
   // 更新动态规则的操作：添加、删除
   chrome.declarativeNetRequest.updateDynamicRules(rules, () => {
     if (chrome.runtime.lastError) {
-      console.log('chrome.runtime.lastError-', chrome.runtime.lastError);
+      console.log('chrome.runtime.lastError-出错：', chrome.runtime.lastError);
     } else {
       chrome.declarativeNetRequest.getDynamicRules(rules => console.log(rules))
     }
-    console.log('修改请求头.....declarativeNetRequest');
+    console.log('修改请求头.....declarativeNetRequest---addRules');
   })
 }
 
@@ -80,7 +120,7 @@ async function delRules(ruleId) {
     } else {
       chrome.declarativeNetRequest.getDynamicRules(rules => console.log(rules))
     }
-    console.log('修改请求头.....declarativeNetRequest');
+    console.log('修改请求头.....declarativeNetRequest----delRules');
   })
 }
 

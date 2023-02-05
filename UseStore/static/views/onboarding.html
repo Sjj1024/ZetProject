@@ -27,6 +27,13 @@
   <div>
     <button id="toggleUseragent">修改UserAgent</button>
     <button id="resetUseragent">恢复UserAgent</button>
+    <div>
+      <span>请输入UserAgent：</span>
+      <div>
+        <!-- Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36 -->
+        <textarea name="cookie" id="userAgentVal" cols="150" rows="3">Mozilla/5.0 (iPhone; CPU iPhone OS 6_0 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10A5376e Safari/8536.25</textarea>
+      </div>
+    </div>
   </div>
   <br>
   <div>
@@ -36,9 +43,9 @@
   </div>
   <br>
   <div>
-    <button id="asyncBtn">同步数据</button> <button id="asyncGetBtn">获取数据</button>  <button id="clearAsyncBtn">清空数据</button>
+    <button id="asyncBtn">同步数据</button> <button id="asyncGetBtn">获取数据</button> <button id="clearAsyncBtn">清空数据</button>
     <div class="dataBox"><span>同步的内容：</span></span><span id="asyncDataBox"></span></div>
-    <span>key:</span><input id="dataKey" type="text" style="width: 80px;" value="data"> 
+    <span>key:</span><input id="dataKey" type="text" style="width: 80px;" value="data">
     <span>value:</span><input id="asyncData" type="text" style="width: 600px;">
   </div>
 </body>
