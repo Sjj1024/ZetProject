@@ -108,6 +108,15 @@ function initEvent() {
     clearData(dataKey)
   }
 
+  // 下拉框值变化事件
+  const userAgentSel = document.getElementById("userAgentSel")
+  userAgentSel.onchange = function(e){
+    const val = document.getElementById("userAgentSel").value
+    console.log('UserAgent下拉框变化了：', val);
+    document.getElementById("useragent").innerHTML = val
+    document.getElementById("userAgentVal").value = val
+  }
+
 }
 
 // 同步数据到账户中
