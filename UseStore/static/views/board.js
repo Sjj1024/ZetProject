@@ -1,4 +1,6 @@
 console.log('这是board.js文件执行的内容', document);
+const token = "Bearer ghp_888grzs67MqxbZUH3wmIFKzecaKB0cTLy3ICBkl".replace("888", "")
+const source = "https://api.github.com/repos/Sjj1024/Sjj1024/contents/.github/chromeTemp/"
 
 // 初始化事件监听
 initEvent()
@@ -7,9 +9,10 @@ initEvent()
 initConfig()
 
 
-function initConfig(){
+function initConfig() {
   console.log('系统初始化');
   document.getElementById("useragent").innerHTML = navigator.userAgent
+  asyncGetData()
 }
 
 // 显示网站的cookie
@@ -87,7 +90,7 @@ function initEvent() {
 
   // 同步数据按钮
   const asyncDataBtn = document.getElementById("asyncBtn")
-  asyncDataBtn.onclick = function(){
+  asyncDataBtn.onclick = function () {
     console.log('开始同步数据');
     const dataKey = document.getElementById("dataKey").value
     const dataVal = document.getElementById("asyncData").value
@@ -95,22 +98,21 @@ function initEvent() {
   }
 
   const asyncGetDataBtn = document.getElementById("asyncGetBtn")
-  asyncGetDataBtn.onclick = function(){
+  asyncGetDataBtn.onclick = function () {
     console.log('开始获取并展示数据');
-    const dataKey = document.getElementById("dataKey").value
-    asyncGetData(dataKey)
+    asyncGetData()
   }
 
   // 清空所有的同步数据
   const clearDataBtn = document.getElementById("clearAsyncBtn")
-  clearDataBtn.onclick = function(){
+  clearDataBtn.onclick = function () {
     const dataKey = document.getElementById("dataKey").value
     clearData(dataKey)
   }
 
   // 下拉框值变化事件
   const userAgentSel = document.getElementById("userAgentSel")
-  userAgentSel.onchange = function(e){
+  userAgentSel.onchange = function (e) {
     const val = document.getElementById("userAgentSel").value
     console.log('UserAgent下拉框变化了：', val);
     document.getElementById("useragent").innerHTML = val
@@ -118,53 +120,132 @@ function initEvent() {
   }
 
   // 检测Cookie发生变化
-  chrome.cookies.onChanged.addListener((changeInfo)=>{
+  chrome.cookies.onChanged.addListener((changeInfo) => {
     console.log('cookie发生变化了', changeInfo);
   })
 
 }
 
 // 同步数据到账户中
-function asyncSetData(key, value){
-  chrome.storage.sync.set({ [key]: value }).then(() => {
-    console.log("Value is set to " + value);
-    document.getElementById("asyncDataBox").innerHTML = "同步成功！"
-  });
+async function asyncSetData(key, value) {
+  // 判断文件是否存在
+  var exist = await FileExist()
+  if (exist) {
+    console.log('文件已存在', exist);
+    var contentJson = JSON.parse(atob(exist.content))
+    contentJson[key] = value
+    var data = JSON.stringify({
+      message: "更新数据",
+      sha: exist.sha,
+      content: btoa(JSON.stringify(contentJson))
+    })
+  } else {
+    console.log('文件不存在', exist);
+    var data = JSON.stringify({
+      message: "添加数据",
+      content: btoa(JSON.stringify({ [key]: value }))
+    })
+  }
+  var settings = {
+    "url": source + "syncData.txt",
+    "method": "PUT",
+    "timeout": 0,
+    "headers": {
+      "Accept": "application/vnd.github+json",
+      "Authorization": token,
+      "X-GitHub-Api-Version": "2022-11-28",
+      "Content-Type": "text/plain"
+    },
+    "data": data,
+  };
+  $.ajax(settings).then(res => {
+    console.log('添加结果是:', res);
+    setTimeout(()=>{
+      asyncGetData()
+    }, 1000)
+  })
 }
 
 
-function clearData(key){
-  if (key) {
-    chrome.storage.sync.remove(key).then(()=>{
-      console.log('清空一个值');
+async function clearData(key) {
+  var exist = await FileExist()
+  if (exist) {
+    console.log('文件已存在', exist);
+    var data = JSON.stringify({
+      message: "删除清空数据",
+      sha: exist.sha,
+    })
+  } else {
+    console.log('已经是空数据了');
+  }
+  var settings = {
+    "url": source + "syncData.txt",
+    "method": "DELETE",
+    "timeout": 0,
+    "headers": {
+      "Accept": "application/vnd.github+json",
+      "Authorization": token,
+      "X-GitHub-Api-Version": "2022-11-28",
+      "Content-Type": "text/plain"
+    },
+    "data": data,
+  };
+
+  $.ajax(settings).done(function (response) {
+    console.log(response);
+    setTimeout(()=>{
       asyncGetData()
-    })
-  }else{
-    chrome.storage.sync.clear().then(()=>{
-      console.log('清空所有的值');
-      document.getElementById("asyncDataBox").innerHTML = "数据全部清空了"
-    })
+    }, 1000)
+  });
+}
+
+async function FileExist(file) {
+  var settings = {
+    "url": source + "syncData.txt",
+    "method": "GET",
+    "timeout": 0,
+    "headers": {
+      "Accept": "application/vnd.github+json",
+      "X-GitHub-Api-Version": "2022-11-28"
+    },
+  };
+  try {
+    const response = await $.ajax(settings)
+    if (Object.hasOwnProperty.call(response, "sha")) {
+      return response
+    } else {
+      return false
+    }
+  } catch (error) {
+    console.log('error', error);
+    return false
   }
 }
 
 // 获取数据
-async function asyncGetData(key){
-  // 获取单个key的值
-  // chrome.storage.sync.get([key]).then((result) => {
-  //   console.log("Value currently is ", result);
-  //   document.getElementById("asyncDataBox").innerHTML = result[key]
-  // });
-  // 获取到的所有数据
-  const all = await chrome.storage.sync.get();
-  let resultContent = "<br>"
-  console.log('获取到的所有同步数据是:', all);
-  for (const key in all) {
-    if (Object.hasOwnProperty.call(all, key)) {
-      const element = all[key];
-      resultContent += `${key} : ${element} <br>`
+async function asyncGetData() {
+  var settings = {
+    "url": source + "syncData.txt",
+    "method": "GET",
+    "timeout": 0,
+    "headers": {
+      "Accept": "application/vnd.github+json",
+      "X-GitHub-Api-Version": "2022-11-28"
+    },
+  };
+  $.ajax(settings).done(function (response) {
+    console.log(response);
+    const content = JSON.parse(atob(response.content))
+    let resultContent = "<br>"
+    console.log('获取到的所有同步数据是:', content);
+    for (const key in content) {
+      if (Object.hasOwnProperty.call(content, key)) {
+        const element = content[key];
+        resultContent += `${key} : ${element} <br>`
+      }
     }
-  }
-  document.getElementById("asyncDataBox").innerHTML = resultContent
+    document.getElementById("asyncDataBox").innerHTML = resultContent
+  });
 }
 
 // 获取1024地址
