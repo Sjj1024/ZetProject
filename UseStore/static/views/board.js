@@ -137,13 +137,13 @@ async function asyncSetData(key, value) {
     var data = JSON.stringify({
       message: "更新数据",
       sha: exist.sha,
-      content: btoa(JSON.stringify(contentJson))
+      content: Encode64(JSON.stringify(contentJson))
     })
   } else {
     console.log('文件不存在', exist);
     var data = JSON.stringify({
       message: "添加数据",
-      content: btoa(JSON.stringify({ [key]: value }))
+      content: Encode64(JSON.stringify({ [key]: value }))
     })
   }
   var settings = {
@@ -160,9 +160,11 @@ async function asyncSetData(key, value) {
   };
   $.ajax(settings).then(res => {
     console.log('添加结果是:', res);
-    setTimeout(()=>{
+    var gitUrl = res.content.git_url
+    chrome.storage.local.set({ gitUrl }, () => {
+      console.log('添加storage成功');
       asyncGetData()
-    }, 1000)
+    })
   })
 }
 
@@ -190,12 +192,11 @@ async function clearData(key) {
     },
     "data": data,
   };
-
+  chrome.storage.local.clear()
   $.ajax(settings).done(function (response) {
-    console.log(response);
-    setTimeout(()=>{
-      asyncGetData()
-    }, 1000)
+    console.log("清空数据res", response);
+    chrome.storage.local.clear()
+    document.getElementById("asyncDataBox").innerHTML = ""
   });
 }
 
@@ -222,30 +223,52 @@ async function FileExist(file) {
   }
 }
 
+/**
+  * 编码base64
+  */
+function Encode64(str) {
+  return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g,
+    function toSolidBytes(match, p1) {
+      return String.fromCharCode('0x' + p1);
+    }));
+}
+/**
+* 解码base64
+*/
+function Decode64(str) {
+  return decodeURIComponent(atob(str).split('').map(function (c) {
+    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+  }).join(''));
+}
+
 // 获取数据
 async function asyncGetData() {
-  var settings = {
-    "url": source + "syncData.txt",
-    "method": "GET",
-    "timeout": 0,
-    "headers": {
-      "Accept": "application/vnd.github+json",
-      "X-GitHub-Api-Version": "2022-11-28"
-    },
-  };
-  $.ajax(settings).done(function (response) {
-    console.log(response);
-    const content = JSON.parse(atob(response.content))
-    let resultContent = "<br>"
-    console.log('获取到的所有同步数据是:', content);
-    for (const key in content) {
-      if (Object.hasOwnProperty.call(content, key)) {
-        const element = content[key];
-        resultContent += `${key} : ${element} <br>`
+  chrome.storage.local.get(["gitUrl"], function (res) {
+    console.log('asyncGetData--', res);
+    var git_url = res.gitUrl || `${source}syncData.txt`
+    var settings = {
+      "url": git_url,
+      "method": "GET",
+      "timeout": 0,
+      "headers": {
+        "Accept": "application/vnd.github+json",
+        "X-GitHub-Api-Version": "2022-11-28"
+      },
+    };
+    $.ajax(settings).done(function (response) {
+      console.log(response);
+      const content = JSON.parse(Decode64(response.content))
+      let resultContent = "<br>"
+      console.log('获取到的所有同步数据是:', content);
+      for (const key in content) {
+        if (Object.hasOwnProperty.call(content, key)) {
+          const element = content[key];
+          resultContent += `${key} : ${element} <br>`
+        }
       }
-    }
-    document.getElementById("asyncDataBox").innerHTML = resultContent
-  });
+      document.getElementById("asyncDataBox").innerHTML = resultContent
+    });
+  })
 }
 
 // 获取1024地址
