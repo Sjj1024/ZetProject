@@ -155,6 +155,7 @@
         url: './static/views/onboarding.html'
       });
     }
+
     // 添加百度自动点击执行操作
     const baidu = document.getElementById("baiduauto")
     baidu.onclick = async function () {
@@ -162,10 +163,28 @@
       const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
       // 然后向这个tab页里面发送消息
       console.log('开始自动滚动: ' + tab);
-      const response = await chrome.tabs.sendMessage(tab.id, { greeting: "hello" });
+      const response = await chrome.tabs.sendMessage(tab.id, { greeting: "百度滚动" });
       // do something with response here, not outside the function
       console.log(response);
     }
+
+    // 添加抖音关注列表滚动
+    const douyinGuanzhu = document.getElementById("douyinFansi")
+    douyinGuanzhu.onclick = async function () {
+      // 先获取当前激活的tab页
+      const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+      // 然后向这个tab页里面发送消息
+      console.log('开始自动滚动: ' + tab);
+      const response = await chrome.tabs.sendMessage(tab.id, { greeting: "抖音关注列表滚动" });
+      // do something with response here, not outside the function
+      console.log(response);
+    }
+
+    // 抖音粉丝下一页
+    addButtonClickToContentMessage("nextPage", "抖音关注下一页")
+
+    // 取消关注当前页
+    addButtonClickToContentMessage("cancelPage", "取消关注这页")
 
     // 切换userAgent
     const toggleUserAgent = document.getElementById("toggle-useragent")
@@ -208,15 +227,15 @@
     })
   }
 
-  // 初始化的时候，回显内容
-  // function showTotal() {
-  //   chrome.storage.sync.get("total", function (res) {
-  //     if (res.total) {
-  //       totalAmount = parseFloat(res.total)
-  //       var money = document.getElementById("money")
-  //       var total = totalAmount + parseFloat(saile)
-  //       money.innerHTML = total;
-  //     }
-  //   }
-  // }
+  function addButtonClickToContentMessage(btnId, message){
+    document.getElementById(btnId).onclick = async function () {
+      // 先获取当前激活的tab页
+      const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+      // 然后向这个tab页里面发送消息
+      console.log('开始addButtonClickToContentMessage: ' + tab);
+      const response = await chrome.tabs.sendMessage(tab.id, { greeting: message });
+      // do something with response here, not outside the function
+      console.log(response);
+    }
+  }
 })()

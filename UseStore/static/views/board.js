@@ -117,6 +117,11 @@ function initEvent() {
     document.getElementById("userAgentVal").value = val
   }
 
+  // 检测Cookie发生变化
+  chrome.cookies.onChanged.addListener((changeInfo)=>{
+    console.log('cookie发生变化了', changeInfo);
+  })
+
 }
 
 // 同步数据到账户中
@@ -201,6 +206,8 @@ function getHomeA(home) {
 }
 
 function setCookie(url, key, val) {
-  const configCookie = { "url": url, "name": key, "value": val }
+  const cookieUrl = document.getElementById("cookieUrl").value
+  let urlEdit = cookieUrl || url
+  const configCookie = { "url": urlEdit, "name": key, "value": val }
   chrome.cookies.set(configCookie);
 }
