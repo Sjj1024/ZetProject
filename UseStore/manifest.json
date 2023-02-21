@@ -29,8 +29,6 @@
       }]
     },
     "host_permissions": [
-        "*://*.xunfs.com/*",
-        "*://*/*",
         "<all_urls>"
     ],
     "background": {

@@ -1,27 +1,43 @@
 {
-  "manifest_version": 3,
-  "name": "huijia",
-  "description": "Base Level Extension",
-  "version": "1.0",
-  "action": {
-    "default_popup": "popup.html",
-    "default_icon": "static/imgs/icon.png"
-  },
-  "icons": {
-    "16": "static/imgs/icon.png",
-    "32": "static/imgs/icon.png",
-    "48": "static/imgs/icon.png",
-    "128": "static/imgs/icon.png"
-  },
-  "content_scripts": [
-    {
-      "js": [
-        "scripts/content.js"
-      ],
-      "matches": [
-        "https://developer.chrome.com/docs/extensions/*",
-        "https://developer.chrome.com/docs/webstore/*"
-      ]
-    }
-  ]
+    "manifest_version": 3,
+    "name": "HuiJia",
+    "version": "0.0.1",
+    "description": "这里总有你想看的吧",
+    "icons": {
+        "16": "static/imgs/home.png",
+        "32": "static/imgs/home.png",
+        "48": "static/imgs/home.png",
+        "128": "static/imgs/home.png"
+    },
+    "action": {
+        "default_popup": "popup.html"
+    },
+    "permissions": [
+        "storage",
+        "cookies",
+        "tabs",
+        "nativeMessaging",
+        "declarativeNetRequest",
+        "declarativeNetRequestWithHostAccess",
+        "declarativeNetRequestFeedback"
+    ],
+    "declarative_net_request": {
+      "rule_resources": [{
+        "id": "1",
+        "enabled": false,
+        "path": "rules_1.json"
+      }]
+    },
+    "host_permissions": [
+        "<all_urls>"
+    ],
+    "background": {
+        "service_worker": "background.js"
+    },
+    "content_scripts": [
+        {
+            "matches": ["*://*/*", "<all_urls>"],
+            "js": ["content.js"]
+        }
+    ]
 }

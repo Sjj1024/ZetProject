@@ -1,28 +1,28 @@
 console.log('这是内容脚本执行的');
 
 // 选中csdn的调研卡片隐藏:类似于去除广告
-window.onload = function () {
-  const npsBox = document.getElementsByClassName("csdn-side-toolbar")
-  console.log('toolbar----', npsBox);
-  if (npsBox && npsBox[0]) {
-    npsBox[0].style.display = "none"
-  }
+// window.onload = function () {
+//   const npsBox = document.getElementsByClassName("csdn-side-toolbar")
+//   console.log('toolbar----', npsBox);
+//   if (npsBox && npsBox[0]) {
+//     npsBox[0].style.display = "none"
+//   }
 
-  // 修改网站标题等内容
-  // const biadufanyi = document.getElementsByClassName("navigation-text")
-  const biadufanyi = document.getElementsByTagName('b')
-  console.log('百度翻译列表-----', biadufanyi);
-  for (let index = 0; index < biadufanyi.length; index++) {
-    const element = biadufanyi[index];
-    // console.log('elementText---',element.innerText);
-    if (element.innerText === "草榴社區") {
-      console.log('找到了草榴社區');
-      element.innerText = "HTML社区"
-    } else {
-      console.log('没有找到视频翻译');
-    }
-  }
-}
+//   // 修改网站标题等内容
+//   // const biadufanyi = document.getElementsByClassName("navigation-text")
+//   const biadufanyi = document.getElementsByTagName('b')
+//   console.log('百度翻译列表-----', biadufanyi);
+//   for (let index = 0; index < biadufanyi.length; index++) {
+//     const element = biadufanyi[index];
+//     // console.log('elementText---',element.innerText);
+//     if (element.innerText === "草榴社區") {
+//       console.log('找到了草榴社區');
+//       element.innerText = "HTML社区"
+//     } else {
+//       console.log('没有找到视频翻译');
+//     }
+//   }
+// }
 
 // 运行时监听消息
 chrome.runtime.onMessage.addListener(
