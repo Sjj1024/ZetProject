@@ -132,7 +132,7 @@ async function asyncSetData(key, value) {
   var exist = await FileExist()
   if (exist) {
     console.log('文件已存在', exist);
-    var contentJson = JSON.parse(atob(exist.content))
+    var contentJson = JSON.parse(Decode64(exist.content))
     contentJson[key] = value
     var data = JSON.stringify({
       message: "更新数据",
