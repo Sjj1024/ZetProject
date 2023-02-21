@@ -245,7 +245,7 @@ function Decode64(str) {
 async function asyncGetData() {
   chrome.storage.local.get(["gitUrl"], function (res) {
     console.log('asyncGetData--', res);
-    var git_url = res.gitUrl || `${source}syncData.txt`
+    var git_url = `${source}syncData.txt`
     var settings = {
       "url": git_url,
       "method": "GET",
