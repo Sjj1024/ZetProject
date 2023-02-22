@@ -18,8 +18,14 @@
 }
 
 .alink{
-  width: 60px;
+  width: 20%;
   margin-bottom: 6px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.alink:hover{
+  color: red;
 }
 
 #btn-1024{
@@ -43,6 +49,10 @@
   /* color: rgb(255 255 255); */
   color: rgb(0, 0, 0);
   /* background: rgb(26 115 232 / 90%); */
+}
+
+.ele-btn:hover{
+  background-color:rgb(159, 157, 157);
 }
 
 #cookies{

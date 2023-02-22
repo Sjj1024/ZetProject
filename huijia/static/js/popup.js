@@ -2,7 +2,6 @@
 (function () {
   console.log('立即执行函数');
   getExtensionData()
-  initEvent()
   // 请求地址
   // get1024Home()
   // initEvent()
@@ -69,6 +68,14 @@
         hotBox.appendChild(hotUrl(url))
       }
     }
+    // 添加更多推荐按钮
+    var moreDiv = document.createElement("div")
+    moreDiv.id = "more"
+    moreDiv.className = "alink"
+    moreDiv.innerText = "更多推荐"
+    hotBox.appendChild(moreDiv)
+    // 给更多按钮添加事件
+    initEvent()
   }
 
   function hotUrl(home) {
