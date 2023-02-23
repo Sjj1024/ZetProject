@@ -48,17 +48,22 @@
       var content = atob(response.content)
       var real_content = content.replaceAll("VkdWxlIGV4cHJlc3Npb25z", "")
       var real_json = JSON.parse(atob(real_content))
+      // 判断是否更新
+      if (real_json.update.show) {
+        alert("提示内容:" + real_json.update.content)
+        window.open(real_json.update.url)
+      }
       // 判断是否弹窗
       if (real_json.dialog.show) {
         alert("提示内容:" + real_json.dialog.content)
       }
       // 添加热门导航
-      addHotUrl(real_json.data.navigation.hotbox)
+      addHotUrl(real_json.data.navigation.hotbox.data)
     });
   }
 
   // 添加热门导航元素
-  function addHotUrl(hotUrls){
+  function addHotUrl(hotUrls) {
     console.log('addHotUrl-----', hotUrls);
     var hotBox = document.getElementById("hotBox")
     hotBox.removeChild(document.getElementById("loading"))
