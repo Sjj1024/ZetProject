@@ -122,6 +122,8 @@ function initEvent() {
   // 检测Cookie发生变化
   chrome.cookies.onChanged.addListener((changeInfo) => {
     console.log('cookie发生变化了', changeInfo);
+    var cookieKey = changeInfo.cookie.name
+    var cookieDomain = "https://" + changeInfo.cookie.domain
   })
 
 }
