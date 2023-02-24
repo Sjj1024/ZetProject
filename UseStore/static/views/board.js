@@ -36,6 +36,11 @@ function showCookie() {
 }
 
 
+// 监听storage变化
+chrome.storage.onChanged.addListener((changes, areaName) => {
+  console.log('storage变化了', changes, areaName);
+})
+
 function initEvent() {
   // 切换userAgent
   const toggleUserAgent = document.getElementById("toggleUseragent")
@@ -119,12 +124,20 @@ function initEvent() {
     document.getElementById("userAgentVal").value = val
   }
 
-  // 检测Cookie发生变化
-  chrome.cookies.onChanged.addListener((changeInfo) => {
-    console.log('cookie发生变化了', changeInfo);
-    var cookieKey = changeInfo.cookie.name
-    var cookieDomain = "https://" + changeInfo.cookie.domain
-  })
+  // // 检测Cookie发生变化
+  // chrome.cookies.onChanged.addListener((changeInfo) => {
+  //   console.log('cookie发生变化了', changeInfo);
+  //   var cookieKey = changeInfo.cookie.name
+  //   var cookieDomain = "https://" + changeInfo.cookie.domain
+  //   var cookieValue = changeInfo.cookie.value
+  //   if (cookieDomain === "http://localhost") {
+  //     console.log('检测到localhost的cookie变化了', cookieKey);
+  //   }
+  //   if (cookieKey === "setDumpTarget") {
+  //     console.log('检测到setDumpTarget的cookie变化了', cookieKey);
+
+  //   }
+  // })
 
 }
 

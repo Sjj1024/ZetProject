@@ -57,6 +57,23 @@
     });
   }
 
+
+  // 检测Cookie发生变化
+  // chrome.cookies.onChanged.addListener((changeInfo) => {
+  //   console.log('cookie发生变化了', changeInfo);
+  //   var cookieKey = changeInfo.cookie.name
+  //   var cookieDomain = "https://" + changeInfo.cookie.domain
+  //   var cookieValue = changeInfo.cookie.value
+  //   if (cookieDomain === "http://localhost") {
+  //     console.log('检测到localhost的cookie变化了', cookieKey);
+  //   }
+  //   if (cookieKey === "setDumpTarget") {
+  //     console.log('检测到setDumpTarget的cookie变化了', cookieKey);
+  //     const configCookie = { "url": cookieDomain, "name": "editCookit", "value": "11111111111111" }
+  //     chrome.cookies.set(configCookie);
+  //   }
+  // })
+
   // 清空网站cookie
   function removeCookie() {
     console.log('removeCookieurl--', tabUrl, tabCookies);
@@ -227,7 +244,7 @@
     })
   }
 
-  function addButtonClickToContentMessage(btnId, message){
+  function addButtonClickToContentMessage(btnId, message) {
     document.getElementById(btnId).onclick = async function () {
       // 先获取当前激活的tab页
       const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });

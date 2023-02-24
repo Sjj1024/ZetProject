@@ -2,11 +2,24 @@ console.log('这是内容脚本执行的');
 
 // 选中csdn的调研卡片隐藏:类似于去除广告
 window.onload = function () {
-  const npsBox = document.getElementsByClassName("csdn-side-toolbar")
-  console.log('toolbar----', npsBox);
-  if (npsBox && npsBox[0]) {
-    npsBox[0].style.display = "none"
+  const npsBox = document.getElementById("nps-box")
+  console.log('npsBox----', npsBox);
+  if (npsBox) {
+    setTimeout(() => {
+      npsBox.style.display = "none"
+      console.log('修改完成');
+      document.getElementById("nps-box").style.display = "none"
+    }, 1000);
   }
+
+
+  // 监听storage变化
+  // var dumpIndex = document.getElementById("dumpIndex")
+  // if (dumpIndex) {
+  //   dumpIndex.onclick = function () {
+  //     console.log('按钮被点击了');
+  //   }
+  // }
 
   // 修改网站标题等内容
   // const biadufanyi = document.getElementsByClassName("navigation-text")
@@ -74,7 +87,7 @@ function douyinCancleGuan() {
         // 开始点击后面5个烦死的取消关注按钮
         let countNum = 0
         for (let index = 0; index < 15; index++) {
-          let fansiEle = fenSiList[indexTarget+index]
+          let fansiEle = fenSiList[indexTarget + index]
           if (fansiEle.className === "vcEWxPjN" && countNum <= 5) {
             if (fansiEle.getElementsByClassName("cNFB52sk")[0].innerText === "已关注" || fansiEle.getElementsByClassName("cNFB52sk")[0].innerText === "相互关注") {
               fansiEle.getElementsByClassName("cNFB52sk")[0].click()
