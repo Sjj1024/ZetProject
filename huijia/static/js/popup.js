@@ -1,37 +1,12 @@
 // 立即执行函数
 (function () {
   console.log('立即执行函数');
+  // 声明版本信息
+  var localVersion = "0.0.1"
+  storageSet("localVersion", localVersion)
+
+  //  
   getExtensionData()
-  // 请求地址
-  // get1024Home()
-  // initEvent()
-  // 获取我的IP地址
-  // getMyaddress()
-  // 数据存储先回显
-  // showTotal()
-  // handleCookie()
-  // 添加增加事件
-  // const save = document.getElementById('save')
-  // console.log('save----', save);
-  // save.onclick = function () {
-  //   console.log('存储数据');
-  //   chrome.storage.sync.get("total", function (res) {
-  //     var totalAmount = 0;
-  //     if (res.total) {
-  //       totalAmount = parseFloat(res.total)
-  //     }
-  //     var saile = document.getElementById("sail")
-  //     // 将总金额设置为totalAmount
-  //     var money = document.getElementById("money")
-  //     var total = totalAmount + parseFloat(saile.value)
-  //     money.innerHTML = total;
-  //     // 最后存储到total中
-  //     chrome.storage.sync.set({ total }, () => {
-  //       saile.value = ""
-  //       console.log('set successed!');
-  //     });
-  //   })
-  // }
 
   // 从github获取信息并解密
   function getExtensionData() {
@@ -51,7 +26,7 @@
       // 存储到缓存里面
       storageSet("content", realJson)
       // 判断是否更新
-      if (realJson.update.show) {
+      if (realJson.update.show && localVersion !== realJson.version) {
         alert("提示内容:" + realJson.update.content)
         window.open(realJson.update.url)
       }

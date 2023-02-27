@@ -120,10 +120,11 @@ async function getChromeHuijiaData() {
   initHomeUrl(realJson.data)
 }
 
-function initInfo(realJson) {
+async function initInfo(realJson) {
   // 升级提醒等
+  var localVersion = await storageGet("localVersion")
   // 判断是否更新
-  if (realJson.update.show) {
+  if (realJson.update.show && localVersion !== realJson.version) {
     alert("提示内容:" + realJson.update.content)
     window.open(realJson.update.url)
   }
