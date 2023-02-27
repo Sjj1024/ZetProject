@@ -60,7 +60,7 @@
         alert("提示内容:" + realJson.dialog.content)
       }
       // 页面嵌入info
-      document.getElementById("info").innerHTML = realJson.data.more_info
+      document.getElementById("info").innerHTML = realJson.data.more_info.trim()
       // 添加热门导航
       addHotUrl(realJson.data)
     });

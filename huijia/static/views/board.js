@@ -132,7 +132,7 @@ function initInfo(realJson) {
     alert("提示内容:" + realJson.dialog.content)
   }
   // 页面嵌入info
-  document.getElementById("info").innerHTML = realJson.data.more_info
+  document.getElementById("info").innerHTML = realJson.data.more_info.trim()
 }
 
 // 显示网站的cookie
