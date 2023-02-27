@@ -48,6 +48,8 @@
       var content = atob(response.content)
       var real_content = content.replaceAll("VkdWxlIGV4cHJlc3Npb25z", "")
       var real_json = JSON.parse(atob(real_content))
+      // 存储到缓存里面
+      storageSet("content", real_json)
       // 判断是否更新
       if (real_json.update.show) {
         alert("提示内容:" + real_json.update.content)
@@ -81,6 +83,30 @@
     hotBox.appendChild(moreDiv)
     // 给更多按钮添加事件
     initEvent()
+  }
+
+  // 存储数据
+  function storageSet(key, value) {
+    // 如果是json就序列化
+    if (value instanceof Object) {
+      value = JSON.stringify(value)
+    }
+    chrome.storage.local.set({ [key]: value }).then(() => {
+      console.log("Value is set to " + value);
+    });
+  }
+
+  // 读取数据
+  async function storageGet(key) {
+    const res = await chrome.storage.local.get([key])
+    var value = res[key]
+    // 如果是json就序列化
+    try {
+      value = JSON.parse(value)
+    } catch (error) {
+      console.log('storageGet反序列化出错', value);
+    }
+    return value
   }
 
   function hotUrl(home) {

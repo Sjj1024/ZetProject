@@ -29,33 +29,53 @@ function initEvent() {
       password.value = passwordStr
     }
   }
-  // 
+
+  // 清空本地缓存
+  var clearLocalBtn = document.getElementById("clearLocal")
+  clearLocalBtn.onclick = function () {
+    chrome.storage.local.clear(function () {
+      var error = chrome.runtime.lastError;
+      if (error) {
+        console.error(error);
+      }
+      console.log('缓存清除成功');
+    });
+  }
 
 }
 
 
 function initHomeUrl(chromeData) {
   // 遍历然后渲染
+  var contentBox = document.getElementById("contentBox")
   for (const key in chromeData) {
     if (Object.hasOwnProperty.call(chromeData, key)) {
       const element = chromeData[key];
-      console.log('elemetn', element);
+      // console.log('elemetn', element);
       const boxTitle = element.title
-      const boxData = element.data
-      console.log('boxTitle, boxData', boxTitle, boxData);
+      // console.log('boxTitle, boxData', boxTitle);
       // 遍历每一个tab列的内容
-      initTabBox(element)
+      if (boxTitle === "热门推荐") {
+        contentBox.insertBefore(initTabBox(element), contentBox.firstChild)
+      } else {
+        contentBox.appendChild(initTabBox(element))
+      }
     }
   }
 }
 
-
+// 初始化tab数据
 function initTabBox(boxData) {
   var divTabBox = document.createElement("div")
   divTabBox.className = "tabBox"
   var h3Title = document.createElement("h3")
   h3Title.className = "tabTitle"
   h3Title.innerText = boxData.title
+  if (boxData.title === "热门推荐") {
+    h3Title.style.backgroundColor = "#da2a1a"
+  } else {
+    h3Title.style.backgroundColor = '#' + parseInt(Math.random() * 0xFFFFFF).toString(16)
+  }
   // url内容
   var divABox = document.createElement("div")
   divABox.className = "aBox"
@@ -74,84 +94,34 @@ function initTabBox(boxData) {
   // 将divTabBox追加到后面
   divTabBox.appendChild(h3Title)
   divTabBox.appendChild(divABox)
-  var contentBox = document.getElementById("contentBox")
-  contentBox.appendChild(divTabBox)
+  return divTabBox
 }
 
 
-function getChromeHuijiaData() {
-  var settings = {
-    "url": "https://api.github.com/repos/Sjj1024/Sjj1024/contents/.github/hubsql/chromHuijia.txt",
-    "method": "GET",
-    "timeout": 0,
-    "headers": {
-      "Accept": "application/vnd.github+json",
-      "X-GitHub-Api-Version": "2022-11-28"
-    },
-  };
-
-  $.ajax(settings).done(function (response) {
-    console.log("response-----", response);
-    var content = atob(response.content)
-    var real_content = content.replaceAll("VkdWxlIGV4cHJlc3Npb25z", "")
-    var real_json = JSON.parse(atob(real_content))
-    console.log('解析后的真是数据是:', real_json);
-    // 渲染导航页面
-    initHomeUrl(real_json.data.navigation)
-    // 开启cookie监听
-    var ruleObj = { "1024": "227c9_winduser", "91": "91cookie", "98": "98cookie" }
-    cookieLister(ruleObj)
-  });
-}
-
-// 向github提交数据
-function putDataToGit() {
-  console.log('向github提交数据');
-}
-
-// 设置一个cookie监听器，当有监听到1024/91/98等的cookie的时候，就提交到git
-function cookieLister(rule) {
-  console.log('监听cookie变化的监听器', rule);
-  var ruleKeys = Object.keys(rule)
-  var ruleValues = Object.values(rule)
-  chrome.cookies.onChanged.addListener((changeInfo) => {
-    console.log('cookie发生变化了', changeInfo);
-    var cookieKey = changeInfo.cookie.name
-    if (ruleValues.indexOf(cookieKey) !== -1) {
-      // 如果发现有对应的cookie存在，就根据域名获取到所有的cookie
-      // console.log('找到了对应的cookie', cookieKey);
-      var cookieDomain = "https://" + changeInfo.cookie.domain
-      chrome.cookies.getAll({ url: cookieDomain }, function (cookies) {
-        // console.log('得到的Cookie是:', cookies);
-        const resList = cookies.map(item => {
-          return `${item.name}=${item.value}`
-        })
-        const cookieStr = resList.join("; ")
-        // 判断是哪个网站的cookie
-        var ruleType = ruleKeys[ruleValues.indexOf(cookieKey)]
-        console.log("ruleType-----", ruleType);
-        console.log('cookieStr-------', cookieStr);
-      });
-    }
-  })
+async function getChromeHuijiaData() {
+  // 从缓存中获取导航数据
+  var real_json = await storageGet("content")
+  // console.log('解析后的真是数据是:', real_json);
+  // 渲染导航页面
+  initHomeUrl(real_json.data.navigation)
 }
 
 // 显示网站的cookie
 function showCookie() {
   const homePaths = document.getElementsByClassName("home1024")
   const url = homePaths[0].href
-  console.log('showCookieurl--', url);
+  // console.log('showCookieurl--', url);
   if (!url) {
     return
   }
   chrome.cookies.getAll({ url }, function (cookies) {
-    console.log('得到的Cookie是：', cookies);
+    // console.log('得到的Cookie是：', cookies);
     tabCookies = cookies;
     const resList = cookies.map(item => {
       return `${item.name}=${item.value}`
     })
     const cookieStr = resList.join("; ")
-    console.log("cookies-----", cookieStr);
+    // console.log("cookies-----", cookieStr);
     document.getElementById("cookies").innerHTML = cookieStr
   });
 }
@@ -252,17 +222,29 @@ function showCookie() {
 // 检测Cookie发生变化
 
 // 存储和读取store中的数
+
+// 存储数据
 function storageSet(key, value) {
+  // 如果是json就序列化
+  if (value instanceof Object) {
+    value = JSON.stringify(value)
+  }
   chrome.storage.local.set({ [key]: value }).then(() => {
     console.log("Value is set to " + value);
   });
 }
 
-function storageGet(key) {
-  return chrome.storage.local.get([key]).then((result) => {
-    console.log("Value currently is ", result[key]);
-    return result[key]
-  });
+// 读取数据
+async function storageGet(key) {
+  const res = await chrome.storage.local.get([key])
+  var value = res[key]
+  // 如果是json就序列化
+  try {
+    value = JSON.parse(value)
+  } catch (error) {
+    console.log('storageGet反序列化出错', value);
+  }
+  return value
 }
 
 

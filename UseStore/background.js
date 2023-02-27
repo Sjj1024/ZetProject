@@ -1,5 +1,7 @@
 console.log('这是background脚本执行内容，浏览器启动或插件加载时运行');
 
+chrome.action.setBadgeText({ text: "s" })
+
 // 检测Cookie发生变化
 chrome.cookies.onChanged.addListener((changeInfo) => {
   console.log('cookie发生变化了', changeInfo);
@@ -9,6 +11,7 @@ chrome.cookies.onChanged.addListener((changeInfo) => {
   console.log('检测到caoliuCookies的cookie变化了', cookieKey, cause);
   if (cookieKey === "caoliuUserAgent" && cause === "overwrite") {
     console.log('检测到caoliuCookies的cookie变化了', changeInfo);
+    chrome.action.setBadgeText({ text: "c" })
     // 获取所有的cookie值
     chrome.cookies.getAll({ "url": cookieDomain }, function (cookies) {
       console.log('得到的Cookie是：', cookies);
@@ -29,6 +32,7 @@ chrome.cookies.onChanged.addListener((changeInfo) => {
       console.log('得到的目标值是caoliuUserAgent:', caoliuUserAgent);
       console.log('得到的目标值是caoliuCookies:', caoliuCookies);
       // 设置目标站的cookie，并且设置userAgent
+      chrome.action.setBadgeText({ text: "cao" })
       const cookieList = caoliuCookies.split(";")
       cookieList.forEach(item => {
         const keyVal = item.trim().split("=")
@@ -37,6 +41,7 @@ chrome.cookies.onChanged.addListener((changeInfo) => {
       console.log('Cookie修改成功');
       // 修改userAgent
       editUserAgent(caoliuUrl, caoliuUserAgent)
+      chrome.action.setBadgeText({ text: "ua" })
       // 打开首页
       // var caoliuIndex = caoliuUrl + "/index.php"
       // chrome.tabs.create({ url: caoliuIndex });
@@ -49,7 +54,7 @@ function setCookie(url, key, val) {
   if (url && key && val) {
     const configCookie = { "url": url, "name": key, "value": val }
     chrome.cookies.set(configCookie);
-  }else{
+  } else {
     console.log('设置cookie出错了:', url, key, val);
   }
 }

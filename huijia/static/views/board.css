@@ -1,13 +1,25 @@
 body {
     padding: 10px 20px;
+    /* background-image: url('../imgs/pattern.png'); */
+    /* background-image: linear-gradient(
+        to bottom,
+        #ffc75f 0%,
+        #ff9671 41%,
+        #ff6f91 100%
+    ); */
 }
 
 .tips {
     color: gray;
     font-size: 14px;
-    height: 28px;
-    line-height: 28px;
+}
+
+.testBox {
     padding: 0px 10px 10px 10px;
+}
+
+.testing {
+    margin: 10px 0px;
 }
 
 .password {
@@ -32,6 +44,7 @@ body {
 
 .action {
     color: black;
+    font-weight: 600;
 }
 
 .btn {
@@ -78,10 +91,6 @@ body {
     margin-left: 10px;
 }
 
-.info {
-    margin-left: 20px;
-}
-
 .hidden {
     /* display: block; */
     display: none;
@@ -103,7 +112,6 @@ body {
     overflow: hidden;
     color: #303133;
     transition: 0.3s;
-    padding: 10px;
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
 }
 
@@ -111,16 +119,33 @@ body {
     margin: 0px 0px 8px 0px;
     font-weight: 600;
     font-size: 18px;
-    color: #303133;
-    padding-bottom: 8px;
+    color: white;
+    padding: 10px;
     border-bottom: 1px solid #ebeef5;
     box-sizing: border-box;
+    background-color: rgb(0, 108, 130);
+    box-shadow: rgb(0 108 130 / 35%) 0px 0px 16px;
 }
 
 .aBox {
+    padding: 10px;
     display: flex;
     flex-wrap: wrap;
     justify-content: start;
+}
+
+.actionBox {
+    padding: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: start;
+}
+
+.oneTest {
+    width: 10%;
+    height: 20px;
+    line-height: 20px;
+    font-size: 16px;
 }
 
 .alink {
@@ -140,4 +165,31 @@ body {
 
 .alink:hover {
     color: orangered;
+}
+
+.footer {
+    color: white;
+    font-size: 16px;
+    padding: 10px;
+    min-height: 1000px;
+    border-radius: 10px;
+    background-image: linear-gradient(
+        to bottom,
+        #00ccff 0%,
+        #017acf 41%,
+        #017acf 100%
+    );
+    /* background-image: url('../imgs/orange.png');
+    background-repeat: no-repeat;
+    background-size: 100% 100%; */
+}
+
+.footBox {
+    margin-bottom: 16px;
+}
+
+.title {
+    font-size: 20px;
+    font-weight: 500;
+    margin-bottom: 5px;
 }
