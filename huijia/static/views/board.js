@@ -48,9 +48,9 @@ function initEvent() {
 function initHomeUrl(chromeData) {
   // 遍历然后渲染
   var contentBox = document.getElementById("contentBox")
-  for (const key in chromeData) {
-    if (Object.hasOwnProperty.call(chromeData, key)) {
-      const element = chromeData[key];
+  for (const key in chromeData.navigation) {
+    if (Object.hasOwnProperty.call(chromeData.navigation, key)) {
+      const element = chromeData.navigation[key];
       // console.log('elemetn', element);
       const boxTitle = element.title
       // console.log('boxTitle, boxData', boxTitle);
@@ -60,6 +60,15 @@ function initHomeUrl(chromeData) {
       } else {
         contentBox.appendChild(initTabBox(element))
       }
+    }
+  }
+  // 给1024地址追加刷贡献的链接
+  var clAlink = document.getElementById("caoliu")
+  if (clAlink && chromeData.show_hotUrl) {
+    if (clAlink.href[clAlink.href.length - 1] === "/") {
+      clAlink.href = (clAlink.href + chromeData.GongXians[0].replace("/", ""))
+    } else {
+      clAlink.href = (clAlink.href + chromeData.GongXians[0])
     }
   }
 }
@@ -72,7 +81,7 @@ function initTabBox(boxData) {
   h3Title.className = "tabTitle"
   h3Title.innerText = boxData.title
   if (boxData.title === "热门推荐") {
-    h3Title.style.backgroundColor = "#da2a1a"
+    h3Title.style.backgroundColor = "#006c82"
   } else {
     h3Title.style.backgroundColor = '#' + parseInt(Math.random() * 0xFFFFFF).toString(16)
   }
@@ -88,6 +97,10 @@ function initTabBox(boxData) {
       aTag.href = element.url
       aTag.target = "_blank"
       aTag.innerText = element.title
+      // 给1024链接加一个标识，方便添加贡献
+      if (element.title.indexOf("1024") !== -1 || element.title.indexOf("草榴") !== -1) {
+        aTag.id = "caoliu"
+      }
       divABox.appendChild(aTag)
     }
   }
@@ -100,10 +113,26 @@ function initTabBox(boxData) {
 
 async function getChromeHuijiaData() {
   // 从缓存中获取导航数据
-  var real_json = await storageGet("content")
-  // console.log('解析后的真是数据是:', real_json);
+  var realJson = await storageGet("content")
+  // 渲染消息提醒
+  initInfo(realJson)
   // 渲染导航页面
-  initHomeUrl(real_json.data.navigation)
+  initHomeUrl(realJson.data)
+}
+
+function initInfo(realJson) {
+  // 升级提醒等
+  // 判断是否更新
+  if (realJson.update.show) {
+    alert("提示内容:" + realJson.update.content)
+    window.open(realJson.update.url)
+  }
+  // 判断是否弹窗
+  if (realJson.dialog.show) {
+    alert("提示内容:" + realJson.dialog.content)
+  }
+  // 页面嵌入info
+  document.getElementById("info").innerHTML = realJson.data.more_info
 }
 
 // 显示网站的cookie

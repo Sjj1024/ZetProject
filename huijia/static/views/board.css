@@ -134,6 +134,10 @@ body {
     justify-content: start;
 }
 
+.info {
+    color: red;
+}
+
 .actionBox {
     padding: 10px;
     display: flex;

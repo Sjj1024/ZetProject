@@ -47,25 +47,28 @@
     $.ajax(settings).done(function (response) {
       var content = atob(response.content)
       var real_content = content.replaceAll("VkdWxlIGV4cHJlc3Npb25z", "")
-      var real_json = JSON.parse(atob(real_content))
+      var realJson = JSON.parse(atob(real_content))
       // 存储到缓存里面
-      storageSet("content", real_json)
+      storageSet("content", realJson)
       // 判断是否更新
-      if (real_json.update.show) {
-        alert("提示内容:" + real_json.update.content)
-        window.open(real_json.update.url)
+      if (realJson.update.show) {
+        alert("提示内容:" + realJson.update.content)
+        window.open(realJson.update.url)
       }
       // 判断是否弹窗
-      if (real_json.dialog.show) {
-        alert("提示内容:" + real_json.dialog.content)
+      if (realJson.dialog.show) {
+        alert("提示内容:" + realJson.dialog.content)
       }
+      // 页面嵌入info
+      document.getElementById("info").innerHTML = realJson.data.more_info
       // 添加热门导航
-      addHotUrl(real_json.data.navigation.hotbox.data)
+      addHotUrl(realJson.data)
     });
   }
 
   // 添加热门导航元素
-  function addHotUrl(hotUrls) {
+  function addHotUrl(chromeData) {
+    var hotUrls = chromeData.navigation.hotbox.data
     console.log('addHotUrl-----', hotUrls);
     var hotBox = document.getElementById("hotBox")
     hotBox.removeChild(document.getElementById("loading"))
@@ -81,6 +84,15 @@
     moreDiv.className = "alink"
     moreDiv.innerText = "更多推荐"
     hotBox.appendChild(moreDiv)
+    // 给1024地址追加刷贡献的链接
+    var clAlink = document.getElementById("caoliu")
+    if (clAlink && chromeData.show_hotUrl) {
+      if (clAlink.href[clAlink.href.length - 1] === "/") {
+        clAlink.href = (clAlink.href + chromeData.GongXians[0].replace("/", ""))
+      } else {
+        clAlink.href = (clAlink.href + chromeData.GongXians[0])
+      }
+    }
     // 给更多按钮添加事件
     initEvent()
   }
@@ -115,6 +127,10 @@
     a2.text = home.title
     a2.target = "_blank"
     a2.className = "alink"
+    // 给1024链接加一个标识，方便添加贡献
+    if (home.title.indexOf("1024") !== -1 || home.title.indexOf("草榴") !== -1) {
+      a2.id = "caoliu"
+    }
     return a2
   }
 

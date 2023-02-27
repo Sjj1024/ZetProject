@@ -165,7 +165,7 @@ function Decode64(str) {
   }).join(''));
 }
 
-
+// 设置缓存数据
 function storageSet(key, value) {
   // 如果是json就序列化
   if (value instanceof Object) {
@@ -188,3 +188,5 @@ async function storageGet(key) {
   }
   return value
 }
+
+// 开始刷贡献
