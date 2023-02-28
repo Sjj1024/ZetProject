@@ -3,17 +3,6 @@
     margin: 0;
 }
 
-body {
-    padding: 10px 0;
-    /* background-image: url('../imgs/pattern.png'); */
-    /* background-image: linear-gradient(
-        to bottom,
-        #ffc75f 0%,
-        #ff9671 41%,
-        #ff6f91 100%
-    ); */
-}
-
 /* 隐藏滚动条 */
 /* ::-webkit-scrollbar {
     width: 0 !important;
