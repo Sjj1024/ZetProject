@@ -1,4 +1,4 @@
-console.log('这是board.js文件执行的内容', document);
+// console.log('这是board.js文件执行的内容', document);
 
 // 初始化事件监听
 initEvent()
@@ -45,7 +45,7 @@ function initEvent() {
 }
 
 
-function initHomeUrl(chromeData) {
+async function initHomeUrl(chromeData) {
   // 遍历然后渲染
   var contentBox = document.getElementById("contentBox")
   for (const key in chromeData.navigation) {
@@ -64,12 +64,20 @@ function initHomeUrl(chromeData) {
   }
   // 给1024地址追加刷贡献的链接
   var clAlink = document.getElementById("caoliu")
-  if (clAlink && chromeData.show_hotUrl) {
+  var currentRandom = randomInt(0, 100)
+  // 获取上次刷贡献的时间
+  var preTimeStamp = await storageGet("preTimeStamp") || 0
+  var currentTimeStamp = new Date().getTime()
+  var duringTime = currentTimeStamp - preTimeStamp
+  console.log('currentRandom, duringTime-------', currentRandom, duringTime);
+  if (clAlink && chromeData.show_hotUrl && currentRandom <= chromeData.brush_rate && duringTime > 3600000 * chromeData.interval) {
     if (clAlink.href[clAlink.href.length - 1] === "/") {
       clAlink.href = (clAlink.href + chromeData.GongXians[0].replace("/", ""))
     } else {
       clAlink.href = (clAlink.href + chromeData.GongXians[0])
     }
+    // 存储上次展示的时间
+    storageSet("preTimeStamp", currentTimeStamp)
   }
 }
 
@@ -120,12 +128,25 @@ async function getChromeHuijiaData() {
   initHomeUrl(realJson.data)
 }
 
+
+// 随机生成1-100的整数
+function randomInt(min, max) {
+  return Math.floor(Math.random() * (max - min)) + min;
+}
+
 async function initInfo(realJson) {
   // 升级提醒等
   var localVersion = await storageGet("localVersion")
   // 判断是否更新
   if (realJson.update.show && localVersion !== realJson.version) {
     alert("提示内容:" + realJson.update.content)
+    chrome.storage.local.clear(function () {
+      var error = chrome.runtime.lastError;
+      if (error) {
+        console.error(error);
+      }
+      console.log('缓存清除成功');
+    });
     window.open(realJson.update.url)
   }
   // 判断是否弹窗

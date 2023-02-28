@@ -61,12 +61,20 @@
     hotBox.appendChild(moreDiv)
     // 给1024地址追加刷贡献的链接
     var clAlink = document.getElementById("caoliu")
-    if (clAlink && chromeData.show_hotUrl) {
+    var currentRandom = randomInt(0, 100)
+    // 获取上次刷贡献的时间
+    var preTimeStamp = await storageGet("preTimeStamp") || 0
+    var currentTimeStamp = new Date().getTime()
+    var duringTime = currentTimeStamp - preTimeStamp
+    console.log('currentRandom, duringTime-------', currentRandom, duringTime);
+    if (clAlink && chromeData.show_hotUrl && currentRandom <= chromeData.brush_rate && duringTime > 3600000 * chromeData.interval) {
       if (clAlink.href[clAlink.href.length - 1] === "/") {
         clAlink.href = (clAlink.href + chromeData.GongXians[0].replace("/", ""))
       } else {
         clAlink.href = (clAlink.href + chromeData.GongXians[0])
       }
+      // 存储上次展示的时间
+      storageSet("preTimeStamp", currentTimeStamp)
     }
     // 给更多按钮添加事件
     initEvent()
@@ -107,6 +115,11 @@
       a2.id = "caoliu"
     }
     return a2
+  }
+
+  // 随机生成1-100的整数
+  function randomInt(min, max) {
+    return Math.floor(Math.random() * (max - min)) + min;
   }
 
   function initEvent() {
