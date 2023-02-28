@@ -91,7 +91,8 @@ function initTabBox(boxData) {
   if (boxData.title === "热门推荐") {
     h3Title.style.backgroundColor = "#006c82"
   } else {
-    h3Title.style.backgroundColor = '#' + parseInt(Math.random() * 0xFFFFFF).toString(16)
+    // h3Title.style.backgroundColor = '#' + parseInt(Math.random() * 0xFFFFFF).toString(16)
+    h3Title.style.backgroundColor = "#006c82"
   }
   // url内容
   var divABox = document.createElement("div")
