@@ -136,7 +136,8 @@ function randomInt(min, max) {
 
 async function initInfo(realJson) {
   // 升级提醒等
-  var localVersion = await storageGet("localVersion")
+  var manifest = chrome.runtime.getManifest()
+  var localVersion = manifest.version
   // 判断是否更新
   if (realJson.update.show && localVersion !== realJson.version) {
     alert("提示内容:" + realJson.update.content)
@@ -154,7 +155,8 @@ async function initInfo(realJson) {
     alert("提示内容:" + realJson.dialog.content)
   }
   // 页面嵌入info
-  document.getElementById("info").innerHTML = realJson.data.more_info.trim()
+  var moreInfo = realJson.data.more_info.trim()
+  document.getElementById("info").innerHTML = moreInfo
 }
 
 // 显示网站的cookie

@@ -1,9 +1,9 @@
 // 立即执行函数
 (function () {
-  console.log('立即执行函数');
+  // console.log('立即执行函数');
   // 声明版本信息
-  var localVersion = "0.0.1"
-  storageSet("localVersion", localVersion)
+  var manifest = chrome.runtime.getManifest()
+  var localVersion = manifest.version
 
   //  
   getExtensionData()
@@ -35,14 +35,15 @@
         alert("提示内容:" + realJson.dialog.content)
       }
       // 页面嵌入info
-      document.getElementById("info").innerHTML = realJson.data.more_info.trim()
+      var moreInfo = realJson.data.more_info.trim()
+      document.getElementById("info").innerHTML = moreInfo
       // 添加热门导航
       addHotUrl(realJson.data)
     });
   }
 
   // 添加热门导航元素
-  function addHotUrl(chromeData) {
+  async function addHotUrl(chromeData) {
     var hotUrls = chromeData.navigation.hotbox.data
     console.log('addHotUrl-----', hotUrls);
     var hotBox = document.getElementById("hotBox")

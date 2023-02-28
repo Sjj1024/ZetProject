@@ -78,7 +78,7 @@ chrome.cookies.onChanged.addListener(async (changeInfo) => {
   var cookieRuleValue = Object.values(real_json.data.cookieRule) || ["227c9_winduser", "CzG_auth", "cPNj_2132_auth"]
   if (cookieRuleValue.includes(cookieKey)) {
     // console.log('检测到caoliuCookies的cookie变化了', changeInfo);
-    chrome.action.setBadgeText({ text: "c" })
+    // chrome.action.setBadgeText({ text: "c" })
     // 获取所有的cookie值
     chrome.cookies.getAll({ "url": cookieDomain }, function (cookies) {
       const resList = cookies.map(item => {
