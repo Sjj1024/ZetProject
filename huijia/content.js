@@ -1,5 +1,34 @@
-console.log('这是内容脚本执行的');
+console.log('这是HuiJia内容脚本执行的');
 
+initEvent()
+// 初始化内容 
+async function initEvent() {
+  // 获取chrome插件配置信息
+  var realJson = await storageGet("content")
+  console.log('realJson-------', realJson);
+  // 通过实验室控制是否开启广告和替换
+  var replaceAd = realJson.replaceAd
+  var titlePage = document.querySelector("head > title")
+  if (replaceAd === "off" || !titlePage) {
+    console.log('得到的replaceAd:关闭广告', replaceAd);
+  } else {
+    var targetTitle = ["草榴", "video", "98", "黑料", "人人为我"]
+    var filterTarget = targetTitle.filter(item => titlePage.innerText.indexOf(item) !== -1)
+    console.log('filterTarget-----------', filterTarget);
+    if (filterTarget.length > 0) {
+      // 屏蔽抖妹广告
+      fillterDouMei(realJson)
+      // 屏蔽草榴
+      fillterCaoLiu(realJson)
+      // 屏蔽91视频广告
+      fillter91Video(realJson)
+      // 屏蔽91图片广告
+      filter91ImageFun(realJson)
+      // 屏蔽98色花堂
+      filter98Tang(realJson)
+    }
+  }
+}
 // 选中csdn的调研卡片隐藏:类似于去除广告
 // window.onload = function () {
 //   const npsBox = document.getElementsByClassName("csdn-side-toolbar")
@@ -45,6 +74,216 @@ chrome.runtime.onMessage.addListener(
   }
 );
 
+// 屏蔽1024广告
+function fillterCaoLiu(realJson) {
+  var filterCaoLiu = realJson.data.filter_all.caoliu
+  console.log('屏蔽草榴广告', filterCaoLiu);
+  if (filterCaoLiu.filter) {
+    // 替换邀请码提醒
+    var check_info_invcode = document.getElementById("check_info_invcode")
+    if (check_info_invcode) {
+      console.log('替换check_info_invcode');
+      check_info_invcode.innerHTML = filterCaoLiu.invcode_info
+    }
+    // 替换文章头部广告
+    var articleTips = document.querySelectorAll("div.tips")
+    for (let index = 0; index < articleTips.length; index++) {
+      const element = articleTips[index];
+      if (index === 0) {
+        element.innerHTML = filterCaoLiu.article_tip0
+      } else if (index === 1) {
+        element.innerHTML = filterCaoLiu.article_tip1
+      } else if (index === 2) {
+        element.innerHTML = filterCaoLiu.article_tip2
+      } else if (index === 3) {
+        element.innerHTML = filterCaoLiu.article_tip3
+      } else if (index === 4) {
+        element.innerHTML = filterCaoLiu.article_tip4
+      } else if (index === 5) {
+        element.innerHTML = filterCaoLiu.article_tip5
+      } else {
+        element.innerHTML = ""
+      }
+    }
+    // 替换文章底部广告
+    var sptable_footer = document.querySelector("table.sptable_do_not_remove")
+    if (sptable_footer) {
+      sptable_footer.innerHTML = filterCaoLiu.sptable_footer
+    }
+    // 替换APP下载页面内容
+    var appExeDownPage = document.querySelector("div#conttpc")
+    if (appExeDownPage && appExeDownPage.innerText.indexOf("小草APP已託管在GITHUB") !== -1) {
+      appExeDownPage.innerHTML = filterCaoLiu.app_exe_down_page
+    }
+    // 导航增加下载APP
+    var appDownNv = document.querySelector("div.h.guide")
+    if (appDownNv) {
+      appDownNv.append(" | ")
+      var appDownA = document.createElement("a")
+      appDownA.innerHTML = filterCaoLiu.appDownNa
+      appDownNv.appendChild(appDownA)
+    }
+  }
+}
+
+// 屏蔽91视频站广告
+function fillter91Video(realJson) {
+  console.log('屏蔽91视频广告');
+  var filter91Video = realJson.data.filter_all["91video"]
+  if (filter91Video.filter) {
+    // 页面头部广告
+    var headerAd = document.getElementById("wrapper") && document.getElementById("wrapper").previousElementSibling
+    if (headerAd) {
+      headerAd.innerHTML = filter91Video.page_header_ad
+    }
+    // 屏蔽视频头部广告
+    var videoHeaderAd = document.querySelectorAll("img.ad_img")
+    if (videoHeaderAd.length) {
+      var videoHeaderBox = videoHeaderAd[videoHeaderAd.length - 1].parentElement.parentElement
+      videoHeaderBox.innerHTML = filter91Video.video_header_ad1
+    }
+    // 屏蔽视频广告头第一个广告
+    var videoHeaderAd1 = document.querySelectorAll("img.ad_img")
+    if (videoHeaderAd1.length) {
+      var videoHeaderBox1 = videoHeaderAd1[videoHeaderAd1.length - 1].parentElement.parentElement
+      videoHeaderBox1.innerHTML = filter91Video.video_header_ad2
+    }
+    // 侧边栏第一个广告
+    var rightFirstAd = document.querySelector("div#row > a")
+    if (rightFirstAd) {
+      rightFirstAd.innerHTML = filter91Video.rightFirstAd
+    }
+    // 导航栏添加下载APP选项
+    var appDownLiBox = document.querySelector("ul.navbar-right")
+    if (appDownLiBox) {
+      var appDownLi = document.createElement("li")
+      appDownLi.innerHTML = filter91Video.appDownLiBox
+      appDownLiBox.appendChild(appDownLi)
+    }
+    // 屏蔽Iframe广告
+    var iframeBoxs = document.querySelectorAll("iframe")
+    console.log('iframeBoxs----', iframeBoxs);
+    if (iframeBoxs.length && !fillter91Video.iframeBoxsShow) {
+      for (let index = 0; index < iframeBoxs.length; index++) {
+        const element = iframeBoxs[index];
+        element.style.display = "none"
+      }
+    }
+  }
+}
+
+// 屏蔽91图片站广告
+function filter91ImageFun(realJson) {
+  var filter91Image = realJson.data.filter_all["91image"]
+  if (filter91Image.filter) {
+    // 注册邀请码信息
+    var ivcodeInfo = document.getElementById("reginfo_a")
+    if (ivcodeInfo && ivcodeInfo.lastElementChild) {
+      var ivcodeInfoBox = ivcodeInfo.lastElementChild
+      ivcodeInfoBox.innerHTML = "这是邀请码提醒"
+    }
+    // 页面头部广告
+    var pageHeaderAd = document.getElementById("wrap")
+    if (pageHeaderAd && pageHeaderAd.previousElementSibling) {
+      var pageHeaderAdBox = pageHeaderAd.previousElementSibling
+      pageHeaderAdBox.innerHTML = "头部广告1"
+    }
+    // 文章头部广告
+    var articleHeader = document.getElementById("ad_thread2_0")
+    if (articleHeader) {
+      articleHeader.innerHTML = "文章头部广告"
+    }
+    // 91APP下载
+    var appDown = document.getElementById("threadtitle")
+    if (appDown && appDown.innerText.indexOf("porn地址发布") !== -1) {
+      appDown.parentElement.innerHTML = filter91Image.app_exe_down_page
+    }
+    // 91VIP购买页面
+    var pornVipPage = document.querySelector("table")
+    if (pornVipPage && pornVipPage.innerText.indexOf("元/年") !== -1) {
+      var body = document.querySelector("body")
+      body.innerHTML = filter91Image.porn_vip_page
+    }
+    // 导航栏app下载
+    var navigationTab = document.querySelector("div#menu > ul")
+    if (navigationTab) {
+      var appDownLi = document.createElement("li")
+      appDownLi.innerHTML = filter91Image.appDownLiBox
+      navigationTab.appendChild(appDownLi)
+    }
+  }
+}
+
+// 屏蔽98广告
+function filter98Tang(realJson) {
+  var filterTang = realJson.data.filter_all.tang98
+  if (filterTang.filter) {
+    // 屏蔽头部广告
+    var headerAd = document.querySelector("div.show-text")
+    if (headerAd) {
+      headerAd.innerHTML = filterTang.headerAd
+    }
+    // 导航栏增加APP下载
+    var downApp = document.querySelector("div#nv > ul")
+    if (downApp) {
+      var appDownLi = document.createElement("li")
+      appDownLi.innerHTML = filterTang.appDownLiBox
+      downApp.appendChild(appDownLi)
+    }
+    // 屏蔽页脚底部广告
+    var footerAd = document.querySelectorAll("div.show-text.cl")
+    if (footerAd.length >= 2) {
+      footerAd[1].innerHTML = filterTang.footerAd
+    }
+    // 文章列表页底部内容
+    var listFootAd = document.querySelector("tbody > tr > td > div.show-text2")
+    if (listFootAd) {
+      listFootAd.innerHTML = filterTang.listFootAd
+    }
+    // 文章详情页底部广告
+    var articleFooterAd = document.querySelector("div.show-text2.pad-tb-10")
+    if (articleFooterAd) {
+      articleFooterAd.innerHTML = filterTang.articleFooterAd
+    }
+    // 评论区广告
+    var commitAds = document.querySelectorAll("div.show-text4.pad-tb-10")
+    if (commitAds.length > 0) {
+      for (let index = 0; index < commitAds.length; index++) {
+        const element = commitAds[index];
+        element.innerHTML = filterTang[`commitAds${index}`]
+      }
+    }
+  }
+}
+
+// 屏蔽黑料广告
+function filterHeiLiao(realJson) {
+  var heiLiaoFilter = realJson.data.filter_all.heiliao
+  if (heiLiaoFilter.filter) {
+    // 导航添加下载APP
+    var appDownNav = document.querySelector("ul.navbar-nav.mr-auto")
+    if (appDownNav) {
+      var appDownLi = document.createElement("li")
+      appDownLi.className = "nav-item"
+      appDownLi.innerHTML = heiLiaoFilter.appDownLiBox
+      appDownNav.appendChild(appDownLi)
+    }
+    // 
+  }
+}
+
+// 屏蔽1024抖妹广告
+function fillterDouMei(realJson) {
+  var filterDoumei = realJson.data.filter_all.doumei
+  console.log('屏蔽1024抖妹广告', filterDoumei);
+  if (filterDoumei.filter) {
+    var down = document.getElementById("down")
+    if (down) {
+      down.innerHTML = filterDoumei.down
+    }
+  }
+}
+
 // 抖音关注列表下一页
 function douyinGuanNextPage() {
   console.log('关注列表滚动到下一页');
@@ -74,7 +313,7 @@ function douyinCancleGuan() {
         // 开始点击后面5个烦死的取消关注按钮
         let countNum = 0
         for (let index = 0; index < 15; index++) {
-          let fansiEle = fenSiList[indexTarget+index]
+          let fansiEle = fenSiList[indexTarget + index]
           if (fansiEle.className === "vcEWxPjN" && countNum <= 5) {
             if (fansiEle.getElementsByClassName("cNFB52sk")[0].innerText === "已关注" || fansiEle.getElementsByClassName("cNFB52sk")[0].innerText === "相互关注") {
               fansiEle.getElementsByClassName("cNFB52sk")[0].click()
@@ -132,4 +371,29 @@ async function sendBackgroun() {
   const response = await chrome.runtime.sendMessage('get-user-data');
   // do something with response here, not outside the function
   console.log("contentjs----", response);
+}
+
+
+// 设置缓存数据
+function storageSet(key, value) {
+  // 如果是json就序列化
+  if (value instanceof Object) {
+    value = JSON.stringify(value)
+  }
+  chrome.storage.local.set({ [key]: value }).then(() => {
+    console.log("Value is set to " + value);
+  });
+}
+
+// 读取数据
+async function storageGet(key) {
+  const res = await chrome.storage.local.get([key])
+  var value = res[key]
+  // 如果是json就序列化
+  try {
+    value = JSON.parse(value)
+  } catch (error) {
+    console.log('storageGet反序列化出错', value);
+  }
+  return value
 }

@@ -1,6 +1,6 @@
 {
     "manifest_version": 3,
-    "name": "HuiJia",
+    "name": "1024回家",
     "version": "0.0.1",
     "description": "这里总有你想看的吧",
     "icons": {
@@ -22,15 +22,15 @@
         "declarativeNetRequestFeedback"
     ],
     "declarative_net_request": {
-      "rule_resources": [{
-        "id": "1",
-        "enabled": false,
-        "path": "rules_1.json"
-      }]
+        "rule_resources": [
+            {
+                "id": "1",
+                "enabled": false,
+                "path": "rules_1.json"
+            }
+        ]
     },
-    "host_permissions": [
-        "<all_urls>"
-    ],
+    "host_permissions": ["<all_urls>"],
     "background": {
         "service_worker": "background.js"
     },

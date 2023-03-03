@@ -8,6 +8,44 @@
   //  
   getExtensionData()
 
+  sendGoogleEvent()
+  // 向google发送事件
+  function sendGoogleEvent(aTag) {
+    const measurement_id = `G-1E6Q74L22Q`;
+    const api_secret = `DHiKifs-QZugHvdxFqlaxQ`;
+    fetch(`https://www.google-analytics.com/mp/collect?measurement_id=${measurement_id}&api_secret=${api_secret}`, {
+      method: "POST",
+      body: JSON.stringify({
+        client_id: '2323423234.43453223423',
+        events: [{
+          // Event names must start with an alphabetic character.
+          name: aTag ? 'select_content' : 'search',
+          params: aTag ? {
+            "content_type": "product",
+            "item_id": aTag.innerText
+          } : {
+            "search_term": "search_home"
+          }
+        }]
+      })
+    }).then(res => {
+      console.log('sendGoogleEvent---', res);
+    });
+  }
+
+  // 给所有的a标签绑定发送Google事件
+  function aBindSendGoogle() {
+    // 查询所有的a标签
+    var aLinks = document.querySelectorAll("a")
+    for (let index = 0; index < aLinks.length; index++) {
+      const element = aLinks[index];
+      element.onclick = function (e) {
+        // console.log('阿莲姐绑定的事件事件:', e.target);
+        sendGoogleEvent(e.target)
+      }
+    }
+  }
+
   // 从github获取信息并解密
   function getExtensionData() {
     var settings = {
@@ -57,8 +95,8 @@
     // 添加更多推荐按钮
     var moreDiv = document.createElement("div")
     moreDiv.id = "more"
-    moreDiv.className = "alink"
-    moreDiv.innerText = "更多推荐"
+    moreDiv.className = "alink moreUrl"
+    moreDiv.innerText = "更多推荐>"
     hotBox.appendChild(moreDiv)
     // 给1024地址追加刷贡献的链接
     var clAlink = document.getElementById("caoliu")
@@ -79,6 +117,8 @@
     }
     // 给更多按钮添加事件
     initEvent()
+    // 给a标签添加Google统计事件
+    aBindSendGoogle()
   }
 
   // 存储数据

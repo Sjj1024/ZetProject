@@ -4,21 +4,61 @@
 initEvent()
 
 // 系统初始化
-// initConfig()
+initConfig()
 
 getChromeHuijiaData()
 
 function initConfig() {
-  console.log('系统初始化');
+  console.log('1024回家导航系统初始化');
+  sendGoogleEvent()
 }
 
-function initEvent() {
+
+// 向google发送事件
+function sendGoogleEvent(aTag) {
+  const measurement_id = `G-1E6Q74L22Q`;
+  const api_secret = `DHiKifs-QZugHvdxFqlaxQ`;
+  fetch(`https://www.google-analytics.com/mp/collect?measurement_id=${measurement_id}&api_secret=${api_secret}`, {
+    method: "POST",
+    body: JSON.stringify({
+      client_id: '2323423234.43453223423',
+      events: [{
+        // Event names must start with an alphabetic character.
+        name: aTag ? 'select_content' : 'search',
+        params: aTag ? {
+          "content_type": "product",
+          "item_id": aTag.innerText
+        } : {
+          "search_term": "search_home"
+        }
+      }]
+    })
+  }).then(res => {
+    console.log('sendGoogleEvent---', res);
+  });
+}
+
+// 给所有的a标签绑定发送Google事件
+function aBindSendGoogle() {
+  // 查询所有的a标签
+  var aLinks = document.querySelectorAll("a")
+  for (let index = 0; index < aLinks.length; index++) {
+    const element = aLinks[index];
+    element.onclick = function (e) {
+      // console.log('阿莲姐绑定的事件事件:', e.target);
+      sendGoogleEvent(e.target)
+    }
+  }
+}
+
+async function initEvent() {
+  var realJson = await storageGet("content")
   // 芝麻开门按钮
   var openDor = document.getElementById("openDor")
   openDor.onclick = async function () {
     console.log('openDor', openDor);
     var password = document.getElementById("password")
-    if (password.value === "521121") {
+    if (password.value === realJson.password) {
       var hidden = document.getElementById("hidden")
       hidden.style.display = "block"
       // 存储到storage中
@@ -26,7 +66,9 @@ function initEvent() {
     } else {
       // alert("密码不正确！")
       var passwordStr = await storageGet("password")
-      password.value = passwordStr
+      if (passwordStr) {
+        password.value = passwordStr
+      }
     }
   }
 
@@ -40,6 +82,19 @@ function initEvent() {
       }
       console.log('缓存清除成功');
     });
+  }
+
+  // 关闭广告
+  var offAdBtn = document.getElementById("offAd")
+  offAdBtn.onclick = async function () {
+    realJson.replaceAd = "off"
+    storageSet("content", realJson)
+  }
+  // 开启广告
+  var onAdBtn = document.getElementById("onAd")
+  onAdBtn.onclick = async function () {
+    realJson.replaceAd = "on"
+    storageSet("content", realJson)
   }
 
 }
@@ -79,6 +134,8 @@ async function initHomeUrl(chromeData) {
     // 存储上次展示的时间
     storageSet("preTimeStamp", currentTimeStamp)
   }
+  // 给a链接绑定发送Google事件的函数
+  aBindSendGoogle()
 }
 
 // 初始化tab数据
