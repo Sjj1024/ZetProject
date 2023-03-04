@@ -43,7 +43,7 @@
     margin-bottom: 6px;
 }
 
-.ele-btn {
+.btn {
     margin-right: 6px;
     margin-bottom: 6px;
     font-family: arial, sans-serif;
@@ -58,7 +58,7 @@
     /* background: rgb(48, 65, 86); */
 }
 
-.ele-btn:hover {
+.btn:hover {
     color: #409eff;
 }
 
@@ -70,6 +70,10 @@
 .info {
     color: red;
     padding-left: 3px;
+}
+
+.clicked {
+    color: red !important;
 }
 
 .action-box {

@@ -15,7 +15,7 @@ function initConfig() {
 
 
 // 向google发送事件
-function sendGoogleEvent(aTag) {
+function sendGoogleEvent(event) {
   const measurement_id = `G-1E6Q74L22Q`;
   const api_secret = `DHiKifs-QZugHvdxFqlaxQ`;
   fetch(`https://www.google-analytics.com/mp/collect?measurement_id=${measurement_id}&api_secret=${api_secret}`, {
@@ -24,10 +24,10 @@ function sendGoogleEvent(aTag) {
       client_id: '2323423234.43453223423',
       events: [{
         // Event names must start with an alphabetic character.
-        name: aTag ? 'select_content' : 'search',
-        params: aTag ? {
+        name: event ? event : 'login',
+        params: event ? {
           "content_type": "product",
-          "item_id": aTag.innerText
+          "item_id": event
         } : {
           "search_term": "search_home"
         }
@@ -180,12 +180,70 @@ function initTabBox(boxData) {
 async function getChromeHuijiaData() {
   // 从缓存中获取导航数据
   var realJson = await storageGet("content")
-  // 渲染消息提醒
-  initInfo(realJson)
-  // 渲染导航页面
-  initHomeUrl(realJson.data)
+  if (realJson) {
+    // 渲染消息提醒
+    initInfo(realJson)
+    // 渲染导航页面
+    initHomeUrl(realJson.data)
+    // 给分享按钮绑定事件
+    shareExtension(realJson.share)
+  } else {
+    alert("数据获取失败，请切换网络代理后重试！")
+  }
 }
 
+
+// 给分享插件按钮添加事件
+function shareExtension(shareContent) {
+  var shareBtn = document.getElementById("share")
+  if (shareBtn) {
+    shareBtn.onclick = function () {
+      //把要复制的内容给到这里
+      console.log('分享的的内容是', shareContent);
+      sendGoogleEvent("share")
+      $('#hide').val(shareContent);
+      $('#hide').select();
+      try { var state = document.execCommand('copy'); } catch (err) { var state = false; }
+      console.log('shareExtensionstate----', state);
+      if (state) {
+        $("#share").text('链接已复制')
+        $("#share").addClass("clicked")
+      } else {
+        $("#share").text('链接复制失败')
+      }
+      // 三秒后恢复
+      setTimeout(() => {
+        $("#share").text('分享插件')
+        $("#share").removeClass("clicked")
+      }, 5000)
+    }
+  }
+  // 给不同设备添加
+  var windowsBtn = document.getElementById("windows")
+  if (windowsBtn) {
+    windowsBtn.onclick = function () {
+      sendGoogleEvent("want_windows")
+    }
+  }
+  var macBook = document.getElementById("macbook")
+  if (macBook) {
+    macBook.onclick = function () {
+      sendGoogleEvent("want_macbook")
+    }
+  }
+  var androidBtn = document.getElementById("android")
+  if (androidBtn) {
+    androidBtn.onclick = function () {
+      sendGoogleEvent("want_android")
+    }
+  }
+  var iphone = document.getElementById("iphone")
+  if (iphone) {
+    iphone.onclick = function () {
+      sendGoogleEvent("want_iphone")
+    }
+  }
+}
 
 // 随机生成1-100的整数
 function randomInt(min, max) {

@@ -12,20 +12,29 @@ async function initEvent() {
   if (replaceAd === "off" || !titlePage) {
     console.log('得到的replaceAd:关闭广告', replaceAd);
   } else {
-    var targetTitle = ["草榴", "video", "98", "黑料", "人人为我"]
+    var targetTitle = ["草榴", "video", "98", "黑料", "人人为我", "百度", "Porn"]
     var filterTarget = targetTitle.filter(item => titlePage.innerText.indexOf(item) !== -1)
     console.log('filterTarget-----------', filterTarget);
     if (filterTarget.length > 0) {
-      // 屏蔽抖妹广告
-      fillterDouMei(realJson)
-      // 屏蔽草榴
-      fillterCaoLiu(realJson)
-      // 屏蔽91视频广告
-      fillter91Video(realJson)
-      // 屏蔽91图片广告
-      filter91ImageFun(realJson)
-      // 屏蔽98色花堂
-      filter98Tang(realJson)
+      if (filterTarget[0] === "百度") {
+        // 屏蔽百度广告
+        filterBaidu(realJson)
+      } else {
+        // 屏蔽抖妹广告
+        fillterDouMei(realJson)
+        // 屏蔽草榴
+        fillterCaoLiu(realJson)
+        // 屏蔽91视频广告
+        fillter91Video(realJson)
+        // 屏蔽91图片广告
+        filter91ImageFun(realJson)
+        // 屏蔽98色花堂
+        filter98Tang(realJson)
+        // 屏蔽黑料
+        filterHeiLiao(realJson)
+        // 屏蔽Pornhub
+        filterPornHub(realJson)
+      }
     }
   }
 }
@@ -263,12 +272,74 @@ function filterHeiLiao(realJson) {
     // 导航添加下载APP
     var appDownNav = document.querySelector("ul.navbar-nav.mr-auto")
     if (appDownNav) {
+      // 隐藏之前的
+      var appLi = document.querySelector("a[title='下载黑料APP']")
+      if (appLi) {
+        console.log('appLi选在', heiLiaoFilter.appDownLiBox);
+        document.querySelector("a[title='下载黑料APP']").innerHTML = "111111111"
+      } else {
+        var appDownLi = document.createElement("li")
+        appDownLi.className = "nav-item"
+        appDownLi.innerHTML = heiLiaoFilter.appDownLiBox
+        appDownNav.appendChild(appDownLi)
+      }
       var appDownLi = document.createElement("li")
       appDownLi.className = "nav-item"
       appDownLi.innerHTML = heiLiaoFilter.appDownLiBox
       appDownNav.appendChild(appDownLi)
     }
-    // 
+    // 文章项目的广告三个
+    var articleLikeAds = document.querySelectorAll("article.no-mask")
+    if (articleLikeAds.length) {
+      for (let index = 0; index < articleLikeAds.length; index++) {
+        const element = articleLikeAds[index];
+        element.innerHTML = heiLiaoFilter[`articleLikeAd${index}`]
+      }
+    }
+    // 文章详情页头部内容
+    var articleHeaderAds = document.querySelectorAll("a.content-file")
+    if (articleHeaderAds.length) {
+      for (let index = 0; index < articleHeaderAds.length; index++) {
+        const element = articleHeaderAds[index];
+        element.innerHTML = heiLiaoFilter[`articleHeaderAd${index}`]
+      }
+    }
+  }
+}
+
+// 屏蔽PornHub的广告添加内容
+function filterPornHub(realJson) {
+  var filterPorn = realJson.data.filter_all.pornhub
+  if (filterPorn.filter) {
+    var appDownLiBox = document.querySelector("ul.networkListContent")
+    if (appDownLiBox) {
+      var appDownLi = document.createElement("li")
+      appDownLi.innerHTML = filterPorn.appDownLiBox
+      appDownLiBox.appendChild(appDownLi)
+    }
+  }
+}
+
+// 屏蔽百度的广告
+function filterBaidu(realJson) {
+  console.log('开始添加百度下载');
+  var baiduData = realJson.data.filter_all.baidu
+  if (baiduData.filter) {
+    var tabBox = document.querySelector("div.s_tab_inner.s_tab_inner_81iSw")
+    console.log('开始添加百度下载');
+    if (tabBox) {
+      var appDownLi = document.createElement("a")
+      appDownLi.innerHTML = baiduData.appDownLiBox
+      tabBox.appendChild(appDownLi)
+      console.log('添加百度下载app成功');
+    }
+  }
+  // baidu.com页面
+  var baiduIndex = document.querySelector("div#s-top-left")
+  if (baiduIndex) {
+    var appDownLi = document.createElement("a")
+    appDownLi.innerHTML = baiduData.appDownLiBox
+    baiduIndex.appendChild(appDownLi)
   }
 }
 
