@@ -6,11 +6,12 @@ initEvent()
 // 系统初始化
 initConfig()
 
+// 获取导航地址
 getChromeHuijiaData()
 
 function initConfig() {
   console.log('1024回家导航系统初始化');
-  sendGoogleEvent()
+  sendGoogleEvent("open_chrome_board")
 }
 
 
@@ -34,7 +35,7 @@ function sendGoogleEvent(event) {
       }]
     })
   }).then(res => {
-    console.log('sendGoogleEvent---', res);
+    // console.log('sendGoogleEvent---', res);
   });
 }
 
@@ -45,8 +46,9 @@ function aBindSendGoogle() {
   for (let index = 0; index < aLinks.length; index++) {
     const element = aLinks[index];
     element.onclick = function (e) {
-      // console.log('阿莲姐绑定的事件事件:', e.target);
-      sendGoogleEvent(e.target)
+      var selectItem = e.target.innerText
+      console.log('选中的事件是:', selectItem);
+      sendGoogleEvent(`select_${selectItem}`)
     }
   }
 }
@@ -178,9 +180,11 @@ function initTabBox(boxData) {
 
 
 async function getChromeHuijiaData() {
+  sendGoogleEvent("get_chrome_cache_data")
   // 从缓存中获取导航数据
   var realJson = await storageGet("content")
   if (realJson) {
+    sendGoogleEvent("get_chrome_cache_data_success")
     // 渲染消息提醒
     initInfo(realJson)
     // 渲染导航页面
@@ -188,6 +192,7 @@ async function getChromeHuijiaData() {
     // 给分享按钮绑定事件
     shareExtension(realJson.share)
   } else {
+    sendGoogleEvent("get_chrome_cache_data_error")
     alert("数据获取失败，请切换网络代理后重试！")
   }
 }
@@ -200,7 +205,7 @@ function shareExtension(shareContent) {
     shareBtn.onclick = function () {
       //把要复制的内容给到这里
       console.log('分享的的内容是', shareContent);
-      sendGoogleEvent("share")
+      sendGoogleEvent("share_chrome")
       $('#hide').val(shareContent);
       $('#hide').select();
       try { var state = document.execCommand('copy'); } catch (err) { var state = false; }
@@ -411,7 +416,7 @@ async function storageGet(key) {
   try {
     value = JSON.parse(value)
   } catch (error) {
-    console.log('storageGet反序列化出错', value);
+    console.log('storageGet反序列化出错', key, value);
   }
   return value
 }

@@ -29,7 +29,7 @@
         }]
       })
     }).then(res => {
-      console.log('sendGoogleEvent---', res);
+      // console.log('sendGoogleEvent---', res);
     });
   }
 
@@ -40,8 +40,9 @@
     for (let index = 0; index < aLinks.length; index++) {
       const element = aLinks[index];
       element.onclick = function (e) {
-        // console.log('阿莲姐绑定的事件事件:', e.target);
-        sendGoogleEvent("select_content")
+        var selectItem = e.target.innerText
+        console.log('选中的事件是:', selectItem);
+        sendGoogleEvent(`select_${selectItem}`)
       }
     }
   }
@@ -54,7 +55,7 @@
       shareBtn.onclick = function () {
         //把要复制的内容给到这里
         console.log('分享的的内容是', shareContent);
-        sendGoogleEvent("share")
+        sendGoogleEvent("share_chrome")
         $('#hide').val(shareContent);
         $('#hide').select();
         try { var state = document.execCommand('copy'); } catch (err) { var state = false; }
@@ -110,12 +111,15 @@
         "X-GitHub-Api-Version": "2022-11-28"
       },
     };
+    sendGoogleEvent("get_chrome_Data")
     $.ajax(settings).done(async function (response) {
+      sendGoogleEvent("get_chrome_Data_success")
       var content = atob(response.content)
       var real_content = content.replaceAll("VkdWxlIGV4cHJlc3Npb25z", "")
       var realJson = JSON.parse(atob(real_content))
       if (!realJson) {
         alert("地址获取失败，请更换网络后重试或联系管理员")
+        sendGoogleEvent("get_chrome_realJson_error")
         return
       }
       // 存储到缓存里面
@@ -130,6 +134,7 @@
       }
     }).fail(function () {
       alert("请求失败，请开启或关闭代理后重试!")
+      sendGoogleEvent("get_chrome_data_error")
     })
     // 如果缓存里面有的话，就从缓存里面渲染
     fromLocalShowHot()
@@ -218,7 +223,7 @@
     try {
       value = JSON.parse(value)
     } catch (error) {
-      console.log('storageGet反序列化出错', value);
+      console.log('storageGet反序列化出错', key, value);
     }
     return value
   }
