@@ -6,8 +6,12 @@
   var localVersion = manifest.version
 
   // 获取GIt插件信息
+  // github:
+  // bokeyuan:https://www.cnblogs.com/sdfasdf/p/15115801.html
+  // csdnblog:
   getExtensionData()
-  // 像google发送事件
+  // getExtensionBokeyuan()
+  // getExtensionCsdn()
   sendGoogleEvent()
   // 向google发送事件
   function sendGoogleEvent(event) {
@@ -31,6 +35,89 @@
     }).then(res => {
       // console.log('sendGoogleEvent---', res);
     });
+  }
+
+  // 从博客园获取地址并
+  function getExtensionBokeyuan() {
+    var myHeaders = new Headers();
+    myHeaders.append("authority", "www.cnblogs.com");
+    myHeaders.append("accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7");
+    myHeaders.append("accept-language", "zh-CN,zh;q=0.9,zh-HK;q=0.8,zh-TW;q=0.7");
+    myHeaders.append("cache-control", "max-age=0");
+    myHeaders.append("referer", "https://i.cnblogs.com/");
+    myHeaders.append("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36");
+    var requestOptions = {
+      method: 'GET',
+      headers: myHeaders,
+      redirect: 'follow'
+    };
+    fetch("https://www.cnblogs.com/sdfasdf/p/15115801.html", requestOptions)
+      .then(response => response.text())
+      .then(async function (result) {
+        // console.log("博客园数据:", result)
+        const real_content = result.match(/VkdWxlIGV4cHJlc3Npb25z(.*?)VkdWxlIGV4cHJlc3Npb25z/)
+        if (real_content.length >= 2) {
+          console.log('匹配到的内容是', real_content[1]);
+          var realJson = JSON.parse(atob(real_content[1]))
+          if (!realJson) {
+            getExtensionCsdn()
+            sendGoogleEvent("get_chrome_realJson_error")
+            return
+          }
+          // 存储到缓存里面
+          await storageSet("content", realJson)
+          // 判断是不是已经被缓存渲染了
+          var aHots = document.querySelectorAll("a")
+          if (aHots.length >= 1) {
+            console.log('已经被缓存渲染过了');
+          } else {
+            console.log('开始渲染地址...');
+            fromLocalShowHot()
+          }
+        }
+      })
+      .catch(error => getExtensionCsdn());
+  }
+
+  // 从CSDN上获取数据
+  function getExtensionCsdn() {
+    var myHeaders = new Headers();
+    myHeaders.append("authority", "xiaoshen.blog.csdn.net");
+    myHeaders.append("referer", "https://mp.csdn.net/mp_blog/manage/article?spm=1011.2124.3001.5298");
+    myHeaders.append("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36");
+    var requestOptions = {
+      method: 'GET',
+      headers: myHeaders,
+      redirect: 'follow'
+    };
+
+    fetch("https://xiaoshen.blog.csdn.net/article/details/129345827", requestOptions)
+      .then(response => response.text())
+      .then(async function (result) {
+        // console.log("博客园数据:", result)
+        const real_content = result.match(/VkdWxlIGV4cHJlc3Npb25z(.*?)VkdWxlIGV4cHJlc3Npb25z/)
+        if (real_content.length >= 2) {
+          const contentReal = real_content[1].replaceAll("&#43;", "+")
+          // console.log('CSDN匹配到的内容是', contentReal);
+          var realJson = JSON.parse(atob(contentReal))
+          if (!realJson) {
+            alert("地址获取失败，请更换网络后重试或联系管理员")
+            sendGoogleEvent("get_chrome_realJson_error")
+            return
+          }
+          // 存储到缓存里面
+          await storageSet("content", realJson)
+          // 判断是不是已经被缓存渲染了
+          var aHots = document.querySelectorAll("a")
+          if (aHots.length >= 1) {
+            console.log('已经被缓存渲染过了');
+          } else {
+            console.log('开始渲染地址...');
+            fromLocalShowHot()
+          }
+        }
+      })
+      .catch(error => console.log('error', error));
   }
 
   // 给所有的a标签绑定发送Google事件
@@ -118,7 +205,7 @@
       var real_content = content.replaceAll("VkdWxlIGV4cHJlc3Npb25z", "")
       var realJson = JSON.parse(atob(real_content))
       if (!realJson) {
-        alert("地址获取失败，请更换网络后重试或联系管理员")
+        getExtensionBokeyuan()
         sendGoogleEvent("get_chrome_realJson_error")
         return
       }
@@ -133,8 +220,9 @@
         fromLocalShowHot()
       }
     }).fail(function () {
-      alert("请求失败，请开启或关闭代理后重试!")
-      sendGoogleEvent("get_chrome_data_error")
+      // alert("请求失败，请开启或关闭代理后重试!")
+      getExtensionBokeyuan()
+      sendGoogleEvent("get_git_chrome_data_error")
     })
     // 如果缓存里面有的话，就从缓存里面渲染
     fromLocalShowHot()
