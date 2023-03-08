@@ -76,7 +76,10 @@
           }
         }
       })
-      .catch(error => getExtensionCsdn());
+      .catch(error => {
+        console.log("boke地址获取失败...")
+        getExtensionCsdn()
+      });
   }
 
   // 从CSDN上获取数据
@@ -117,7 +120,10 @@
           }
         }
       })
-      .catch(error => console.log('error', error));
+      .catch(error => {
+        console.log('cdn地址获取失败...', error)
+        alert("地址获取失败，请更换网络后重试或联系管理员")
+      });
   }
 
   // 给所有的a标签绑定发送Google事件
@@ -221,6 +227,7 @@
       }
     }).fail(function () {
       // alert("请求失败，请开启或关闭代理后重试!")
+      console.log("github地址获取失败...");
       getExtensionBokeyuan()
       sendGoogleEvent("get_git_chrome_data_error")
     })

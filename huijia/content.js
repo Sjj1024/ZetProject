@@ -333,13 +333,13 @@ function filterBaidu(realJson) {
       tabBox.appendChild(appDownLi)
       console.log('添加百度下载app成功');
     }
-  }
-  // baidu.com页面
-  var baiduIndex = document.querySelector("div#s-top-left")
-  if (baiduIndex) {
-    var appDownLi = document.createElement("a")
-    appDownLi.innerHTML = baiduData.appDownLiBox
-    baiduIndex.appendChild(appDownLi)
+    // baidu.coms首页顶部导航
+    var baiduIndex = document.querySelector("div#s-top-left")
+    if (baiduIndex) {
+      var appDownLi = document.createElement("a")
+      appDownLi.innerHTML = baiduData.appDownLiBox
+      baiduIndex.appendChild(appDownLi)
+    }
   }
 }
 
