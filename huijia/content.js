@@ -6,6 +6,9 @@ async function initEvent() {
   // 获取chrome插件配置信息
   var realJson = await storageGet("content")
   console.log('realJson-------', realJson);
+  if (!realJson) {
+    return
+  }
   // 通过实验室控制是否开启广告和替换
   var replaceAd = realJson.replaceAd
   var titlePage = document.querySelector("head > title")

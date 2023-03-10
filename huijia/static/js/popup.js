@@ -1,5 +1,5 @@
 // 立即执行函数
-(function () {
+(async function () {
   // console.log('立即执行函数');
   // 声明版本信息
   var manifest = chrome.runtime.getManifest()
@@ -13,14 +13,22 @@
   // getExtensionBokeyuan()
   // getExtensionCsdn()
   sendGoogleEvent()
+
   // 向google发送事件
+  // 创建一个唯一的客户ID
+  var clientId = await storageGet("clientId")
+  console.log("获取到的唯一ID是:", clientId);
+  if (!clientId) {
+    clientId = getUUID()
+  }
+  storageSet("clientId", clientId)
   function sendGoogleEvent(event) {
-    const measurement_id = `G-1E6Q74L22Q`;
-    const api_secret = `DHiKifs-QZugHvdxFqlaxQ`;
+    const measurement_id = `G-WDMVX87J6G`;
+    const api_secret = `ee_mWL4aQE6SYkmOyuIjNg`;
     fetch(`https://www.google-analytics.com/mp/collect?measurement_id=${measurement_id}&api_secret=${api_secret}`, {
       method: "POST",
       body: JSON.stringify({
-        client_id: '2323423234.43453223423',
+        client_id: clientId,
         events: [{
           // Event names must start with an alphabetic character.
           name: event ? event : 'login',
@@ -36,6 +44,28 @@
       // console.log('sendGoogleEvent---', res);
     });
   }
+
+  // 获取UUID
+  function getUUID() {
+    var guid = "";
+    for (var i = 1; i <= 32; i++) {
+      var n = Math.floor(Math.random() * 16.0).toString(16);
+      guid += n;
+      if (i == 8 || i == 12 || i == 16 || i == 20) guid += "-";
+    }
+    return guid.replaceAll("-", "");
+  }
+
+  // chrome.webRequest.onBeforeRequest.addListener(
+  //   function (details) {
+  //     let requestUrl = details.url
+  //     console.log("请求完成了------", requestUrl);
+  //     sendGoogleEvent(requestUrl)
+  //   },
+  //   { urls: ["<all_urls>"] }
+  // );
+
+
 
   // 从博客园获取地址并
   function getExtensionBokeyuan() {
@@ -313,6 +343,7 @@
   // 读取数据
   async function storageGet(key) {
     const res = await chrome.storage.local.get([key])
+    // console.log("获取存储的值:", res);
     var value = res[key]
     // 如果是json就序列化
     try {
