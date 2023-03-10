@@ -381,7 +381,7 @@
       cliNode.onclick = async function (cliId) {
         var realJson = await storageGet("content")
         // console.log('cliNode-----', cliId, realJson.data[cliId.target.id]);
-        if (realJson.data[cliId.target.id]) {
+        if (realJson && realJson.data[cliId.target.id]) {
           window.open(realJson.data[cliId.target.id], '_blank');
         } else {
           cliId.target.innerText = "还在开发中..."
