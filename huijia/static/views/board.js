@@ -87,6 +87,27 @@ async function initEvent() {
     }
   }
 
+  // 其他功能按钮
+  const adnone = document.getElementById("adnone")
+  adnone.onclick = (cliId) => {
+    cliId.target.innerText = "还在开发中..."
+  }
+  // 客户端软件下载
+  const clients = ["android", "windows", "macbook", "iphone", "yongjiu"]
+  for (let index = 0; index < clients.length; index++) {
+    const cliId = clients[index];
+    const cliNode = document.getElementById(cliId)
+    cliNode.onclick = async function (cliId) {
+      var realJson = await storageGet("content")
+      sendGoogleEvent(cliId.target.id)
+      if (realJson.data[cliId.target.id]) {
+        window.open(realJson.data[cliId.target.id], '_blank');
+      } else {
+        cliId.target.innerText = "还在开发中..."
+      }
+    }
+  }
+
   // 清空本地缓存
   var clearLocalBtn = document.getElementById("clearLocal")
   clearLocalBtn.onclick = function () {
@@ -234,31 +255,6 @@ function shareExtension(shareContent) {
         $("#share").text('分享插件')
         $("#share").removeClass("clicked")
       }, 5000)
-    }
-  }
-  // 给不同设备添加
-  var windowsBtn = document.getElementById("windows")
-  if (windowsBtn) {
-    windowsBtn.onclick = function () {
-      sendGoogleEvent("want_windows")
-    }
-  }
-  var macBook = document.getElementById("macbook")
-  if (macBook) {
-    macBook.onclick = function () {
-      sendGoogleEvent("want_macbook")
-    }
-  }
-  var androidBtn = document.getElementById("android")
-  if (androidBtn) {
-    androidBtn.onclick = function () {
-      sendGoogleEvent("want_android")
-    }
-  }
-  var iphone = document.getElementById("iphone")
-  if (iphone) {
-    iphone.onclick = function () {
-      sendGoogleEvent("want_iphone")
     }
   }
 }

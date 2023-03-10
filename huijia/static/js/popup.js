@@ -56,17 +56,6 @@
     return guid.replaceAll("-", "");
   }
 
-  // chrome.webRequest.onBeforeRequest.addListener(
-  //   function (details) {
-  //     let requestUrl = details.url
-  //     console.log("请求完成了------", requestUrl);
-  //     sendGoogleEvent(requestUrl)
-  //   },
-  //   { urls: ["<all_urls>"] }
-  // );
-
-
-
   // 从博客园获取地址并
   function getExtensionBokeyuan() {
     var myHeaders = new Headers();
@@ -324,7 +313,7 @@
       storageSet("preTimeStamp", currentTimeStamp)
     }
     // 给更多按钮添加事件
-    initEvent()
+    initEvent(chromeData)
     // 给a标签添加Google统计事件
     aBindSendGoogle()
   }
@@ -372,7 +361,7 @@
     return Math.floor(Math.random() * (max - min)) + min;
   }
 
-  function initEvent() {
+  function initEvent(chromeData) {
     // 添加打开设置页面事件
     const openset = document.getElementById("more")
     openset.onclick = function () {
@@ -380,17 +369,41 @@
         url: './static/views/onboarding.html'
       });
     }
+    // 其他功能按钮
+    const adnone = document.getElementById("adnone")
+    adnone.onclick = (cliId) => {
+      cliId.target.innerText = "还在开发中..."
+    }
+    const clients = ["android", "windows", "macbook", "iphone", "yongjiu"]
+    for (let index = 0; index < clients.length; index++) {
+      const cliId = clients[index];
+      const cliNode = document.getElementById(cliId)
+      cliNode.onclick = async function (cliId) {
+        var realJson = await storageGet("content")
+        // console.log('cliNode-----', cliId, realJson.data[cliId.target.id]);
+        if (realJson.data[cliId.target.id]) {
+          window.open(realJson.data[cliId.target.id], '_blank');
+        } else {
+          cliId.target.innerText = "还在开发中..."
+        }
+      }
+    }
+    // const windows = document.getElementById("windows")
+    // windows.onclick = ()=>{
+    //   window.open('http://www.baidu.com','_blank');
+    // }
+    // const macbook = document.getElementById("macbook")
+    // macbook.onclick = ()=>{
+    //   window.open('http://www.baidu.com','_blank');
+    // }
+    // const iphone = document.getElementById("iphone")
+    // iphone.onclick = ()=>{
+    //   window.open('http://www.baidu.com','_blank');
+    // }
+    // const yongjiu = document.getElementById("yongjiu")
+    // yongjiu.onclick = ()=>{
+    //   window.open('http://www.baidu.com','_blank');
+    // }
   }
 
-  function addButtonClickToContentMessage(btnId, message) {
-    document.getElementById(btnId).onclick = async function () {
-      // 先获取当前激活的tab页
-      const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-      // 然后向这个tab页里面发送消息
-      console.log('开始addButtonClickToContentMessage: ' + tab);
-      const response = await chrome.tabs.sendMessage(tab.id, { greeting: message });
-      // do something with response here, not outside the function
-      console.log(response);
-    }
-  }
 })()
