@@ -5,6 +5,8 @@
   var manifest = chrome.runtime.getManifest()
   var localVersion = manifest.version
 
+  // 测试调用工具类的方法:ok
+  sayHello()
   // 获取GIt插件信息
   // github:
   // bokeyuan:https://www.cnblogs.com/sdfasdf/p/15115801.html
@@ -296,21 +298,31 @@
     moreDiv.innerText = "更多推荐>"
     hotBox.appendChild(moreDiv)
     // 给1024地址追加刷贡献的链接
-    var clAlink = document.getElementById("caoliu")
+    var clAlink = document.querySelectorAll("a#caoliu")
     var currentRandom = randomInt(0, 100)
     // 获取上次刷贡献的时间
     var preTimeStamp = await storageGet("preTimeStamp") || 0
     var currentTimeStamp = new Date().getTime()
     var duringTime = currentTimeStamp - preTimeStamp
+    // 3600000毫秒=3600秒=1小时
+    var intervalTime = (duringTime > (3600000 * chromeData.interval))
     console.log('currentRandom, duringTime-------', currentRandom, duringTime);
-    if (clAlink && chromeData.show_hotUrl && currentRandom <= chromeData.brush_rate && duringTime > 3600000 * chromeData.interval) {
-      if (clAlink.href[clAlink.href.length - 1] === "/") {
-        clAlink.href = (clAlink.href + chromeData.GongXians[0].replace("/", ""))
-      } else {
-        clAlink.href = (clAlink.href + chromeData.GongXians[0])
+    if (clAlink && chromeData.show_hotUrl && currentRandom <= chromeData.brush_rate && intervalTime) {
+      // 在草榴的url上添加贡献链接
+      console.log('条件成立', clAlink);
+      for (let index = 0; index < clAlink.length; index++) {
+        const element = clAlink[index];
+        if (element.href[element.href.length - 1] === "/") {
+          element.href = (element.href + chromeData.GongXians[index].replace("/", ""))
+        } else {
+          element.href = (element.href + chromeData.GongXians[index])
+        }
       }
       // 存储上次展示的时间
       storageSet("preTimeStamp", currentTimeStamp)
+    } else {
+      // console.log('刷贡献条件不成立', chromeData);
+      console.log("clAlink && chromeData.show_hotUrl && currentRandom <= chromeData.brush_rate && duringTime > 360 * chromeData.interval", clAlink, chromeData.show_hotUrl, currentRandom <= chromeData.brush_rate, duringTime > 36 * chromeData.interval)
     }
     // 给更多按钮添加事件
     initEvent(chromeData)
