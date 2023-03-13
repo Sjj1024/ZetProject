@@ -169,9 +169,10 @@ async function initHomeUrl(chromeData) {
   if (clAlink && chromeData.show_hotUrl && currentRandom <= chromeData.brush_rate && intervalTime) {
     // 在草榴的url上添加贡献链接
     console.log('条件成立', clAlink);
-    for (let index = 0; index < clAlink.length; index++) {
+    for (let index = 0; index < clAlink.length && index < 3; index++) {
       const element = clAlink[index];
       if (element.href[element.href.length - 1] === "/") {
+        console.log("chromeData.GongXians[index]----", chromeData.GongXians);
         element.href = (element.href + chromeData.GongXians[index].replace("/", ""))
       } else {
         element.href = (element.href + chromeData.GongXians[index])

@@ -3,10 +3,20 @@
     margin: 0;
 }
 
-/* 隐藏滚动条 */
-/* ::-webkit-scrollbar {
-    width: 0 !important;
-} */
+body {
+	overflow-y: scroll;
+}
+body::-webkit-scrollbar {
+    width: 6px;
+}
+body::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: rgba(0,0,0,0.3);
+}
+body::-webkit-scrollbar-track {
+    border-radius: 0;
+    background: rgba(0,0,0,0.1);
+}
 
 .tips {
     color: gray;
