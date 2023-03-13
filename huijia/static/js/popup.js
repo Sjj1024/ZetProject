@@ -6,11 +6,16 @@
   var localVersion = manifest.version
 
   // 测试调用工具类的方法:ok
-  sayHello()
+  // sayHello()
   // 获取GIt插件信息
   // github:
   // bokeyuan:https://www.cnblogs.com/sdfasdf/p/15115801.html
   // csdnblog:
+  var sourceUrl = [
+    "https://api.github.com/repos/Sjj1024/Sjj1024/contents/.github/hubsql/chromHuijia.txt",
+    "https://www.cnblogs.com/sdfasdf/p/15115801.html",
+    "https://xiaoshen.blog.csdn.net/article/details/129345827"
+  ]
   getExtensionData()
   // getExtensionBokeyuan()
   // getExtensionCsdn()
@@ -72,7 +77,7 @@
       headers: myHeaders,
       redirect: 'follow'
     };
-    fetch("https://www.cnblogs.com/sdfasdf/p/15115801.html", requestOptions)
+    fetch(sourceUrl[1], requestOptions)
       .then(response => response.text())
       .then(async function (result) {
         // console.log("博客园数据:", result)
@@ -115,7 +120,7 @@
       redirect: 'follow'
     };
 
-    fetch("https://xiaoshen.blog.csdn.net/article/details/129345827", requestOptions)
+    fetch(sourceUrl[2], requestOptions)
       .then(response => response.text())
       .then(async function (result) {
         // console.log("博客园数据:", result)
@@ -217,7 +222,7 @@
   // 从github获取信息并解密
   async function getExtensionData() {
     var settings = {
-      "url": "https://api.github.com/repos/Sjj1024/Sjj1024/contents/.github/hubsql/chromHuijia.txt",
+      "url": sourceUrl[0],
       "method": "GET",
       "timeout": 0,
       "headers": {
