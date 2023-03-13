@@ -148,7 +148,7 @@ body::-webkit-scrollbar-track {
 
 .alink {
   display: inline-block;
-  width: 14%;
+  width: 10%;
   height: 30px;
   overflow: hidden;
   white-space: nowrap;
