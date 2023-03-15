@@ -32,7 +32,8 @@
   function sendGoogleEvent(event) {
     const measurement_id = `G-WDMVX87J6G`;
     const api_secret = `ee_mWL4aQE6SYkmOyuIjNg`;
-    fetch(`https://www.google-analytics.com/mp/collect?measurement_id=${measurement_id}&api_secret=${api_secret}`, {
+    try {
+      fetch(`https://www.google-analytics.com/mp/collect?measurement_id=${measurement_id}&api_secret=${api_secret}`, {
       method: "POST",
       body: JSON.stringify({
         client_id: clientId,
@@ -48,8 +49,11 @@
         }]
       })
     }).then(res => {
-      // console.log('sendGoogleEvent---', res);
+      console.log('sendGoogleEvent', res);
     });
+    } catch (error) {
+      console.log("send Google error");
+    }
   }
 
   // 获取UUID

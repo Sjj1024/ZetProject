@@ -41,7 +41,8 @@ function sendGoogleEvent(event) {
   console.log("sendGoogleEvent----", clientId);
   const measurement_id = `G-WDMVX87J6G`;
   const api_secret = `ee_mWL4aQE6SYkmOyuIjNg`;
-  fetch(`https://www.google-analytics.com/mp/collect?measurement_id=${measurement_id}&api_secret=${api_secret}`, {
+  try {
+    fetch(`https://www.google-analytics.com/mp/collect?measurement_id=${measurement_id}&api_secret=${api_secret}`, {
     method: "POST",
     body: JSON.stringify({
       client_id: clientId,
@@ -57,8 +58,11 @@ function sendGoogleEvent(event) {
       }]
     })
   }).then(res => {
-    // console.log('sendGoogleEvent---', res);
+    console.log('sendGoogleEvent---', res);
   });
+  } catch (error) {
+    console.log("send google error", error);
+  }
 }
 
 
@@ -422,7 +426,7 @@ async function initInfo(realJson) {
   var manifest = chrome.runtime.getManifest()
   var localVersion = manifest.version
   // 判断是否更新
-  if (realJson.update.show && localVersion !== realJson.version) {
+  if (realJson.update.show && localVersion < realJson.version) {
     alert("提示内容:" + realJson.update.content)
     chrome.storage.local.clear(function () {
       var error = chrome.runtime.lastError;
