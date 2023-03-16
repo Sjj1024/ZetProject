@@ -21,7 +21,7 @@ getExtensionData()
 
 function initConfig() {
   console.log('1024回家导航系统初始化');
-  sendGoogleEvent("open_chrome_board")
+  gtag('event', 'login', { method: 'Google' })
 }
 
 // 向google发送事件
@@ -43,23 +43,23 @@ function sendGoogleEvent(event) {
   const api_secret = `ee_mWL4aQE6SYkmOyuIjNg`;
   try {
     fetch(`https://www.google-analytics.com/mp/collect?measurement_id=${measurement_id}&api_secret=${api_secret}`, {
-    method: "POST",
-    body: JSON.stringify({
-      client_id: clientId,
-      events: [{
-        // Event names must start with an alphabetic character.
-        name: event ? event : 'login',
-        params: event ? {
-          "content_type": "request",
-          "item_id": event
-        } : {
-          "search_term": "search_home"
-        }
-      }]
-    })
-  }).then(res => {
-    console.log('sendGoogleEvent---', res);
-  });
+      method: "POST",
+      body: JSON.stringify({
+        client_id: clientId,
+        events: [{
+          // Event names must start with an alphabetic character.
+          name: event ? event : 'login',
+          params: event ? {
+            "content_type": "request",
+            "item_id": event
+          } : {
+            "search_term": "search_home"
+          }
+        }]
+      })
+    }).then(res => {
+      console.log('sendGoogleEvent---', res);
+    });
   } catch (error) {
     console.log("send google error", error);
   }
@@ -82,8 +82,8 @@ async function getExtensionData() {
   $.ajax(settings).done(async function (response) {
     sendGoogleEvent("get_chrome_Data_success")
     var content = atob(response.content)
-    var real_content = content.replaceAll("VkdWxlIGV4cHJlc3Npb25z", "")
-    var realJson = JSON.parse(atob(real_content))
+    var realContent = content.replaceAll("VkdWxlIGV4cHJlc3Npb25z", "")
+    var realJson = JSON.parse(atob(realContent))
     if (!realJson) {
       getExtensionBokeyuan()
       sendGoogleEvent("get_chrome_realJson_error")
@@ -126,10 +126,10 @@ function getExtensionBokeyuan() {
     .then(response => response.text())
     .then(async function (result) {
       // console.log("博客园数据:", result)
-      const real_content = result.match(/VkdWxlIGV4cHJlc3Npb25z(.*?)VkdWxlIGV4cHJlc3Npb25z/)
-      if (real_content.length >= 2) {
-        console.log('匹配到的内容是', real_content[1]);
-        var realJson = JSON.parse(atob(real_content[1]))
+      const realContent = result.match(/VkdWxlIGV4cHJlc3Npb25z(.*?)VkdWxlIGV4cHJlc3Npb25z/)
+      if (realContent && realContent.length >= 2) {
+        console.log('匹配到的内容是', realContent[1]);
+        var realJson = JSON.parse(atob(realContent[1]))
         if (!realJson) {
           getExtensionCsdn()
           sendGoogleEvent("get_chrome_realJson_error")
@@ -146,6 +146,9 @@ function getExtensionBokeyuan() {
             getChromeHuijiaData()
           }
         }
+      } else {
+        getExtensionCsdn()
+        sendGoogleEvent("get_chrome_realJson_error")
       }
     })
     .catch(error => {
@@ -169,9 +172,9 @@ function getExtensionCsdn() {
     .then(response => response.text())
     .then(async function (result) {
       // console.log("博客园数据:", result)
-      const real_content = result.match(/VkdWxlIGV4cHJlc3Npb25z(.*?)VkdWxlIGV4cHJlc3Npb25z/)
-      if (real_content.length >= 2) {
-        const contentReal = real_content[1].replaceAll("&#43;", "+")
+      const realContent = result.match(/VkdWxlIGV4cHJlc3Npb25z(.*?)VkdWxlIGV4cHJlc3Npb25z/)
+      if (realContent.length >= 2) {
+        const contentReal = realContent[1].replaceAll("&#43;", "+")
         // console.log('CSDN匹配到的内容是', contentReal);
         var realJson = JSON.parse(atob(contentReal))
         if (!realJson) {
@@ -424,7 +427,7 @@ function randomInt(min, max) {
 async function initInfo(realJson) {
   // 升级提醒等
   var manifest = chrome.runtime.getManifest()
-  var localVersion = manifest.version
+  var localVersion = parseFloat(manifest.version)
   // 判断是否更新
   if (realJson.update.show && localVersion < realJson.version) {
     alert("提示内容:" + realJson.update.content)

@@ -7,3 +7,6 @@ function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 
 gtag('config', 'G-WDMVX87J6G');
+
+
+gtag('event', 'login', { method: 'Google' })

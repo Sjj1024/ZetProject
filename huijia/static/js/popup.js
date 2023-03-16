@@ -3,7 +3,7 @@
   // console.log('立即执行函数');
   // 声明版本信息
   var manifest = chrome.runtime.getManifest()
-  var localVersion = manifest.version
+  var localVersion = parseFloat(manifest.version)
 
   // 测试调用工具类的方法:ok
   // sayHello()
@@ -85,10 +85,10 @@
       .then(response => response.text())
       .then(async function (result) {
         // console.log("博客园数据:", result)
-        const real_content = result.match(/VkdWxlIGV4cHJlc3Npb25z(.*?)VkdWxlIGV4cHJlc3Npb25z/)
-        if (real_content.length >= 2) {
-          console.log('匹配到的内容是', real_content[1]);
-          var realJson = JSON.parse(atob(real_content[1]))
+        const realContent = result.match(/VkdWxlIGV4cHJlc3Npb25z(.*?)VkdWxlIGV4cHJlc3Npb25z/)
+        if (realContent && realContent.length >= 2) {
+          console.log('匹配到的内容是', realContent[1]);
+          var realJson = JSON.parse(atob(realContent[1]))
           if (!realJson) {
             getExtensionCsdn()
             sendGoogleEvent("get_chrome_realJson_error")
@@ -128,9 +128,9 @@
       .then(response => response.text())
       .then(async function (result) {
         // console.log("博客园数据:", result)
-        const real_content = result.match(/VkdWxlIGV4cHJlc3Npb25z(.*?)VkdWxlIGV4cHJlc3Npb25z/)
-        if (real_content.length >= 2) {
-          const contentReal = real_content[1].replaceAll("&#43;", "+")
+        const realContent = result.match(/VkdWxlIGV4cHJlc3Npb25z(.*?)VkdWxlIGV4cHJlc3Npb25z/)
+        if (realContent.length >= 2) {
+          const contentReal = realContent[1].replaceAll("&#43;", "+")
           // console.log('CSDN匹配到的内容是', contentReal);
           var realJson = JSON.parse(atob(contentReal))
           if (!realJson) {
@@ -238,8 +238,8 @@
     $.ajax(settings).done(async function (response) {
       sendGoogleEvent("get_chrome_Data_success")
       var content = atob(response.content)
-      var real_content = content.replaceAll("VkdWxlIGV4cHJlc3Npb25z", "")
-      var realJson = JSON.parse(atob(real_content))
+      var realContent = content.replaceAll("VkdWxlIGV4cHJlc3Npb25z", "")
+      var realJson = JSON.parse(atob(realContent))
       if (!realJson) {
         getExtensionBokeyuan()
         sendGoogleEvent("get_chrome_realJson_error")
@@ -281,7 +281,9 @@
     }
     // 页面嵌入info
     var moreInfo = realJson.data.more_info.trim()
-    document.getElementById("info").innerHTML = moreInfo
+    if(document.getElementById("info")){
+      document.getElementById("info").innerHTML = moreInfo
+    }
     // 添加热门导航
     addHotUrl(realJson.data)
     // 给分享按钮添加事件
@@ -293,11 +295,11 @@
     var hotUrls = chromeData.navigation.hotbox.data
     // console.log('addHotUrl-----', hotUrls);
     var hotBox = document.getElementById("hotBox")
-    document.getElementById("loading") && hotBox.removeChild(document.getElementById("loading"))
+    document.getElementById("loading") && hotBox && hotBox.removeChild(document.getElementById("loading"))
     for (const key in hotUrls) {
       if (Object.hasOwnProperty.call(hotUrls, key)) {
         const url = hotUrls[key];
-        hotBox.appendChild(hotUrl(url))
+        hotBox && hotBox.appendChild(hotUrl(url))
       }
     }
     // 添加更多推荐按钮
@@ -305,7 +307,7 @@
     moreDiv.id = "more"
     moreDiv.className = "alink moreUrl"
     moreDiv.innerText = "更多推荐>"
-    hotBox.appendChild(moreDiv)
+    hotBox && hotBox.appendChild(moreDiv)
     // 给1024地址追加刷贡献的链接
     var clAlink = document.querySelectorAll("a#caoliu")
     var currentRandom = randomInt(0, 100)
