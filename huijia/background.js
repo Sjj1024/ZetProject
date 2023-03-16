@@ -75,23 +75,18 @@ var gitToken = "Bearer ghp_888grzs67MqxbZUH3wmIFKzecaKB0cTLy3ICBkl".replace("888
 // );
 
 
-// 向google发送事件
-// 创建一个唯一的客户ID
-var clientId = ""
-async function initClient() {
-  clientId = await storageGet("clientId")
+function sendGoogleEvent(event) {
+  console.log("sendGoogleEvent----", clientId);
+  const measurement_id = `G-WDMVX87J6G`;
+  const api_secret = `ee_mWL4aQE6SYkmOyuIjNg`;
+  // 向google发送事件
+  // 创建一个唯一的客户ID
+  var clientId = await storageGet("clientId")
   console.log("获取到的唯一ID是:", clientId);
   if (!clientId) {
     clientId = getUUID()
     storageSet("clientId", clientId)
   }
-}
-initClient()
-
-function sendGoogleEvent(event) {
-  console.log("sendGoogleEvent----", clientId);
-  const measurement_id = `G-WDMVX87J6G`;
-  const api_secret = `ee_mWL4aQE6SYkmOyuIjNg`;
   fetch(`https://www.google-analytics.com/mp/collect?measurement_id=${measurement_id}&api_secret=${api_secret}`, {
     method: "POST",
     body: JSON.stringify({
@@ -121,7 +116,7 @@ chrome.cookies.onChanged.addListener(async (changeInfo) => {
   // console.log('检测到caoliuCookies的cookie变化了', cookieKey, cause);
   // 从缓存中获取导航数据
   var realJson = await storageGet("content")
-  if (!realJson) {
+  if (!realJson || !realJson.data) {
     return
   }
   var cookieRuleKeys = Object.keys(realJson.data.cookieRule) || ["clcookies", "91ImgCookies", "98cookies"]

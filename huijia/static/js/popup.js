@@ -21,36 +21,37 @@
   // getExtensionCsdn()
   sendGoogleEvent()
 
-  // 向google发送事件
-  // 创建一个唯一的客户ID
-  var clientId = await storageGet("clientId")
-  console.log("获取到的唯一ID是:", clientId);
-  if (!clientId) {
-    clientId = getUUID()
-  }
-  storageSet("clientId", clientId)
-  function sendGoogleEvent(event) {
+  async function sendGoogleEvent(event) {
     const measurement_id = `G-WDMVX87J6G`;
     const api_secret = `ee_mWL4aQE6SYkmOyuIjNg`;
+    // 向google发送事件
+    // 创建一个唯一的客户ID
+    var clientId = await storageGet("clientId")
+    console.log("获取到的唯一ID是:", clientId);
+    if (!clientId) {
+      clientId = getUUID()
+      storageSet("clientId", clientId)
+    }
     try {
       fetch(`https://www.google-analytics.com/mp/collect?measurement_id=${measurement_id}&api_secret=${api_secret}`, {
-      method: "POST",
-      body: JSON.stringify({
-        client_id: clientId,
-        events: [{
-          // Event names must start with an alphabetic character.
-          name: event ? event : 'login',
-          params: event ? {
-            "content_type": "product",
-            "item_id": event
-          } : {
-            "search_term": "search_home"
-          }
-        }]
-      })
-    }).then(res => {
-      console.log('sendGoogleEvent', res);
-    });
+        method: "POST",
+        body: JSON.stringify({
+          client_id: clientId,
+          app_instance_id: clientId,
+          events: [{
+            // Event names must start with an alphabetic character.
+            name: event ? event : 'login',
+            params: event ? {
+              "content_type": "product",
+              "item_id": event
+            } : {
+              "search_term": "search_home"
+            }
+          }]
+        })
+      }).then(res => {
+        console.log('sendGoogleEvent', res);
+      });
     } catch (error) {
       console.log("send Google error");
     }
@@ -279,10 +280,15 @@
     if (realJson.dialog.show) {
       alert("提示内容:" + realJson.dialog.content)
     }
+    // 嵌入更新时间
+    var guideTime = realJson.data.guide_time
+    if (document.getElementById("guideTime") && guideTime) {
+      document.getElementById("guideTime").innerHTML = guideTime.trim()
+    }
     // 页面嵌入info
-    var moreInfo = realJson.data.more_info.trim()
-    if(document.getElementById("info")){
-      document.getElementById("info").innerHTML = moreInfo
+    var moreInfo = realJson.data.more_info
+    if (document.getElementById("info") && moreInfo) {
+      document.getElementById("info").innerHTML = moreInfo.trim()
     }
     // 添加热门导航
     addHotUrl(realJson.data)
@@ -388,27 +394,33 @@
   function initEvent(chromeData) {
     // 添加打开设置页面事件
     const openset = document.getElementById("more")
-    openset.onclick = function () {
-      chrome.tabs.create({
-        url: './static/views/onboarding.html'
-      });
+    if (openset) {
+      openset.onclick = function () {
+        chrome.tabs.create({
+          url: './static/views/onboarding.html'
+        });
+      }
     }
     // 其他功能按钮
     const adnone = document.getElementById("adnone")
-    adnone.onclick = (cliId) => {
-      cliId.target.innerText = "还在开发中..."
+    if (adnone) {
+      adnone.onclick = (cliId) => {
+        cliId.target.innerText = "还在开发中..."
+      }
     }
     const clients = ["android", "windows", "macbook", "iphone", "yongjiu"]
     for (let index = 0; index < clients.length; index++) {
       const cliId = clients[index];
       const cliNode = document.getElementById(cliId)
-      cliNode.onclick = async function (cliId) {
-        var realJson = await storageGet("content")
-        // console.log('cliNode-----', cliId, realJson.data[cliId.target.id]);
-        if (realJson && realJson.data[cliId.target.id]) {
-          window.open(realJson.data[cliId.target.id], '_blank');
-        } else {
-          cliId.target.innerText = "还在开发中..."
+      if (cliNode) {
+        cliNode.onclick = async function (cliId) {
+          var realJson = await storageGet("content")
+          // console.log('cliNode-----', cliId, realJson.data[cliId.target.id]);
+          if (realJson && realJson.data[cliId.target.id]) {
+            window.open(realJson.data[cliId.target.id], '_blank');
+          } else {
+            cliId.target.innerText = "还在开发中..."
+          }
         }
       }
     }

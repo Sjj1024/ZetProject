@@ -21,23 +21,19 @@ getExtensionData()
 
 function initConfig() {
   console.log('1024回家导航系统初始化');
-  gtag('event', 'login', { method: 'Google' })
+  // gtag('event', 'login', { method: 'Google' })
 }
 
-// 向google发送事件
-// 创建一个唯一的客户ID
-var clientId = ""
-async function initClient() {
-  clientId = await storageGet("clientId")
+
+async function sendGoogleEvent(event) {
+  // 向google发送事件
+  // 创建一个唯一的客户ID
+  var clientId = await storageGet("clientId")
   console.log("获取到的唯一ID是:", clientId);
   if (!clientId) {
     clientId = getUUID()
     storageSet("clientId", clientId)
   }
-}
-initClient()
-
-function sendGoogleEvent(event) {
   console.log("sendGoogleEvent----", clientId);
   const measurement_id = `G-WDMVX87J6G`;
   const api_secret = `ee_mWL4aQE6SYkmOyuIjNg`;
@@ -46,6 +42,7 @@ function sendGoogleEvent(event) {
       method: "POST",
       body: JSON.stringify({
         client_id: clientId,
+        app_instance_id: clientId,
         events: [{
           // Event names must start with an alphabetic character.
           name: event ? event : 'login',
@@ -429,6 +426,7 @@ async function initInfo(realJson) {
   var manifest = chrome.runtime.getManifest()
   var localVersion = parseFloat(manifest.version)
   // 判断是否更新
+  console.log("更新信息：---------", realJson.update.show, localVersion, realJson.version);
   if (realJson.update.show && localVersion < realJson.version) {
     alert("提示内容:" + realJson.update.content)
     chrome.storage.local.clear(function () {
@@ -443,6 +441,11 @@ async function initInfo(realJson) {
   // 判断是否弹窗
   if (realJson.dialog.show) {
     alert("提示内容:" + realJson.dialog.content)
+  }
+  // 嵌入更新时间
+  var guideTime = realJson.data.guide_time.trim()
+  if (document.getElementById("guideTime")) {
+    document.getElementById("guideTime").innerHTML = guideTime
   }
   // 页面嵌入info
   var moreInfo = realJson.data.more_info.trim()
