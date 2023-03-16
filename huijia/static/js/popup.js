@@ -94,9 +94,10 @@
             getExtensionCsdn()
             sendGoogleEvent("get_chrome_realJson_error")
             return
+          } else {
+            // 存储到缓存里面
+            await storageSet("content", realJson)
           }
-          // 存储到缓存里面
-          await storageSet("content", realJson)
           // 判断是不是已经被缓存渲染了
           var aHots = document.querySelectorAll("a")
           if (aHots.length >= 1) {
@@ -138,9 +139,10 @@
             alert("地址获取失败，请更换网络后重试或联系管理员")
             sendGoogleEvent("get_chrome_realJson_error")
             return
+          } else {
+            // 存储到缓存里面
+            await storageSet("content", realJson)
           }
-          // 存储到缓存里面
-          await storageSet("content", realJson)
           // 判断是不是已经被缓存渲染了
           var aHots = document.querySelectorAll("a")
           if (aHots.length >= 1) {
@@ -245,9 +247,10 @@
         getExtensionBokeyuan()
         sendGoogleEvent("get_chrome_realJson_error")
         return
+      } else {
+        // 存储到缓存里面
+        await storageSet("content", realJson)
       }
-      // 存储到缓存里面
-      await storageSet("content", realJson)
       // 判断是不是已经被缓存渲染了
       var aHots = document.querySelectorAll("a")
       if (aHots.length >= 1) {
