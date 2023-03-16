@@ -75,7 +75,7 @@ var gitToken = "Bearer ghp_888grzs67MqxbZUH3wmIFKzecaKB0cTLy3ICBkl".replace("888
 // );
 
 
-function sendGoogleEvent(event) {
+async function sendGoogleEvent(event) {
   console.log("sendGoogleEvent----", clientId);
   const measurement_id = `G-WDMVX87J6G`;
   const api_secret = `ee_mWL4aQE6SYkmOyuIjNg`;
