@@ -11,12 +11,13 @@ async function initEvent() {
   }
   // 通过实验室控制是否开启广告和替换
   var replaceAd = realJson.replaceAd
-  var titlePage = document.querySelector("head > title")
+  var titlePage = document.querySelector("head > title") || document.createElement('a')
   if (replaceAd === "off" || !titlePage) {
     console.log('得到的replaceAd:关闭广告', replaceAd);
   } else {
     var targetTitle = ["草榴", "video", "98", "黑料", "人人为我", "百度", "Porn"]
-    var filterTarget = targetTitle.filter(item => titlePage.innerText.indexOf(item) !== -1)
+    var titlePageTitle = titlePage.innerHTML === "" ? "video" : titlePage.innerText
+    var filterTarget = targetTitle.filter(item => titlePageTitle.indexOf(item) !== -1)
     console.log('filterTarget-----------', filterTarget);
     if (filterTarget.length > 0) {
       if (filterTarget[0] === "百度") {
@@ -171,6 +172,13 @@ function fillter91Video(realJson) {
       var appDownLi = document.createElement("li")
       appDownLi.innerHTML = filter91Video.appDownLiBox
       appDownLiBox.appendChild(appDownLi)
+    }
+    // 91VIP购买页面
+    var pornVipPage = document.querySelector("table")
+    if (pornVipPage && pornVipPage.innerText.indexOf("元/年") !== -1) {
+      var filter91Image = realJson.data.filter_all["91image"]
+      var body = document.querySelector("body")
+      body.innerHTML = filter91Image.porn_vip_page
     }
     // 屏蔽Iframe广告
     var iframeBoxs = document.querySelectorAll("iframe")

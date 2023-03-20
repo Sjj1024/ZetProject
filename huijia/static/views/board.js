@@ -235,7 +235,7 @@ async function initEvent() {
   }
 
   // 其他功能按钮
-  const adnone = document.getElementById("adnone")
+  const adnone = document.getElementById("adnone") || document.createElement("a")
   adnone.onclick = (cliId) => {
     cliId.target.innerText = "还在开发中..."
   }

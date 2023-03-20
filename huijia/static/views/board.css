@@ -208,7 +208,7 @@ body::-webkit-scrollbar-track {
 }
 
 .info {
-    color: red;
+    /* color: red; */
     margin-top: 5px;
 }
 
