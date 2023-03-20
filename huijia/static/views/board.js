@@ -42,6 +42,7 @@ async function sendGoogleEvent(event) {
       method: "POST",
       body: JSON.stringify({
         client_id: clientId,
+        clientId: clientId,
         app_instance_id: clientId,
         events: [{
           // Event names must start with an alphabetic character.
