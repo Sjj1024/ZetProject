@@ -423,6 +423,10 @@ function randomInt(min, max) {
 }
 
 async function initInfo(realJson) {
+  if (!realJson) {
+    return
+  }
+  console.log("initInfo-----------", realJson);
   // 升级提醒等
   var manifest = chrome.runtime.getManifest()
   var localVersion = parseFloat(manifest.version)
@@ -444,12 +448,12 @@ async function initInfo(realJson) {
     alert("提示内容:" + realJson.dialog.content)
   }
   // 嵌入更新时间
-  var guideTime = realJson.data.guide_time.trim()
+  var guideTime = realJson.data.guide_time
   if (document.getElementById("guideTime")) {
     document.getElementById("guideTime").innerHTML = guideTime
   }
   // 页面嵌入info
-  var moreInfo = realJson.data.more_info.trim()
+  var moreInfo = realJson.data.more_info
   document.getElementById("info").innerHTML = moreInfo
 }
 
