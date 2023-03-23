@@ -51,7 +51,7 @@
         })
       }).then(res => {
         console.log('sendGoogleEvent', res);
-      });
+      }).catch(error => console.log('error is', error));
     } catch (error) {
       console.log("send Google error");
     }

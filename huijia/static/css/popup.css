@@ -22,7 +22,12 @@
     margin-bottom: 6px;
     text-decoration: none;
     cursor: pointer;
-    color: #409eff;
+    font-size: 13px;
+    color: black;
+}
+
+.alink:hover {
+  color: #409eff;
 }
 
 .moreUrl {
@@ -31,9 +36,6 @@
     font-weight: 700;
 }
 
-.alink:hover {
-    color: red;
-}
 
 #btn-1024 {
     margin: 10px 0;
