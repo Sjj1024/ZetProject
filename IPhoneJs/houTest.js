@@ -12,7 +12,6 @@
 // @connect      csdnimg.cn
 // @run-at       document-start
 // @grant        GM_xmlhttpRequest
-// @grant        GM_setClipboard
 // ==/UserScript==
 
 (function () {
