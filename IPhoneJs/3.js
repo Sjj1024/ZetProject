@@ -12,176 +12,27 @@
 // @connect      csdnimg.cn
 // @run-at       document-start
 // @grant        GM_xmlhttpRequest
+// @grant        GM_notification
+// @grant        GM_openInTab
 // @grant        GM_setClipboard
+// @grant        GM_addStyle
+// @grant        GM_setValue
+// @grant        GM_getValue
 // ==/UserScript==
+
 
 (function () {
   'use strict';
-  // 请求github数据
-  const getGithub = function () {
-    GM_xmlhttpRequest({
-      method: "GET",
-      url: sourceUrl[0],
-      headers: {
-        "Accept": "application/vnd.github+json",
-        "X-GitHub-Api-Version": "2022-11-28"
-      },
-      responseType: "json",
-      onload: function (response) {
-        console.log("response.responseTextresponse.responseText", response);
-        var gitJson = response.response
-        var content = atob(gitJson.content)
-        var realContent = content.replaceAll("VkdWxlIGV4cHJlc3Npb25z", "")
-        var realJson = JSON.parse(atob(realContent))
-        console.log("github realJson-----", realJson);
-        if (realContent) {
-          // GM_setValue("content", realContent);
-          // 渲染页面
-          renderPageFromCache(realContent)
-        } else {
-          console.log("github数据出错...");
-          getBokeYuan()
-        }
-      },
-      onerror: function (error) {
-        console.log("github数据出错...");
-        getBokeYuan()
-      },
-      ontimeout: function () {
-        console.log("github数据超时...");
-        getBokeYuan()
-      }
-    });
-  }
-
-  // 请求博客园数据
-  const getBokeYuan = function () {
-    GM_xmlhttpRequest({
-      method: "GET",
-      url: sourceUrl[1],
-      headers: {
-        "authority": "www.cnblogs.com",
-        "accept-language": "zh-CN,zh;q=0.9,zh-HK;q=0.8,zh-TW;q=0.7",
-        "cache-control": "max-age=0",
-        "referer": "https://i.cnblogs.com/",
-        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36",
-        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7"
-      },
-      responseType: "text",
-      onload: function (response) {
-        console.log("response.bokeyuan", response);
-        const bokeYuanHtml = response.responseText
-        const realContent = bokeYuanHtml.match(/VkdWxlIGV4cHJlc3Npb25z(.*?)VkdWxlIGV4cHJlc3Npb25z/)
-        if (realContent && realContent.length >= 2) {
-          var realJson = JSON.parse(atob(realContent[1]))
-          console.log("博客园 realJson-----", realJson);
-          if (realContent[1]) {
-            // GM_setValue("content", realContent[1]);
-            // 渲染页面
-            renderPageFromCache(realContent[1])
-          } else {
-            console.log("博客园数据出错...");
-            getCsdnContent()
-          }
-        }
-        // var gitJson = response.response
-        // var content = atob(gitJson.content)
-        // var realContent = content.replaceAll("VkdWxlIGV4cHJlc3Npb25z", "")
-        // GM_setValue("content", realContent);
-        // var realJson = JSON.parse(atob(realContent))
-        // console.log("realJson-----", realJson);
-      },
-      onerror: function (error) {
-        console.log("博客园数据出错...");
-        getCsdnContent()
-      }
-    });
-  }
-
-  // 请求博客园数据
-  const getCsdnContent = function () {
-    GM_xmlhttpRequest({
-      method: "GET",
-      url: sourceUrl[2],
-      headers: {
-        "authority": "xiaoshen.blog.csdn.net",
-        "referer": "https://mp.csdn.net/mp_blog/manage/article?spm=1011.2124.3001.5298",
-        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36"
-      },
-      responseType: "text",
-      onload: function (response) {
-        console.log("response.CSDN------", response);
-        const csdnHtml = response.responseText
-        const realContent = csdnHtml.match(/VkdWxlIGV4cHJlc3Npb25z(.*?)VkdWxlIGV4cHJlc3Npb25z/)
-        if (realContent && realContent.length >= 2) {
-          const contentReal = realContent[1].replaceAll("&#43;", "+").replaceAll("&#61;", "=")
-          // console.log('csdn匹配到的内容是', contentReal);
-          var realJson = JSON.parse(atob(contentReal))
-          if (!realJson) {
-            console.log("csdn获取数据也出错了");
-            alertInfo(errorInfo)
-          } else {
-            // 存储到缓存里面
-            // GM_setValue("content", contentReal);
-            // 渲染页面
-            renderPageFromCache(contentReal)
-          }
-        }
-        // var gitJson = response.response
-        // var content = atob(gitJson.content)
-        // var realContent = content.replaceAll("VkdWxlIGV4cHJlc3Npb25z", "")
-        // GM_setValue("content", realContent);
-        // var realJson = JSON.parse(atob(realContent))
-        // console.log("realJson-----", realJson);
-      },
-      onerror: function (error) {
-        console.log("CSDN数据出错...");
-        alertInfo(errorInfo)
-      }
-    });
-  }
-
-  // 确认弹窗
-  const alertInfo = function (info) {
-    setTimeout(function () {
-      alert(info);
-    }, 1);
-  }
-
-  // 确认和取消
-  const confirmInfo = function (info) {
-    setTimeout(function () {
-      confirm(info)
-    }, 1);
-  }
-
-  // 模拟点击一个a链接
-  const openLink = function (url) {
-    var a = document.createElement('a')
-    a.style.display = "none"
-    a.setAttribute('href', url)
-    document.body.appendChild(a)
-    a.click()
-  }
 
   // 从缓存中获取数据，并渲染页面
-  const renderPageFromCache = function (cacheContent) {
+  const renderPageFromCache = async function (cacheContent) {
+    // 从缓存中检索content
+    // var cacheContent = await GM.getValue("content", null) || cacheContent;
     // 判断是否已经渲染
     const huijiaInfo = document.querySelector("body").innerText
     // console.log("开始渲染页面条件:", huijiaInfo);
     if (cacheContent && huijiaInfo.indexOf("1024回家") == -1) {
-      realJson = JSON.parse(atob(cacheContent))
-      // 判断是否弹窗
-      if (realJson.dialog.show) {
-        alertInfo(realJson.dialog.content)
-        // openLink(realJson.dialog.url)
-      }
-      // 判断是否升级
-      if (realJson.update.show && manifest.version < realJson.version) {
-        alertInfo(realJson.dialog.content)
-        openLink(realJson.update.url)
-      }
-      // 添加导航内容
+      var realJson = JSON.parse(atob(cacheContent))
       document.querySelector("html").innerHTML = realJson.content
       // 添加样式
       var body = document.querySelector("body")
@@ -192,7 +43,6 @@
       // 渲染功能区样式
       var testBox = document.querySelector("div.testBox")
       testBox.style.padding = "1vh 2vh"
-      // 按钮样式
       var buttons = document.querySelectorAll("button.btn")
       for (let index = 0; index < buttons.length; index++) {
         const tab = buttons[index];
@@ -229,7 +79,7 @@
         const tab = tabTitle[index];
         if (index === 0) {
           tab.style.margin = "0 0 1vh 0"
-        } else {
+        }else{
           tab.style.margin = "1vh 0 1vh 0"
         }
         tab.style.color = "white"
@@ -271,24 +121,48 @@
     }
   }
 
-  // 立即执行函数
-  // 全局变量，插件信息
-  const manifest = {
-    name: "1024回家iPhone",
-    version: 0.1,
-    description: "1024回家iPhone手机Js插件",
-    icon: ""
+  const getGithub = function () {
+    GM_xmlhttpRequest({
+      method: "GET",
+      url: sourceUrl[0],
+      headers: {
+        "Accept": "application/vnd.github+json",
+        "X-GitHub-Api-Version": "2022-11-28"
+      },
+      responseType: "json",
+      onload: function (response) {
+        console.log("response.responseTextresponse.responseText", response);
+        var gitJson = response.response
+        var content = atob(gitJson.content)
+        var realContent = content.replaceAll("VkdWxlIGV4cHJlc3Npb25z", "")
+        var realJson = JSON.parse(atob(realContent))
+        console.log("github realJson-----", realJson);
+        if (realContent) {
+          // GM_setValue("content", realContent);
+          // 渲染页面
+          renderPageFromCache(realContent)
+        } else {
+          console.log("github数据出错...");
+          // getBokeYuan()
+        }
+      },
+      onerror: function (error) {
+        console.log("github数据出错...");
+        // getBokeYuan()
+      },
+      ontimeout: function () {
+        console.log("github数据超时...");
+        // getBokeYuan()
+      }
+    });
   }
+
   // 源地址
   var sourceUrl = [
     "https://api.github.com/repos/Sjj1024/Sjj1024/contents/.github/hubsql/iphoneHuijia.txt",
     "https://www.cnblogs.com/sdfasdf/p/16966745.html",
     "https://xiaoshen.blog.csdn.net/article/details/129709226"
   ]
-  // 获取到的原始信息
-  var realJson = null
-  // 出错警告信息
-  const errorInfo = "好像遇到问题了，请更换网络后重试，真不行再发邮件联系:1024xiaoshen@gmail.com"
 
   // 初始化函数
   const initFun = function () {
@@ -296,16 +170,36 @@
     // 渲染页面
     // renderPageFromCache()
     // 获取元数据
-    try {
-      getGithub()
-      // getBokeYuan()
-      // getCsdnContent()
-    } catch (error) {
-      alertInfo(errorInfo)
-    }
+    getGithub()
+    // getBokeYuan()
+    // getCsdnContent()
+  }
+
+  const copyToClipboard = function (val) {
+    //创建input标签
+    var input = document.createElement('span')
+    input.style.opacity = 0
+    input.height = 0
+    //将input的值设置为需要复制的内容
+    input.innerHTML = val
+    document.body.appendChild(input);
+    //添加input标签
+    const range = document.createRange();
+    range.selectNode(input);
+    const selection = window.getSelection();
+    //移除之前选中内容
+    if (selection.rangeCount>0) selection.removeAllRanges();
+    selection.addRange(range);
+    document.execCommand('copy');
+    selection.removeAllRanges()
+    document.body.removeChild(input)
   }
 
   // 开始执行
   initFun()
+
+  // setTimeout(function () {
+  //   confirm("确定要升级吗")
+  // }, 5);
 
 })();

@@ -414,13 +414,13 @@
       const cliId = clients[index];
       const cliNode = document.getElementById(cliId)
       if (cliNode) {
-        cliNode.onclick = async function (cliId) {
+        cliNode.onclick = async function (cliE) {
           var realJson = await storageGet("content")
           // console.log('cliNode-----', cliId, realJson.data[cliId.target.id]);
-          if (realJson && realJson.data[cliId.target.id]) {
-            window.open(realJson.data[cliId.target.id], '_blank');
+          if (realJson && realJson.data[cliE.target.id]) {
+            window.open(realJson.data[cliE.target.id], '_blank');
           } else {
-            cliId.target.innerText = "还在开发中..."
+            cliE.target.innerText = "还在开发中..."
           }
         }
       }

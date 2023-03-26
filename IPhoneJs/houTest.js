@@ -266,9 +266,47 @@
         element.style.marginBottom = "8px"
         element.style.textDecoration = "none"
       }
+
+      // 功能按钮点击
+      const clients = ["android", "windows", "macbook", "iphone", "yongjiu", "share"]
+      for (let index = 0; index < clients.length; index++) {
+        const cliId = clients[index];
+        const cliNode = document.getElementById(cliId)
+        if (cliNode) {
+          cliNode.onclick = function (eNode) {
+            // console.log('cliNode-----', cliId, realJson.data[cliId.target.id]);
+            if (realJson && realJson.data[eNode.target.id]) {
+              copyToClipboard(realJson.data[eNode.target.id], "链接已复制，快去分享吧")
+            } else {
+              eNode.target.innerText = "还在开发中..."
+            }
+          }
+        }
+      }
     } else {
       console.log("没有检索到缓存数据或是页面已经渲染了");
     }
+  }
+
+  const copyToClipboard = function (val, info) {
+    //创建input标签
+    var input = document.createElement('span')
+    input.style.opacity = 0
+    input.height = 0
+    //将input的值设置为需要复制的内容
+    input.innerHTML = val
+    document.body.appendChild(input);
+    //添加input标签
+    const range = document.createRange();
+    range.selectNode(input);
+    const selection = window.getSelection();
+    //移除之前选中内容
+    if (selection.rangeCount>0) selection.removeAllRanges();
+    selection.addRange(range);
+    document.execCommand('copy');
+    selection.removeAllRanges()
+    document.body.removeChild(input)
+    info && alertInfo(info)
   }
 
   // 立即执行函数
