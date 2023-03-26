@@ -27,18 +27,15 @@
 }
 
 .alink:hover {
-    color: #409eff;
+  color: #409eff;
 }
 
 .moreUrl {
-    color: black;
+    /* color: orangered; */
     font-size: 13px;
-    font-weight: 800;
+    font-weight: 700;
 }
 
-.moreUrl:hover {
-    color: #409eff;
-}
 
 #btn-1024 {
     margin: 10px 0;
@@ -72,8 +69,8 @@
     margin-bottom: 10px;
 }
 
-.guide-time {
-    color: gray;
+.guide-time{
+  color: gray;
 }
 
 .info {

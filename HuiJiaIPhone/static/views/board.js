@@ -25,22 +25,24 @@ function initConfig() {
 
 
 async function sendGoogleEvent(event) {
+  const measurement_id = `G-KEENGW9B7D`;
+  const api_secret = `p32RCflFRTe9kx4QIgnS5w`;
   // 向google发送事件
   // 创建一个唯一的客户ID
-  var clientId = "1109524297.1679645519"
+  // var clientId = await storageGet("clientId")
+  var clientId = "1109513296.1677753798"
   console.log("获取到的唯一ID是:", clientId);
   // if (!clientId) {
   //   clientId = getUUID()
   //   storageSet("clientId", clientId)
   // }
-  console.log("sendGoogleEvent----", clientId);
-  const measurement_id = `G-WDMVX87J6G`;
-  const api_secret = `ee_mWL4aQE6SYkmOyuIjNg`;
   try {
     fetch(`https://www.google-analytics.com/mp/collect?measurement_id=${measurement_id}&api_secret=${api_secret}`, {
       method: "POST",
       body: JSON.stringify({
         client_id: clientId,
+        clientId: clientId,
+        app_instance_id: clientId,
         events: [{
           // Event names must start with an alphabetic character.
           name: event ? event : 'login',
@@ -82,6 +84,7 @@ async function getExtensionData() {
     if (!realJson) {
       getExtensionBokeyuan()
       sendGoogleEvent("get_chrome_realJson_error")
+      return
     } else {
       // 存储到缓存里面
       await storageSet("content", realJson)
@@ -127,6 +130,7 @@ function getExtensionBokeyuan() {
         if (!realJson) {
           getExtensionCsdn()
           sendGoogleEvent("get_chrome_realJson_error")
+          return
         } else {
           // 存储到缓存里面
           await storageSet("content", realJson)
@@ -167,12 +171,13 @@ function getExtensionCsdn() {
       // console.log("博客园数据:", result)
       const realContent = result.match(/VkdWxlIGV4cHJlc3Npb25z(.*?)VkdWxlIGV4cHJlc3Npb25z/)
       if (realContent.length >= 2) {
-        const contentReal = realContent[1].replaceAll("&#43;", "+").replaceAll("&#61;", "=")
+        const contentReal = realContent[1].replaceAll("&#43;", "+")
         // console.log('CSDN匹配到的内容是', contentReal);
         var realJson = JSON.parse(atob(contentReal))
         if (!realJson) {
           alert("地址获取失败，请更换网络后重试或邮件联系:1024xiaoshen@gmail.com")
           sendGoogleEvent("get_chrome_realJson_error")
+          return
         } else {
           // 存储到缓存里面
           await storageSet("content", realJson)

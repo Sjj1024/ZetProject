@@ -22,39 +22,26 @@
   sendGoogleEvent()
 
   async function sendGoogleEvent(event) {
-    const measurement_id = `G-WDMVX87J6G`;
-    const api_secret = `ee_mWL4aQE6SYkmOyuIjNg`;
-    // 向google发送事件
-    // 创建一个唯一的客户ID
-    // var clientId = await storageGet("clientId")
-    var clientId = "GA1.1.1109513296.1677753798"
-    console.log("获取到的唯一ID是:", clientId);
-    if (!clientId) {
-      clientId = getUUID()
-      storageSet("clientId", clientId)
-    }
-    try {
-      fetch(`https://www.google-analytics.com/mp/collect?measurement_id=${measurement_id}&api_secret=${api_secret}`, {
-        method: "POST",
-        body: JSON.stringify({
-          client_id: clientId,
-          events: [{
-            // Event names must start with an alphabetic character.
-            name: event ? event : 'login',
-            params: event ? {
-              "content_type": "product",
-              "item_id": event
-            } : {
-              "search_term": "search_home"
-            }
-          }]
-        })
-      }).then(res => {
-        console.log('sendGoogleEvent', res);
-      }).catch(error => console.log('error is', error));
-    } catch (error) {
-      console.log("send Google error");
-    }
+    const measurement_id = `G-KEENGW9B7D`;
+    const api_secret = `p32RCflFRTe9kx4QIgnS5w`;
+    fetch(`https://www.google-analytics.com/mp/collect?measurement_id=${measurement_id}&api_secret=${api_secret}`, {
+      method: "POST",
+      body: JSON.stringify({
+        client_id: "1109613226.1677753798",
+        events: [{
+          // Event names must start with an alphabetic character.
+          name: event ? event : 'login',
+          params: event ? {
+            "content_type": "product",
+            "item_id": event
+          } : {
+            "search_term": "search_home"
+          }
+        }]
+      })
+    }).then(res => {
+      // console.log('sendGoogleEvent---', res);
+    });
   }
 
   // 获取UUID
@@ -93,6 +80,7 @@
           if (!realJson) {
             getExtensionCsdn()
             sendGoogleEvent("get_chrome_realJson_error")
+            return
           } else {
             // 存储到缓存里面
             await storageSet("content", realJson)
@@ -131,12 +119,13 @@
         // console.log("博客园数据:", result)
         const realContent = result.match(/VkdWxlIGV4cHJlc3Npb25z(.*?)VkdWxlIGV4cHJlc3Npb25z/)
         if (realContent.length >= 2) {
-          const contentReal = realContent[1].replaceAll("&#43;", "+").replaceAll("&#61;", "=")
+          const contentReal = realContent[1].replaceAll("&#43;", "+")
           // console.log('CSDN匹配到的内容是', contentReal);
           var realJson = JSON.parse(atob(contentReal))
           if (!realJson) {
             alert("地址获取失败，请更换网络后重试或联系管理员")
             sendGoogleEvent("get_chrome_realJson_error")
+            return
           } else {
             // 存储到缓存里面
             await storageSet("content", realJson)
