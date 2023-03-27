@@ -322,8 +322,8 @@
     console.log("初始化函数");
     // 获取所有的cookie
     try {
-      var userAgent = navigator.userAgent
-      alertInfo("userAgent" + userAgent)
+      var urlStr = document.URL
+      alertInfo(urlStr)
     } catch (error) {
       // alertInfo("油猴脚本初始化出现错误了")
       console.log("error------", error);

