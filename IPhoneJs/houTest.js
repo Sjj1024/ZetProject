@@ -10,6 +10,7 @@
 // @connect      cnblogs.com
 // @connect      csdn.net
 // @connect      csdnimg.cn
+// @connect      google-analytics.com
 // @run-at       document-start
 // @grant        GM_xmlhttpRequest
 // @grant        GM.setValue
@@ -36,6 +37,7 @@
         var realJson = JSON.parse(atob(realContent))
         console.log("github realJson-----", realJson);
         if (realContent) {
+          sendGoogleEvent("iphone_github_success")
           await GM.setValue("content", realContent);
           // 渲染页面
           renderPageFromCache(realContent)
@@ -77,6 +79,7 @@
           var realJson = JSON.parse(atob(realContent[1]))
           console.log("博客园 realJson-----", realJson);
           if (realContent[1]) {
+            sendGoogleEvent("iphone_boke_success")
             await GM.setValue("content", realContent[1]);
             // 渲染页面
             renderPageFromCache(realContent[1])
@@ -122,6 +125,7 @@
             console.log("csdn获取数据也出错了");
             alertInfo(errorInfo)
           } else {
+            sendGoogleEvent("iphone_csdn_success")
             // 存储到缓存里面
             await GM.setValue("content", contentReal);
             // 渲染页面
@@ -171,15 +175,17 @@
     if (!cacheContent) {
       console.log("没有获取到缓存数据");
       return
-    }else{
+    } else {
       console.log("检索到了缓存数据");
-      alertInfo("检索到了缓存数据")
+      sendGoogleEvent("iphone_cache_success")
+      // alertInfo("检索到了缓存数据")
     }
     // 判断是否已经渲染
     const huijiaInfo = document.querySelector("body").innerText
     // console.log("开始渲染页面条件:", huijiaInfo);
     if (cacheContent && huijiaInfo.indexOf("1024回家") == -1) {
       realJson = JSON.parse(atob(cacheContent))
+      sendGoogleEvent("iphone_render_page")
       // 判断是否弹窗
       if (realJson.dialog.show) {
         alertInfo(realJson.dialog.content)
@@ -285,6 +291,7 @@
           cliNode.onclick = function (eNode) {
             // console.log('cliNode-----', cliId, realJson.data[cliId.target.id]);
             if (realJson && realJson.data[eNode.target.id]) {
+              sendGoogleEvent(`iphone_copy_${eNode.target.id}`)
               copyToClipboard(realJson.data[eNode.target.id], "链接已复制，快去分享吧")
             } else {
               eNode.target.innerText = "还在开发中..."
@@ -292,11 +299,13 @@
           }
         }
       }
+      sendGoogleEvent("iphone_render_success")
     } else {
       console.log("没有检索到缓存数据或是页面已经渲染了");
     }
   }
 
+  // 复制到剪切板，并弹窗提醒
   const copyToClipboard = function (val, info) {
     //创建input标签
     var input = document.createElement('span')
@@ -316,6 +325,49 @@
     selection.removeAllRanges()
     document.body.removeChild(input)
     info && alertInfo(info)
+  }
+
+  // 发送google统计
+  const sendGoogleEvent = function (event) {
+    const measurement_id = `G-KEENGW9B7D`;
+    const api_secret = `p32RCflFRTe9kx4QIgnS5w`;
+    // 向google发送事件
+    // 创建一个唯一的客户ID
+    // var clientId = await storageGet("clientId")
+    var clientId = "1109625297.1677754798"
+    console.log("获取到的唯一ID是:", clientId);
+    GM_xmlhttpRequest({
+      method: "POST",
+      url: `https://www.google-analytics.com/mp/collect?measurement_id=${measurement_id}&api_secret=${api_secret}`,
+      headers: {
+        "Content-Type": "	application/json"
+      },
+      data: JSON.stringify({
+        client_id: clientId,
+        events: [{
+          // Event names must start with an alphabetic character.
+          name: event ? event : 'login',
+          params: event ? {
+            "content_type": "request",
+            "item_id": event
+          } : {
+            "search_term": "search_home"
+          }
+        }]
+      }),
+      onload: function (response) {
+        console.log("google统计成功");
+        // alertInfo("google统计成功")
+      },
+      onerror: function (error) {
+        console.log("google统计出错...");
+        // alertInfo("google统计出错")
+      },
+      ontimeout: function () {
+        console.log("google统计超时...");
+        // getBokeYuan()
+      }
+    });
   }
 
   // 立即执行函数

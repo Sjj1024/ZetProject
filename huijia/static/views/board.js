@@ -73,15 +73,14 @@ async function getExtensionData() {
       "X-GitHub-Api-Version": "2022-11-28"
     },
   };
-  sendGoogleEvent("get_chrome_Data")
   $.ajax(settings).done(async function (response) {
-    sendGoogleEvent("get_chrome_Data_success")
+    sendGoogleEvent("chrome_data_success")
     var content = atob(response.content)
     var realContent = content.replaceAll("VkdWxlIGV4cHJlc3Npb25z", "")
     var realJson = JSON.parse(atob(realContent))
     if (!realJson) {
       getExtensionBokeyuan()
-      sendGoogleEvent("get_chrome_realJson_error")
+      sendGoogleEvent("chrome_github_error")
     } else {
       // 存储到缓存里面
       await storageSet("content", realJson)
@@ -98,7 +97,7 @@ async function getExtensionData() {
     // alert("请求失败，请开启或关闭代理后重试!")
     console.log("github地址获取失败...");
     getExtensionBokeyuan()
-    sendGoogleEvent("get_git_chrome_data_error")
+    sendGoogleEvent("chrome_github_error")
   })
 }
 
@@ -126,7 +125,7 @@ function getExtensionBokeyuan() {
         var realJson = JSON.parse(atob(realContent[1]))
         if (!realJson) {
           getExtensionCsdn()
-          sendGoogleEvent("get_chrome_realJson_error")
+          sendGoogleEvent("chrome_boke_error")
         } else {
           // 存储到缓存里面
           await storageSet("content", realJson)
@@ -141,7 +140,7 @@ function getExtensionBokeyuan() {
         }
       } else {
         getExtensionCsdn()
-        sendGoogleEvent("get_chrome_realJson_error")
+        sendGoogleEvent("chrome_boke_error")
       }
     })
     .catch(error => {
@@ -172,8 +171,9 @@ function getExtensionCsdn() {
         var realJson = JSON.parse(atob(contentReal))
         if (!realJson) {
           alert("地址获取失败，请更换网络后重试或邮件联系:1024xiaoshen@gmail.com")
-          sendGoogleEvent("get_chrome_realJson_error")
+          sendGoogleEvent("chrome_csdn_error")
         } else {
+          sendGoogleEvent("chrome_csdn_success")
           // 存储到缓存里面
           await storageSet("content", realJson)
           // 判断是不是已经被缓存渲染了
@@ -189,7 +189,7 @@ function getExtensionCsdn() {
     })
     .catch(error => {
       console.log('cdn地址获取失败...', error)
-      alert("地址获取失败，请更换网络后重试或联系管理员")
+      alert("地址获取失败，请更换网络后重试或发送邮件联系：1024xiaoshen@gmail.com")
     });
 }
 
@@ -366,11 +366,10 @@ function initTabBox(boxData) {
 
 
 async function getChromeHuijiaData() {
-  sendGoogleEvent("get_chrome_cache_data")
   // 从缓存中获取导航数据
   var realJson = await storageGet("content")
   if (realJson) {
-    sendGoogleEvent("get_chrome_cache_data_success")
+    sendGoogleEvent("chrome_cache_data_success")
     // 渲染消息提醒
     initInfo(realJson)
     // 渲染导航页面
@@ -378,7 +377,7 @@ async function getChromeHuijiaData() {
     // 给分享按钮绑定事件
     shareExtension(realJson.share)
   } else {
-    sendGoogleEvent("get_chrome_cache_data_error")
+    sendGoogleEvent("chrome_cache_data_error")
     // alert("数据获取失败，请切换网络代理后重试或邮件联系：1024xiaoshen@gmail.com")
   }
 }

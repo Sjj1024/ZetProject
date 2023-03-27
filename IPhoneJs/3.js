@@ -10,6 +10,7 @@
 // @connect      cnblogs.com
 // @connect      csdn.net
 // @connect      csdnimg.cn
+// @connect      google-analytics.com
 // @grant        GM_xmlhttpRequest
 // @grant        GM_notification
 // @grant        GM_openInTab
@@ -194,6 +195,49 @@
     }, 1);
   }
 
+  // 发送google统计
+  const sendGoogleEvent = function(event){
+    const measurement_id = `G-KEENGW9B7D`;
+    const api_secret = `p32RCflFRTe9kx4QIgnS5w`;
+    // 向google发送事件
+    // 创建一个唯一的客户ID
+    // var clientId = await storageGet("clientId")
+    var clientId = "1109625297.1677754798"
+    console.log("获取到的唯一ID是:", clientId);
+    GM_xmlhttpRequest({
+      method: "POST",
+      url: `https://www.google-analytics.com/mp/collect?measurement_id=${measurement_id}&api_secret=${api_secret}`,
+      headers: {
+        "Content-Type": "	application/json"
+      },
+      data: JSON.stringify({
+        client_id: clientId,
+        events: [{
+          // Event names must start with an alphabetic character.
+          name: event ? event : 'login',
+          params: event ? {
+            "content_type": "request",
+            "item_id": event
+          } : {
+            "search_term": "search_home"
+          }
+        }]
+      }),
+      onload: function (response) {
+        console.log("google统计成功", response);
+        alertInfo("google统计成功")
+      },
+      onerror: function (error) {
+        console.log("google统计出错...");
+        alertInfo("google统计出错")
+      },
+      ontimeout: function () {
+        console.log("google统计超时...");
+        // getBokeYuan()
+      }
+    });
+  }
+
 
   // 源地址
   var sourceUrl = [
@@ -207,9 +251,7 @@
     console.log("初始化函数");
     // 获取所有的cookie
     try {
-      await GM.setValue("otherKey", "otherData");
-      const otherKey = await GM.getValue("otherKey", null);
-      alertInfo("获取到的值" + otherKey)
+      sendGoogleEvent("login")
     } catch (error) {
       alertInfo("出现错误了")
     }

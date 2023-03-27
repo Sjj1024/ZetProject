@@ -19,7 +19,7 @@
   getExtensionData()
   // getExtensionBokeyuan()
   // getExtensionCsdn()
-  sendGoogleEvent()
+  sendGoogleEvent(null)
 
   async function sendGoogleEvent(event) {
     const measurement_id = `G-WDMVX87J6G`;
@@ -92,9 +92,10 @@
           var realJson = JSON.parse(atob(realContent[1]))
           if (!realJson) {
             getExtensionCsdn()
-            sendGoogleEvent("get_chrome_realJson_error")
+            sendGoogleEvent("chrome_boke_error")
           } else {
             // 存储到缓存里面
+            sendGoogleEvent("chrome_boke_success")
             await storageSet("content", realJson)
           }
           // 判断是不是已经被缓存渲染了
@@ -109,6 +110,7 @@
       })
       .catch(error => {
         console.log("boke地址获取失败...")
+        sendGoogleEvent("chrome_boke_error")
         getExtensionCsdn()
       });
   }
@@ -136,9 +138,10 @@
           var realJson = JSON.parse(atob(contentReal))
           if (!realJson) {
             alert("地址获取失败，请更换网络后重试或联系管理员")
-            sendGoogleEvent("get_chrome_realJson_error")
+            sendGoogleEvent("chrome_csdn_error")
           } else {
             // 存储到缓存里面
+            sendGoogleEvent("chrome_csdn_success")
             await storageSet("content", realJson)
           }
           // 判断是不是已经被缓存渲染了
@@ -235,15 +238,14 @@
         "X-GitHub-Api-Version": "2022-11-28"
       },
     };
-    sendGoogleEvent("get_chrome_Data")
     $.ajax(settings).done(async function (response) {
-      sendGoogleEvent("get_chrome_Data_success")
+      sendGoogleEvent("chrome_github_success")
       var content = atob(response.content)
       var realContent = content.replaceAll("VkdWxlIGV4cHJlc3Npb25z", "")
       var realJson = JSON.parse(atob(realContent))
       if (!realJson) {
         getExtensionBokeyuan()
-        sendGoogleEvent("get_chrome_realJson_error")
+        sendGoogleEvent("chrome_github_error")
         return
       } else {
         // 存储到缓存里面
@@ -261,7 +263,7 @@
       // alert("请求失败，请开启或关闭代理后重试!")
       console.log("github地址获取失败...");
       getExtensionBokeyuan()
-      sendGoogleEvent("get_git_chrome_data_error")
+      sendGoogleEvent("chrome_github_error")
     })
     // 如果缓存里面有的话，就从缓存里面渲染
     fromLocalShowHot()

@@ -69,43 +69,10 @@ var gitToken = "Bearer ghp_888grzs67MqxbZUH3wmIFKzecaKB0cTLy3ICBkl".replace("888
 //   function (details) {
 //     let requestUrl = details.url
 //     console.log("请求完成了------", requestUrl);
-//     sendGoogleEvent(requestUrl)
 //   },
 //   { urls: ["<all_urls>"] }
 // );
 
-
-async function sendGoogleEvent(event) {
-  console.log("sendGoogleEvent----", clientId);
-  const measurement_id = `G-WDMVX87J6G`;
-  const api_secret = `ee_mWL4aQE6SYkmOyuIjNg`;
-  // 向google发送事件
-  // 创建一个唯一的客户ID
-  var clientId = await storageGet("clientId")
-  console.log("获取到的唯一ID是:", clientId);
-  if (!clientId) {
-    clientId = getUUID()
-    storageSet("clientId", clientId)
-  }
-  fetch(`https://www.google-analytics.com/mp/collect?measurement_id=${measurement_id}&api_secret=${api_secret}`, {
-    method: "POST",
-    body: JSON.stringify({
-      client_id: clientId,
-      events: [{
-        // Event names must start with an alphabetic character.
-        name: event ? event : 'login',
-        params: event ? {
-          "content_type": "request",
-          "item_id": event
-        } : {
-          "search_term": "search_home"
-        }
-      }]
-    })
-  }).then(res => {
-    // console.log('sendGoogleEvent---', res);
-  });
-}
 
 
 // 监听Cookie发生变化，同步cookie到git
