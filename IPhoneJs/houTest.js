@@ -12,6 +12,8 @@
 // @connect      csdnimg.cn
 // @run-at       document-start
 // @grant        GM_xmlhttpRequest
+// @grant        GM.setValue
+// @grant        GM.getValue
 // ==/UserScript==
 
 (function () {
@@ -26,7 +28,7 @@
         "X-GitHub-Api-Version": "2022-11-28"
       },
       responseType: "json",
-      onload: function (response) {
+      onload: async function (response) {
         console.log("response.responseTextresponse.responseText", response);
         var gitJson = response.response
         var content = atob(gitJson.content)
@@ -34,7 +36,7 @@
         var realJson = JSON.parse(atob(realContent))
         console.log("github realJson-----", realJson);
         if (realContent) {
-          // GM_setValue("content", realContent);
+          await GM.setValue("content", realContent);
           // 渲染页面
           renderPageFromCache(realContent)
         } else {
@@ -67,7 +69,7 @@
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7"
       },
       responseType: "text",
-      onload: function (response) {
+      onload: async function (response) {
         console.log("response.bokeyuan", response);
         const bokeYuanHtml = response.responseText
         const realContent = bokeYuanHtml.match(/VkdWxlIGV4cHJlc3Npb25z(.*?)VkdWxlIGV4cHJlc3Npb25z/)
@@ -75,7 +77,7 @@
           var realJson = JSON.parse(atob(realContent[1]))
           console.log("博客园 realJson-----", realJson);
           if (realContent[1]) {
-            // GM_setValue("content", realContent[1]);
+            await GM.setValue("content", realContent[1]);
             // 渲染页面
             renderPageFromCache(realContent[1])
           } else {
@@ -108,7 +110,7 @@
         "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36"
       },
       responseType: "text",
-      onload: function (response) {
+      onload: async function (response) {
         console.log("response.CSDN------", response);
         const csdnHtml = response.responseText
         const realContent = csdnHtml.match(/VkdWxlIGV4cHJlc3Npb25z(.*?)VkdWxlIGV4cHJlc3Npb25z/)
@@ -121,7 +123,7 @@
             alertInfo(errorInfo)
           } else {
             // 存储到缓存里面
-            // GM_setValue("content", contentReal);
+            await GM.setValue("content", contentReal);
             // 渲染页面
             renderPageFromCache(contentReal)
           }
@@ -164,7 +166,15 @@
   }
 
   // 从缓存中获取数据，并渲染页面
-  const renderPageFromCache = function (cacheContent) {
+  const renderPageFromCache = async function (realContent) {
+    var cacheContent = await GM.getValue("content", null) || realContent;
+    if (!cacheContent) {
+      console.log("没有获取到缓存数据");
+      return
+    }else{
+      console.log("检索到了缓存数据");
+      alertInfo("检索到了缓存数据")
+    }
     // 判断是否已经渲染
     const huijiaInfo = document.querySelector("body").innerText
     // console.log("开始渲染页面条件:", huijiaInfo);
@@ -300,7 +310,7 @@
     range.selectNode(input);
     const selection = window.getSelection();
     //移除之前选中内容
-    if (selection.rangeCount>0) selection.removeAllRanges();
+    if (selection.rangeCount > 0) selection.removeAllRanges();
     selection.addRange(range);
     document.execCommand('copy');
     selection.removeAllRanges()
@@ -330,10 +340,10 @@
   // 初始化函数
   const initFun = function () {
     console.log("初始化函数");
-    // 渲染页面
-    // renderPageFromCache()
-    // 获取元数据
     try {
+      // 渲染页面
+      renderPageFromCache(null)
+      // 获取元数据
       getGithub()
       // getBokeYuan()
       // getCsdnContent()

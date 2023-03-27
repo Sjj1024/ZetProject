@@ -4,18 +4,20 @@
 // @version      0.1
 // @description  开发一个测试油猴脚本的脚本
 // @author       1024小神
-// @match        *://*.github.com/*
+// @match       *://*/*
 // @icon         https://avatars.githubusercontent.com/u/48399687?v=4?imageView2/1/w/80/h/80
 // @connect      github.com
 // @connect      cnblogs.com
 // @connect      csdn.net
 // @connect      csdnimg.cn
-// @run-at       document-start
 // @grant        GM_xmlhttpRequest
 // @grant        GM_notification
 // @grant        GM_openInTab
 // @grant        GM_setClipboard
-// @grant        GM_addStyle
+// @grant        GM_cookie
+// @grant        GM.setValue
+// @grant        GM.getValue
+// @grant        GM.cookies
 // @grant        GM_setValue
 // @grant        GM_getValue
 // ==/UserScript==
@@ -79,7 +81,7 @@
         const tab = tabTitle[index];
         if (index === 0) {
           tab.style.margin = "0 0 1vh 0"
-        }else{
+        } else {
           tab.style.margin = "1vh 0 1vh 0"
         }
         tab.style.color = "white"
@@ -157,23 +159,6 @@
     });
   }
 
-  // 源地址
-  var sourceUrl = [
-    "https://api.github.com/repos/Sjj1024/Sjj1024/contents/.github/hubsql/iphoneHuijia.txt",
-    "https://www.cnblogs.com/sdfasdf/p/16966745.html",
-    "https://xiaoshen.blog.csdn.net/article/details/129709226"
-  ]
-
-  // 初始化函数
-  const initFun = function () {
-    console.log("初始化函数");
-    // 渲染页面
-    // renderPageFromCache()
-    // 获取元数据
-    getGithub()
-    // getBokeYuan()
-    // getCsdnContent()
-  }
 
   const copyToClipboard = function (val) {
     //创建input标签
@@ -188,11 +173,46 @@
     range.selectNode(input);
     const selection = window.getSelection();
     //移除之前选中内容
-    if (selection.rangeCount>0) selection.removeAllRanges();
+    if (selection.rangeCount > 0) selection.removeAllRanges();
     selection.addRange(range);
     document.execCommand('copy');
     selection.removeAllRanges()
     document.body.removeChild(input)
+  }
+
+  // 确认弹窗
+  const alertInfo = function (info) {
+    setTimeout(function () {
+      alert(info);
+    }, 1);
+  }
+
+  // 确认和取消
+  const confirmInfo = function (info) {
+    setTimeout(function () {
+      confirm(info)
+    }, 1);
+  }
+
+
+  // 源地址
+  var sourceUrl = [
+    "https://api.github.com/repos/Sjj1024/Sjj1024/contents/.github/hubsql/iphoneHuijia.txt",
+    "https://www.cnblogs.com/sdfasdf/p/16966745.html",
+    "https://xiaoshen.blog.csdn.net/article/details/129709226"
+  ]
+
+  // 初始化函数
+  const initFun = async function () {
+    console.log("初始化函数");
+    // 获取所有的cookie
+    try {
+      await GM.setValue("otherKey", "otherData");
+      const otherKey = await GM.getValue("otherKey", null);
+      alertInfo("获取到的值" + otherKey)
+    } catch (error) {
+      alertInfo("出现错误了")
+    }
   }
 
   // 开始执行
