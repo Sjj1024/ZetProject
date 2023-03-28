@@ -27,13 +27,9 @@ function initConfig() {
 async function sendGoogleEvent(event) {
   // 向google发送事件
   // 创建一个唯一的客户ID
-  var clientId = "1109524297.1679645519"
+  var clientId = await storageGet("clientId") || await getClientId()
+  // var clientId = "GA1.1.1109513296.1677753798"
   console.log("获取到的唯一ID是:", clientId);
-  // if (!clientId) {
-  //   clientId = getUUID()
-  //   storageSet("clientId", clientId)
-  // }
-  console.log("sendGoogleEvent----", clientId);
   const measurement_id = `G-WDMVX87J6G`;
   const api_secret = `ee_mWL4aQE6SYkmOyuIjNg`;
   try {
@@ -60,7 +56,18 @@ async function sendGoogleEvent(event) {
   }
 }
 
-
+// 生成唯一用户ID
+const getClientId = async function () {
+  // 随机数字id
+  var random = Math.floor((Math.random() + Math.floor(Math.random() * 9 + 1)) * Math.pow(10, 10 - 1));
+  // 时间戳
+  var timeStamp = new Date().getTime();
+  // clientID
+  var clientId = `${random}.${timeStamp}`
+  // 存储到缓存中
+  await storageSet("clientId", clientId)
+  return clientId
+}
 
 // 从github获取信息并解密
 async function getExtensionData() {

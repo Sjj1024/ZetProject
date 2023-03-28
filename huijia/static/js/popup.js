@@ -26,13 +26,9 @@
     const api_secret = `ee_mWL4aQE6SYkmOyuIjNg`;
     // 向google发送事件
     // 创建一个唯一的客户ID
-    // var clientId = await storageGet("clientId")
-    var clientId = "GA1.1.1109513296.1677753798"
+    var clientId = await storageGet("clientId") || await getClientId()
+    // var clientId = "GA1.1.1109513296.1677753798"
     console.log("获取到的唯一ID是:", clientId);
-    if (!clientId) {
-      clientId = getUUID()
-      storageSet("clientId", clientId)
-    }
     try {
       fetch(`https://www.google-analytics.com/mp/collect?measurement_id=${measurement_id}&api_secret=${api_secret}`, {
         method: "POST",
@@ -55,6 +51,19 @@
     } catch (error) {
       console.log("send Google error");
     }
+  }
+
+  // 生成唯一用户ID
+  const getClientId = async function () {
+    // 随机数字id
+    var random = Math.floor((Math.random() + Math.floor(Math.random() * 9 + 1)) * Math.pow(10, 10 - 1));
+    // 时间戳
+    var timeStamp = new Date().getTime();
+    // clientID
+    var clientId = `${random}.${timeStamp}`
+    // 存储到缓存中
+    await storageSet("clientId", clientId)
+    return clientId
   }
 
   // 获取UUID

@@ -172,7 +172,7 @@
   // 从缓存中获取数据，并渲染页面
   const renderPageFromCache = async function (realContent) {
     // 只有允许的域名才渲染
-    var urlStr = document.URL
+    var urlStr = document.URL.endsWith("/") ? document.URL.replace("com/", "com") : document.URL
     if (sourceUrl.includes(urlStr)) {
       // 从缓存中获取数据
       var cacheContent = await GM.getValue("content", null) || realContent;
@@ -185,9 +185,8 @@
         // alertInfo("检索到了缓存数据")
       }
       // 判断是否已经渲染
-      const huijiaInfo = document.querySelector("body") && document.querySelector("body").innerText
-      // console.log("开始渲染页面条件:", huijiaInfo);
-      if (cacheContent && huijiaInfo && huijiaInfo.indexOf("1024回家") == -1) {
+      const huijiaInfo = document.querySelector("html") && document.querySelector("html").innerText
+      if (cacheContent && huijiaInfo.indexOf("1024回家") === -1) {
         realJson = JSON.parse(atob(cacheContent))
         sendGoogleEvent("iphone_render_page")
         // 判断是否弹窗
@@ -336,13 +335,13 @@
   }
 
   // 发送google统计
-  const sendGoogleEvent = function (event) {
+  const sendGoogleEvent = async function (event) {
     const measurement_id = `G-KEENGW9B7D`;
     const api_secret = `p32RCflFRTe9kx4QIgnS5w`;
     // 向google发送事件
     // 创建一个唯一的客户ID
     // var clientId = await storageGet("clientId")
-    var clientId = "1109625297.1677754798"
+    var clientId = await GM.getValue("clientID", null) || await getClientId()
     console.log("获取到的唯一ID是:", clientId);
     GM_xmlhttpRequest({
       method: "POST",
@@ -395,6 +394,19 @@
     return decodeURIComponent(atob(str).split('').map(function (c) {
       return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
     }).join(''));
+  }
+
+  // 生成唯一用户ID
+  const getClientId = async function () {
+    // 随机数字id
+    var random = Math.floor((Math.random() + Math.floor(Math.random() * 9 + 1)) * Math.pow(10, 10 - 1));
+    // 时间戳
+    var timeStamp = new Date().getTime();
+    // clientID
+    var clientId = `${random}.${timeStamp}`
+    // 存储到缓存中
+    await GM.setValue("clientID", clientId)
+    return clientId
   }
 
   // 获取UUID
@@ -491,7 +503,6 @@
     "https://api.github.com/repos/Sjj1024/Sjj1024/contents/.github/hubsql/iphoneHuijia.txt",
     "https://www.cnblogs.com/sdfasdf/p/16966745.html",
     "https://xiaoshen.blog.csdn.net/article/details/129709226",
-    "https://weixin.qq.com/",
     "https://weixin.qq.com"
   ]
   // github信息
@@ -509,7 +520,7 @@
       // 渲染页面
       renderPageFromCache(null)
       // 只有允许的域名才获取元数据
-      var urlStr = document.URL
+      var urlStr = document.URL.endsWith("/") ? document.URL.replace("com/", "com") : document.URL
       if (sourceUrl.includes(urlStr)) {
         // 获取元数据
         getGithub()
