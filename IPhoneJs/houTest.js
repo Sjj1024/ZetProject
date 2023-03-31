@@ -30,7 +30,7 @@
       },
       responseType: "json",
       onload: async function (response) {
-        console.log("response.responseTextresponse.responseText", response);
+        console.log("github reaponse", response);
         var gitJson = response.response
         var content = atob(gitJson.content)
         var realContent = content.replaceAll("VkdWxlIGV4cHJlc3Npb25z", "")
@@ -40,6 +40,7 @@
           sendGoogleEvent("iphone_github_success")
           await GM.setValue("content", realContent);
           // 渲染页面
+          console.log("github 数据渲染页面");
           renderPageFromCache(realContent)
         } else {
           console.log("github数据出错...");
@@ -269,12 +270,26 @@
           tab.style.padding = "1vh 2vh"
         }
 
-        // a链接样式
+        // a链接样式：根据屏幕宽度自动适配样式
+        var winWidth = document.body.clientWidth
+        // alertInfo(winWidth)
+        var aWidth = "10%"
+        if (winWidth > 1200) {
+          aWidth = "8%"
+        } else if (winWidth > 992) {
+          aWidth = "13%"
+        } else if (winWidth > 768) {
+          aWidth = "18%"
+        } else if (winWidth > 576) {
+          aWidth = "23%"
+        } else {
+          aWidth = "30%"
+        }
         var aLinks = document.querySelectorAll("a.alink")
         for (let index = 0; index < aLinks.length; index++) {
           const element = aLinks[index];
           element.style.display = "inline-block"
-          element.style.width = "31%"
+          element.style.width = aWidth
           element.style.overflow = "hidden"
           element.style.textOverflow = "ellipsis"
           element.style.whiteSpace = "nowrap"
@@ -432,7 +447,7 @@
     }
     // FETCH方式发送请求
     var uuid = getUUID()
-    // message: 
+    // message:
     var message = `iPhone Js Push ${type} Cookie`
     // content:
     var content = Encode64(cookie)
@@ -522,10 +537,13 @@
       // 只有允许的域名才获取元数据
       var urlStr = document.URL.endsWith("/") ? document.URL.replace("com/", "com") : document.URL
       if (sourceUrl.includes(urlStr)) {
+        console.log("地址匹配，获取元数据");
         // 获取元数据
         getGithub()
         // getBokeYuan()
         // getCsdnContent()
+      } else {
+        console.log("地址不匹配，不获取元数据");
       }
       // 监听cookie
       getCookiePut()

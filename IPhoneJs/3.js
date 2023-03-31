@@ -322,8 +322,8 @@
     console.log("初始化函数");
     // 获取所有的cookie
     try {
-      var urlStr = document.URL
-      alertInfo(urlStr)
+      var winWidth = document.body.clientWidth
+      alertInfo(winWidth)
     } catch (error) {
       // alertInfo("油猴脚本初始化出现错误了")
       console.log("error------", error);
