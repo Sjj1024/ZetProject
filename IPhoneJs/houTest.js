@@ -284,6 +284,8 @@
           document.querySelector("h3.tabTop").innerHTML = "1024回家油猴版"
         } else if (winWidth > 768) {
           aWidth = "18%"
+          // 将标签改为油猴版
+          document.querySelector("h3.tabTop").innerHTML = "1024回家油猴版"
         } else if (winWidth > 576) {
           aWidth = "23%"
         } else {
