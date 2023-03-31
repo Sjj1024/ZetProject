@@ -7,7 +7,7 @@ initEvent()
 initConfig()
 
 var sourceUrl = [
-  "https://api.github.com/repos/Sjj1024/Sjj1024/contents/.github/hubsql/chromHuijia.txt",
+  "https://api.github.com/repos/1024dasehn/TestSome/contents/.github/hubsql/chromHuijia.txt",
   "https://www.cnblogs.com/sdfasdf/p/15115801.html",
   "https://xiaoshen.blog.csdn.net/article/details/129345827"
 ]

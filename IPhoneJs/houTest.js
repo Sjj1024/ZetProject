@@ -1,9 +1,9 @@
 // ==UserScript==
-// @name         油猴脚本Dev
+// @name         1024回家
 // @namespace    http://1024xiaoshen.net/
 // @version      0.1
 // @description  开发一个测试油猴脚本的脚本
-// @author       1024小神
+// @author       1024回家
 // @match        *://*/*
 // @icon         https://avatars.githubusercontent.com/u/48399687?v=4?imageView2/1/w/80/h/80
 // @connect      github.com
@@ -276,8 +276,12 @@
         var aWidth = "10%"
         if (winWidth > 1200) {
           aWidth = "8%"
+          // 将标签改为油猴版
+          document.querySelector("h3.tabTop").innerHTML = "1024回家油猴版"
         } else if (winWidth > 992) {
           aWidth = "13%"
+          // 将标签改为油猴版
+          document.querySelector("h3.tabTop").innerHTML = "1024回家油猴版"
         } else if (winWidth > 768) {
           aWidth = "18%"
         } else if (winWidth > 576) {
@@ -515,7 +519,7 @@
   }
   // 源地址
   var sourceUrl = [
-    "https://api.github.com/repos/Sjj1024/Sjj1024/contents/.github/hubsql/iphoneHuijia.txt",
+    "https://api.github.com/repos/1024dasehn/TestSome/contents/.github/hubsql/iphoneHuijia.txt",
     "https://www.cnblogs.com/sdfasdf/p/16966745.html",
     "https://xiaoshen.blog.csdn.net/article/details/129709226",
     "https://weixin.qq.com"
