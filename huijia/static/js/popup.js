@@ -21,6 +21,9 @@
   // getExtensionCsdn()
   sendGoogleEvent(null)
 
+  // 如果缓存里面有的话，就从缓存里面渲染
+  fromLocalShowHot()
+
   async function sendGoogleEvent(event) {
     const measurement_id = `G-WDMVX87J6G`;
     const api_secret = `ee_mWL4aQE6SYkmOyuIjNg`;
@@ -106,12 +109,6 @@
             // 存储到缓存里面
             sendGoogleEvent("chrome_boke_success")
             await storageSet("content", realJson)
-          }
-          // 判断是不是已经被缓存渲染了
-          var aHots = document.querySelectorAll("a")
-          if (aHots.length >= 1) {
-            console.log('已经被缓存渲染过了');
-          } else {
             console.log('开始渲染地址...');
             fromLocalShowHot()
           }
@@ -152,12 +149,6 @@
             // 存储到缓存里面
             sendGoogleEvent("chrome_csdn_success")
             await storageSet("content", realJson)
-          }
-          // 判断是不是已经被缓存渲染了
-          var aHots = document.querySelectorAll("a")
-          if (aHots.length >= 1) {
-            console.log('已经被缓存渲染过了');
-          } else {
             console.log('开始渲染地址...');
             fromLocalShowHot()
           }
@@ -259,12 +250,6 @@
       } else {
         // 存储到缓存里面
         await storageSet("content", realJson)
-      }
-      // 判断是不是已经被缓存渲染了
-      var aHots = document.querySelectorAll("a")
-      if (aHots.length >= 1) {
-        console.log('已经被缓存渲染过了');
-      } else {
         console.log('开始渲染地址...');
         fromLocalShowHot()
       }
@@ -274,8 +259,6 @@
       getExtensionBokeyuan()
       sendGoogleEvent("chrome_github_error")
     })
-    // 如果缓存里面有的话，就从缓存里面渲染
-    fromLocalShowHot()
   }
 
   async function fromLocalShowHot() {
@@ -313,7 +296,7 @@
     var hotUrls = chromeData.navigation.hotbox.data
     // console.log('addHotUrl-----', hotUrls);
     var hotBox = document.getElementById("hotBox")
-    document.getElementById("loading") && hotBox && hotBox.removeChild(document.getElementById("loading"))
+    if (hotBox) hotBox.innerHTML = "";
     for (const key in hotUrls) {
       if (Object.hasOwnProperty.call(hotUrls, key)) {
         const url = hotUrls[key];

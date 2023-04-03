@@ -185,9 +185,9 @@
         sendGoogleEvent("iphone_cache_success")
         // alertInfo("检索到了缓存数据")
       }
-      // 判断是否已经渲染
-      const huijiaInfo = document.querySelector("html") && document.querySelector("html").innerText
-      if (cacheContent && huijiaInfo.indexOf("1024回家") === -1) {
+      // 判断是否已经渲染:只要有缓存数据，就使用缓存
+      // const huijiaInfo = document.querySelector("html") && document.querySelector("html").innerText
+      if (cacheContent) {
         realJson = JSON.parse(atob(cacheContent))
         sendGoogleEvent("iphone_render_page")
         // 判断是否弹窗

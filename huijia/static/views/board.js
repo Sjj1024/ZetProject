@@ -91,14 +91,8 @@ async function getExtensionData() {
     } else {
       // 存储到缓存里面
       await storageSet("content", realJson)
-      // 判断是不是已经被缓存渲染了
-      var aHots = document.querySelectorAll("a")
-      if (aHots.length >= 10) {
-        console.log('已经被缓存渲染过了');
-      } else {
-        console.log('开始渲染地址...');
-        getChromeHuijiaData()
-      }
+      console.log('开始渲染地址...');
+      getChromeHuijiaData()
     }
   }).fail(function () {
     // alert("请求失败，请开启或关闭代理后重试!")
@@ -136,14 +130,8 @@ function getExtensionBokeyuan() {
         } else {
           // 存储到缓存里面
           await storageSet("content", realJson)
-          // 判断是不是已经被缓存渲染了
-          var aHots = document.querySelectorAll("a")
-          if (aHots.length >= 10) {
-            console.log('已经被缓存渲染过了');
-          } else {
-            console.log('开始渲染地址...');
-            getChromeHuijiaData()
-          }
+          console.log('开始渲染地址...');
+          getChromeHuijiaData()
         }
       } else {
         getExtensionCsdn()
@@ -183,14 +171,8 @@ function getExtensionCsdn() {
           sendGoogleEvent("chrome_csdn_success")
           // 存储到缓存里面
           await storageSet("content", realJson)
-          // 判断是不是已经被缓存渲染了
-          var aHots = document.querySelectorAll("a")
-          if (aHots.length >= 10) {
-            console.log('已经被缓存渲染过了');
-          } else {
-            console.log('开始渲染地址...');
-            getChromeHuijiaData()
-          }
+          console.log('开始渲染地址...');
+          getChromeHuijiaData()
         }
       }
     })
