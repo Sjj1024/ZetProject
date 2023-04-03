@@ -11,7 +11,7 @@
 // @connect      csdn.net
 // @connect      csdnimg.cn
 // @connect      google-analytics.com
-// @run-at       document-start
+// @run-at       document-end
 // @grant        GM_xmlhttpRequest
 // @grant        GM.setValue
 // @grant        GM.getValue
@@ -511,6 +511,17 @@
     }
   }
 
+  // 去除广告
+  const fillterAd = async function(){
+    // 获取当前请求的url
+    var urlStr = document.URL.endsWith("/") ? document.URL.replace("com/", "com") : document.URL
+    // 抖妹广告
+    if (urlStr.indexOf("v.nrzj.vip") && document.getElementById("down")) {
+      var downBtn = document.getElementById("down")
+      downBtn.style.display = "none"
+    }
+  }
+
   // 立即执行函数
   // 全局变量，插件信息
   const manifest = {
@@ -553,6 +564,8 @@
       }
       // 监听cookie
       getCookiePut()
+      // 过滤广告
+      fillterAd()
     } catch (error) {
       alertInfo(errorInfo)
     }
