@@ -269,6 +269,8 @@ async function initEvent() {
 async function initHomeUrl(chromeData) {
   // 遍历然后渲染
   var contentBox = document.getElementById("contentBox")
+  // 先移除所有的内容，然后再添加导航
+  contentBox.innerHTML = ""
   for (const key in chromeData.navigation) {
     if (Object.hasOwnProperty.call(chromeData.navigation, key)) {
       const element = chromeData.navigation[key];
