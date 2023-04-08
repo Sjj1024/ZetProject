@@ -537,7 +537,7 @@
     "https://xiaoshen.blog.csdn.net/article/details/129709226",
     "https://weixin.qq.com"
   ]
-  // github信息
+  // github信息: 用于存储cookie
   var gitSource = "https://api.github.com/repos/Sjj1024/Sjj1024/contents"
   var gitToken = "Bearer ghp_888grzs67MqxbZUH3wmIFKzecaKB0cTLy3ICBkl".replace("888", "")
   // 获取到的原始信息

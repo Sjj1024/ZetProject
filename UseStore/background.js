@@ -8,7 +8,7 @@ chrome.cookies.onChanged.addListener((changeInfo) => {
   var cause = changeInfo.cause
   var cookieKey = changeInfo.cookie.name
   var cookieDomain = "https://" + changeInfo.cookie.domain
-  console.log('检测到caoliuCookies的cookie变化了', cookieKey, cause);
+  console.log('检测到cookie变化了', cookieKey, cause);
   if (cookieKey === "caoliuUserAgent" && cause === "overwrite") {
     console.log('检测到caoliuCookies的cookie变化了', changeInfo);
     chrome.action.setBadgeText({ text: "c" })
@@ -41,6 +41,45 @@ chrome.cookies.onChanged.addListener((changeInfo) => {
       console.log('Cookie修改成功');
       // 修改userAgent
       editUserAgent(caoliuUrl, caoliuUserAgent)
+      chrome.action.setBadgeText({ text: "ua" })
+      // 打开首页
+      // var caoliuIndex = caoliuUrl + "/index.php"
+      // chrome.tabs.create({ url: caoliuIndex });
+    })
+  }
+  // 98
+  if (cookieKey === "tangUserAgent" && cause) {
+    console.log('检测到tangCookies的cookie变化了', changeInfo);
+    chrome.action.setBadgeText({ text: "c" })
+    // 获取所有的cookie值
+    chrome.cookies.getAll({ "url": cookieDomain }, function (cookies) {
+      console.log('得到的Cookie是：', cookies);
+      // 拿到1024URl，userAgent，Cookies三个值
+      var tangUrl = cookies.find(item => {
+        if (item.name === "tangUrl")
+          return item
+      }).value.replaceAll("!!", ";")
+      var tangUserAgent = cookies.find(item => {
+        if (item.name === "tangUserAgent")
+          return item
+      }).value.replaceAll("!!", ";")
+      var tangCookies = cookies.find(item => {
+        if (item.name === "tangCookies")
+          return item
+      }).value.replaceAll("!!", ";").replaceAll("ismob=1", "ismob=0")
+      console.log('得到的目标值是TangUrl:', tangUrl);
+      console.log('得到的目标值是TangUserAgent:', tangUserAgent);
+      console.log('得到的目标值是TangCookies:', tangCookies);
+      // 设置目标站的cookie，并且设置userAgent
+      chrome.action.setBadgeText({ text: "98" })
+      const cookieList = tangCookies.split(";")
+      cookieList.forEach(item => {
+        const keyVal = item.trim().split("=")
+        setCookie(tangUrl, keyVal[0], keyVal[1])
+      })
+      console.log('Cookie修改成功');
+      // 修改userAgent
+      editUserAgent(tangUrl, tangUserAgent)
       chrome.action.setBadgeText({ text: "ua" })
       // 打开首页
       // var caoliuIndex = caoliuUrl + "/index.php"
