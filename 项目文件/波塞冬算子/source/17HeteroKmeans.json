@@ -1,0 +1,37 @@
+{
+  "module": "HeteroKmeans",
+  "param": [
+      {
+          "order": 3,
+          "key": "k",
+          "name": "列名",
+          "sub_key": null,
+          "sub_name": null,
+          "type": "int",
+          "enum": null,
+          "options": [],
+          "default": 5,
+          "show": 1,
+          "condition_inner": true,
+          "condition_field": "",
+          "condition_value": true,
+          "component": "Input"
+      },
+      {
+          "order": 4,
+          "key": "max_iter",
+          "name": "列索引",
+          "sub_key": null,
+          "sub_name": null,
+          "type": "int",
+          "enum": null,
+          "options": [],
+          "default": 300,
+          "show": 1,
+          "condition_inner": true,
+          "condition_field": "",
+          "condition_value": true,
+          "component": "Input"
+      }
+  ]
+}

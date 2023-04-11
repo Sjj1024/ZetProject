@@ -1,0 +1,55 @@
+{
+  "module": "SecureInformationRetrieval",
+  "needConfig": true,
+  "roles": ["common"],
+  "param": [
+      {
+          "order": 1,
+          "key": "security_level",
+          "name": "安全水位线阈值",
+          "sub_key": null,
+          "sub_name": null,
+          "type": "float",
+          "enum": null,
+          "options": [],
+          "default": 0.5,
+          "show": 1,
+          "condition_inner": true,
+          "condition_field": "",
+          "condition_value": "",
+          "component": "Input"
+      },
+      {
+          "order": 3,
+          "key": "raw_retrieval",
+          "name": "",
+          "sub_key": null,
+          "sub_name": null,
+          "type": "bool",
+          "enum": null,
+          "options": [],
+          "default": false,
+          "show": 1,
+          "condition_inner": true,
+          "condition_field": "",
+          "condition_value": "",
+          "component": "Radio"
+      },
+      {
+          "order": 4,
+          "key": "target_cols",
+          "name": "目标列集合。输入值示例:[\"x0\",\"x1\"]",
+          "sub_key": null,
+          "sub_name": null,
+          "type": "list",
+          "enum": null,
+          "options": [],
+          "default": null,
+          "show": 1,
+          "condition_inner": true,
+          "condition_field": "",
+          "condition_value": "",
+          "component": "Input"
+      }
+  ]
+}

@@ -1,0 +1,55 @@
+{
+    "module": "ColumnExpand",
+    "needConfig": true,
+    "roles": ["guest", "host"],
+    "param": [
+        {
+            "order": 1,
+            "key": "need_run",
+            "name": "是否需要运行",
+            "sub_key": null,
+            "sub_name": null,
+            "type": "bool",
+            "enum": null,
+            "options": [],
+            "default": false,
+            "show": 1,
+            "condition_inner": true,
+            "condition_field": "",
+            "condition_value": "",
+            "component": "Radio"
+        },
+        {
+            "order": 2,
+            "key": "append_header",
+            "name": "输入拓展的特征列明，格式:str或者List[str]",
+            "sub_key": null,
+            "sub_name": null,
+            "type": "list",
+            "enum": null,
+            "options": [],
+            "default": null,
+            "show": 1,
+            "condition_inner": true,
+            "condition_field": "",
+            "condition_value": "",
+            "component": "Input"
+        },
+        {
+            "order": 3,
+            "key": "fill_value",
+            "name": "输入格式:int/float/str/list",
+            "sub_key": null,
+            "sub_name": null,
+            "type": "list",
+            "enum": null,
+            "options": [],
+            "default": null,
+            "show": 1,
+            "condition_inner": true,
+            "condition_field": "",
+            "condition_value": "",
+            "component": "Input"
+        }
+    ]
+}

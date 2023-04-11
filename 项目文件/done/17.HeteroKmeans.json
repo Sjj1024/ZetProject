@@ -1,0 +1,71 @@
+{
+    "module": "HeteroKmeans",
+    "needConfig": true,
+    "roles": ["common"],
+    "param": [
+        {
+            "order": 1,
+            "key": "k",
+            "name": "聚类数目。输入2-99之间的整数",
+            "sub_key": null,
+            "sub_name": null,
+            "type": "int",
+            "enum": [],
+            "options": [],
+            "default": 5,
+            "show": 1,
+            "condition_inner": true,
+            "condition_field": "",
+            "condition_value": "",
+            "component": "Input"
+        },
+        {
+            "order": 2,
+            "key": "max_iter",
+            "name": "最大迭代数",
+            "sub_key": null,
+            "sub_name": null,
+            "type": "int",
+            "enum": null,
+            "options": [],
+            "default": 300,
+            "show": 1,
+            "condition_inner": true,
+            "condition_field": "",
+            "condition_value": "",
+            "component": "Input"
+        },
+        {
+            "order": 3,
+            "key": "tol",
+            "name": "tol",
+            "sub_key": null,
+            "sub_name": null,
+            "type": "float",
+            "enum": null,
+            "options": [],
+            "default": 0.001,
+            "show": 1,
+            "condition_inner": true,
+            "condition_field": "",
+            "condition_value": "",
+            "component": "Input"
+        },
+        {
+            "order": 4,
+            "key": "random_stat",
+            "name": "被定义缺失值",
+            "sub_key": null,
+            "sub_name": null,
+            "type": "int",
+            "enum": null,
+            "options": [],
+            "default": null,
+            "show": 1,
+            "condition_inner": true,
+            "condition_field": "",
+            "condition_value": "",
+            "component": "Input"
+        }
+    ]
+}

@@ -1,0 +1,55 @@
+{
+    "module": "ColumnExpand",
+    "needConfig": true,
+    "roles": [],
+    "param": [
+        {
+            "order": 1,
+            "key": "need_run",
+            "name": "是否需要运行",
+            "sub_key": null,
+            "sub_name": null,
+            "type": "bool",
+            "enum": null,
+            "options": [],
+            "default": true,
+            "show": 1,
+            "condition_inner": true,
+            "condition_field": "",
+            "condition_value": "",
+            "component": "Radio"
+        },
+        {
+            "order": 2,
+            "key": "append_header",
+            "name": "拓展列明",
+            "sub_key": null,
+            "sub_name": null,
+            "type": "str",
+            "enum": null,
+            "options": [],
+            "default": null,
+            "show": 1,
+            "condition_inner": true,
+            "condition_field": "",
+            "condition_value": "",
+            "component": "Input"
+        },
+        {
+            "order": 3,
+            "key": "fill_value",
+            "name": "填充值",
+            "sub_key": null,
+            "sub_name": null,
+            "type": "str",
+            "enum": null,
+            "options": [],
+            "default": null,
+            "show": 1,
+            "condition_inner": true,
+            "condition_field": "",
+            "condition_value": "",
+            "component": "Input"
+        }
+    ]
+}

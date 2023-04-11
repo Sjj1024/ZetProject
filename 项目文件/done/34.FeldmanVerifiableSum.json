@@ -1,0 +1,39 @@
+{
+    "module": "FeldmanVerifiableSum",
+    "needConfig": true,
+    "roles": ["common"],
+    "param": [
+        {
+            "order": 1,
+            "key": "q_n",
+            "name": "q_n 为十进制有效位数,如果数据类型为浮点数,则最大有效位数为 16 整数和十进制有效位数之和应小于或等于 16",
+            "sub_key": null,
+            "sub_name": null,
+            "type": "int",
+            "enum": null,
+            "options": [],
+            "default": 6,
+            "show": 1,
+            "condition_inner": true,
+            "condition_field": "",
+            "condition_value": "",
+            "component": "Input"
+        },
+        {
+            "order": 2,
+            "key": "sum_cols",
+            "name": "指定哪些列需要求和,如果列索引为无,则每一列都是总和",
+            "sub_key": null,
+            "sub_name": null,
+            "type": "list",
+            "enum": null,
+            "options": [],
+            "default": [1, 2, 3],
+            "show": 1,
+            "condition_inner": true,
+            "condition_field": "",
+            "condition_value": "",
+            "component": "Input"
+        }
+    ]
+}

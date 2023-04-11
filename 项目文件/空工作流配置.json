@@ -1,0 +1,48 @@
+{
+    "dsl_version": 2,
+    "initiator": {
+        "role": "guest",
+        "party_id": 1000
+    },
+    "role": {
+        "host": [1100],
+        "guest": [1000]
+    },
+    "job_parameters": {
+        "common": {
+            "job_type": "train",
+            "backend": 0,
+            "work_mode": 1,
+            "task_cores": 4,
+            "spark_run": {
+                "executor-memory": "2g",
+                "total-executor-cores": 2
+            }
+        }
+    },
+    "component_parameters": {
+        "common": {},
+        "role": {
+            "guest": {
+                "0": {
+                    "reader_0": {
+                        "table": {
+                            "name": "6337967501686607872",
+                            "namespace": "6337965959139037184"
+                        }
+                    }
+                }
+            },
+            "host": {
+                "0": {
+                    "reader_0": {
+                        "table": {
+                            "name": "6337967892931284992",
+                            "namespace": "6337965959139037184"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

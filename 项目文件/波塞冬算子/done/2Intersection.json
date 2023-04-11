@@ -1,0 +1,23 @@
+{
+  "module": "Intersection",
+  "needConfig": true,
+  "roles": ["common"],
+  "param": [
+      {
+          "order": 1,
+          "key": "intersect_method",
+          "name": "intersect_method",
+          "sub_key": null,
+          "sub_name": null,
+          "type": "str",
+          "enum": ["rsa", "dh"],
+          "options": ["rsa", "dh"],
+          "default": "rsa",
+          "show": 1,
+          "condition_inner": true,
+          "condition_field": "",
+          "condition_value": "",
+          "component": "Select"
+      }
+  ]
+}

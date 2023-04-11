@@ -1,0 +1,55 @@
+{
+  "module": "HeteroChiSquare",
+  "needConfig": true,
+  "roles": ["guest", "host"],
+  "param": [
+      {
+          "order": 1,
+          "key": "need_run",
+          "name": "是否运行",
+          "sub_key": null,
+          "sub_name": null,
+          "type": "bool",
+          "enum": [],
+          "options": [],
+          "default": true,
+          "show": 1,
+          "condition_inner": true,
+          "condition_field": "",
+          "condition_value": "",
+          "component": "Radio"
+      },
+      {
+          "order": 2,
+          "key": "column_names",
+          "name": "column_names",
+          "sub_key": null,
+          "sub_name": null,
+          "type": "list",
+          "enum": null,
+          "options": [],
+          "default": null,
+          "show": 1,
+          "condition_inner": true,
+          "condition_field": "need_run",
+          "condition_value": true,
+          "component": "Input"
+      },
+      {
+          "order": 3,
+          "key": "column_index",
+          "name": "column_index",
+          "sub_key": null,
+          "sub_name": null,
+          "type": "list",
+          "enum": null,
+          "options": [],
+          "default": -1,
+          "show": 1,
+          "condition_inner": true,
+          "condition_field": "need_run",
+          "condition_value": true,
+          "component": "Input"
+      }
+  ]
+}
