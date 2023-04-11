@@ -1,0 +1,55 @@
+{
+    "module": "LabelTransform",
+    "needConfig": true,
+    "roles": ["guest", "host"],
+    "param": [
+        {
+            "order": 1,
+            "key": "need_run",
+            "name": "是否运行",
+            "sub_key": null,
+            "sub_name": null,
+            "type": "bool",
+            "enum": [],
+            "options": [],
+            "default": true,
+            "show": 1,
+            "condition_inner": true,
+            "condition_field": "",
+            "condition_value": "",
+            "component": "Radio"
+        },
+        {
+            "order": 2,
+            "key": "label_encoder",
+            "name": "输入数据每个字段类型",
+            "sub_key": null,
+            "sub_name": null,
+            "type": "json",
+            "enum": null,
+            "options": [],
+            "default": { "yes": 1, "no": 0 },
+            "show": 1,
+            "condition_inner": true,
+            "condition_field": "need_run",
+            "condition_value": true,
+            "component": "Input"
+        },
+        {
+            "order": 3,
+            "key": "label_list",
+            "name": "输入数据每个字段类型",
+            "sub_key": null,
+            "sub_name": null,
+            "type": "list",
+            "enum": null,
+            "options": [],
+            "default": ["yes", "no"],
+            "show": 1,
+            "condition_inner": true,
+            "condition_field": "need_run",
+            "condition_value": true,
+            "component": "Input"
+        }
+    ]
+}

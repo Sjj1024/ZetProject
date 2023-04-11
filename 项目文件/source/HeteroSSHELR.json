@@ -1,0 +1,290 @@
+{
+  "module": "HeteroSSHELR",
+  "param": [
+    {
+      "key": "penalty",
+      "name": "penalty",
+      "sub_key": null,
+      "sub_name": null,
+      "type": "str",
+      "enum": ["L1", "L2", "null"],
+      "default": "L1",
+      "show": 1
+    },
+    {
+      "key": "tol",
+      "name": "tol",
+      "sub_key": null,
+      "sub_name": null,
+      "type": "float",
+      "enum": null,
+      "default": 0.0001,
+      "show": 1
+    },
+    {
+      "key": "alpha",
+      "name": "alpha",
+      "sub_key": null,
+      "sub_name": null,
+      "type": "float",
+      "enum": null,
+      "default": 0.01,
+      "show": 1
+    },
+    {
+      "key": "optimizer",
+      "name": "optimizer",
+      "sub_key": null,
+      "sub_name": null,
+      "type": "str",
+      "enum": ["rmsprop", "sgd", "adam", "nesterov_momentum_sgd", "adagrad"],
+      "default": "rmsprop",
+      "show": 1
+    },
+    {
+      "key": "batch_strategy",
+      "name": "batch_strategy",
+      "sub_key": null,
+      "sub_name": null,
+      "type": "str",
+      "enum": ["full", "random"],
+      "default": "full",
+      "show": 1
+    },
+    {
+      "key": "batch_size",
+      "name": "batch_size",
+      "sub_key": null,
+      "sub_name": null,
+      "type": "int",
+      "enum": null,
+      "default": -1,
+      "show": 1
+    },
+    {
+      "key": "shuffle",
+      "name": "shuffle",
+      "sub_key": null,
+      "sub_name": null,
+      "type": "bool",
+      "enum": null,
+      "default": true,
+      "show": 1
+    },
+    {
+      "key": "masked_rate",
+      "name": "masked_rate",
+      "sub_key": null,
+      "sub_name": null,
+      "type": "int",
+      "enum": null,
+      "default": 5,
+      "show": 1
+    },
+    {
+      "key": "learning_rate",
+      "name": "learning_rate",
+      "sub_key": null,
+      "sub_name": null,
+      "type": "float",
+      "enum": null,
+      "default": 0.15,
+      "show": 1
+    },
+    {
+      "key": "max_iter",
+      "name": "max_iter",
+      "sub_key": null,
+      "sub_name": null,
+      "type": "int",
+      "enum": null,
+      "default": 5,
+      "show": 1
+    },
+    {
+      "key": "early_stop",
+      "name": "early_stop",
+      "sub_key": null,
+      "sub_name": null,
+      "type": "str",
+      "enum": ["diff", "weight_diff", "abs"],
+      "default": "diff",
+      "show": 1
+    },
+    {
+      "key": "encrypt_param",
+      "name": "encrypt_param",
+      "sub_key": "key_length",
+      "sub_name": "key_length",
+      "type": "int",
+      "enum": null,
+      "default": 1024,
+      "show": 1
+    },
+    {
+      "key": "predict_param",
+      "name": "predict_param",
+      "sub_key": "threshold",
+      "sub_name": "threshold",
+      "type": "float",
+      "enum": null,
+      "default": 0.5,
+      "show": 1
+    },
+    {
+      "key": "callback_param",
+      "name": "callback_param",
+      "sub_key": "callbacks",
+      "sub_name": "callbacks",
+      "type": "str",
+      "enum": [
+        "None",
+        "EarlyStopping",
+        "ModelCheckpoint",
+        "PerformanceEvaluate"
+      ],
+      "default": null,
+      "show": 1
+    },
+    {
+      "key": "callback_param",
+      "name": "callback_param",
+      "sub_key": "early_stopping_rounds",
+      "sub_name": "early_stopping_rounds",
+      "type": "int",
+      "enum": null,
+      "default": null,
+      "show": 1
+    },
+    {
+      "key": "callback_param",
+      "name": "callback_param",
+      "sub_key": "metrics",
+      "sub_name": "metrics",
+      "type": "list",
+      "enum": null,
+      "default": ["auc", "ks"],
+      "show": 1
+    },
+    {
+      "key": "callback_param",
+      "name": "callback_param",
+      "sub_key": "use_first_metric_only",
+      "sub_name": "use_first_metric_only",
+      "type": "bool",
+      "enum": null,
+      "default": false,
+      "show": 1
+    },
+    {
+      "key": "cv_param",
+      "name": "cv_param",
+      "sub_key": "n_splits",
+      "sub_name": "n_splits",
+      "type": "int",
+      "enum": null,
+      "default": 5,
+      "show": 1
+    },
+    {
+      "key": "cv_param",
+      "name": "cv_param",
+      "sub_key": "shuffle",
+      "sub_name": "shuffle",
+      "type": "bool",
+      "enum": null,
+      "default": true,
+      "show": 1
+    },
+    {
+      "key": "cv_param",
+      "name": "cv_param",
+      "sub_key": "random_seed",
+      "sub_name": "random_seed",
+      "type": "int",
+      "enum": null,
+      "default": 1,
+      "show": 1
+    },
+    {
+      "key": "multi_class",
+      "name": "multi_class",
+      "sub_key": null,
+      "sub_name": null,
+      "type": "str",
+      "enum": null,
+      "default": "ovr",
+      "show": 1
+    },
+    {
+      "key": "early_stopping_rounds",
+      "name": "early_stopping_rounds",
+      "sub_key": null,
+      "sub_name": null,
+      "type": "int",
+      "enum": null,
+      "default": null,
+      "show": 1
+    },
+    {
+      "key": "metrics",
+      "name": "metrics",
+      "sub_key": null,
+      "sub_name": null,
+      "type": "list",
+      "enum": null,
+      "default": ["auc", "ks"],
+      "show": 1
+    },
+    {
+      "key": "use_first_metric_only",
+      "name": "use_first_metric_only",
+      "sub_key": null,
+      "sub_name": null,
+      "type": "bool",
+      "enum": null,
+      "default": false,
+      "show": 1
+    },
+    {
+      "key": "reveal_every_iter",
+      "name": "reveal_every_iter",
+      "sub_key": null,
+      "sub_name": null,
+      "type": "bool",
+      "enum": null,
+      "default": true,
+      "show": 1
+    },
+    {
+      "key": "reveal_strategy",
+      "name": "reveal_strategy",
+      "sub_key": null,
+      "sub_name": null,
+      "type": "str",
+      "enum": null,
+      "default": "respectively",
+      "show": 1
+    },
+    {
+      "key": "init_param",
+      "name": "init_param",
+      "sub_key": "fit_intercept",
+      "sub_name": "fit_intercept",
+      "type": "bool",
+      "enum": null,
+      "default": true,
+      "show": 1
+    },
+    {
+      "key": "init_param",
+      "name": "init_param",
+      "sub_key": "init_method",
+      "sub_name": "init_method",
+      "type": "str",
+      "enum": null,
+      "default": "zeros",
+      "show": 1
+    }
+  ]
+}

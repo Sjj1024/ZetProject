@@ -1,0 +1,39 @@
+{
+    "module": "HeteroFeatureBinning",
+    "needConfig": true,
+    "roles": ["common"],
+    "param": [
+        {
+            "order": 1,
+            "key": "method",
+            "name": "分箱方法",
+            "sub_key": null,
+            "sub_name": null,
+            "type": "str",
+            "enum": ["quantile", "bucket", "optimal"],
+            "options": ["quantile", "bucket", "optimal"],
+            "default": "quantile",
+            "show": 1,
+            "condition_inner": true,
+            "condition_field": "",
+            "condition_value": "",
+            "component": "Select"
+        },
+        {
+            "order": 2,
+            "key": "bin_num",
+            "name": "分箱的最大箱数",
+            "sub_key": null,
+            "sub_name": null,
+            "type": "int",
+            "enum": null,
+            "options": [],
+            "default": 10,
+            "show": 1,
+            "condition_inner": true,
+            "condition_field": "",
+            "condition_value": "",
+            "component": "Input"
+        }
+    ]
+}

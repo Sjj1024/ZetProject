@@ -1,0 +1,30 @@
+{
+    "guest": {
+        "need_run": true,
+        "data_type": "float64",
+        "exclusive_data_type": "{}",
+        "is_list": "[1, 2, 3, 4]",
+        "is_obj": "{\"Yes\": 1, \"No\": 0}",
+        "tree_param": {
+            "missing_fill": "play",
+            "missing_fill_method": "{\"Yes\": 1, \"No\": 0}",
+            "missing_method_list": "[1, 2, 3, 4]",
+            "missing_list": "['a', 'b', 'c', 'd']",
+            "missing_obj": "{\"Yes\": 1, \"No\": 0, 'mid': 'center'}"
+        }
+    },
+    "host": {
+        "need_run": true,
+        "data_type": "float64",
+        "exclusive_data_type": "{}",
+        "is_list": "[1, 2, 3, 4]",
+        "is_obj": "{\"Yes\": 1, \"No\": 0}",
+        "tree_param": {
+            "missing_fill": "play",
+            "missing_fill_method": "{\"Yes\": 1, \"No\": 0}",
+            "missing_method_list": "[1, 2, 3, 4]",
+            "missing_list": "['a', 'b', 'c', 'd']",
+            "missing_obj": "{\"Yes\": 1, \"No\": 0, 'mid': 'center'}"
+        }
+    }
+}

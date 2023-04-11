@@ -1,0 +1,55 @@
+{
+    "module": "Union",
+    "needConfig": true,
+    "roles": ["guest", "host"],
+    "param": [
+        {
+            "order": 1,
+            "key": "need_run",
+            "name": "是否运行",
+            "sub_key": null,
+            "sub_name": null,
+            "type": "bool",
+            "enum": [],
+            "options": [],
+            "default": true,
+            "show": 1,
+            "condition_inner": true,
+            "condition_field": "",
+            "condition_value": "",
+            "component": "Radio"
+        },
+        {
+            "order": 2,
+            "key": "allow_missing",
+            "name": "allow_missing",
+            "sub_key": null,
+            "sub_name": null,
+            "type": "bool",
+            "enum": null,
+            "options": [],
+            "default": false,
+            "show": 1,
+            "condition_inner": true,
+            "condition_field": "need_run",
+            "condition_value": true,
+            "component": "Radio"
+        },
+        {
+            "order": 3,
+            "key": "keep_duplicate",
+            "name": "keep_duplicate",
+            "sub_key": null,
+            "sub_name": null,
+            "type": "bool",
+            "enum": null,
+            "options": [],
+            "default": false,
+            "show": 1,
+            "condition_inner": true,
+            "condition_field": "need_run",
+            "condition_value": true,
+            "component": "Radio"
+        }
+    ]
+}

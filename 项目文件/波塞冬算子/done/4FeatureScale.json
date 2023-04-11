@@ -1,0 +1,101 @@
+{
+  "module": "FeatureScale",
+  "needConfig": true,
+  "roles": ["guest", "host"],
+  "param": [
+      {
+          "order": 1,
+          "key": "need_run",
+          "name": "是否运行",
+          "sub_key": null,
+          "sub_name": null,
+          "type": "bool",
+          "enum": [],
+          "options": [],
+          "default": true,
+          "show": 1,
+          "condition_inner": true,
+          "condition_field": "",
+          "condition_value": "",
+          "component": "Radio"
+      },
+      {
+          "order": 2,
+          "key": "method",
+          "name": "标注化方法",
+          "sub_key": null,
+          "sub_name": null,
+          "type": "str",
+          "enum": ["min_max_scale", "standard_scale"],
+          "options": ["min_max_scale", "standard_scale"],
+          "default": "standard_scale",
+          "show": 1,
+          "condition_inner": true,
+          "condition_field": "need_run",
+          "condition_value": true,
+          "component": "Select",
+          "children": [
+              {
+                  "order": 1,
+                  "key": "with_mean",
+                  "name": "将数据方差规范到0",
+                  "sub_key": null,
+                  "sub_name": null,
+                  "type": "bool",
+                  "enum": null,
+                  "default": true,
+                  "show": 1,
+                  "condition_inner": true,
+                  "condition_field": "method",
+                  "condition_value": "standard_scale",
+                  "component": "Radio"
+              },
+              {
+                  "order": 2,
+                  "key": "with_std",
+                  "name": "将数据方差规范到1",
+                  "sub_key": null,
+                  "sub_name": null,
+                  "type": "bool",
+                  "enum": null,
+                  "default": true,
+                  "show": 1,
+                  "condition_inner": true,
+                  "condition_field": "method",
+                  "condition_value": "standard_scale",
+                  "component": "Radio"
+              }
+          ]
+      },
+      {
+          "order": 3,
+          "key": "scale_col_indexes",
+          "name": "scale_column_idx列索引",
+          "sub_key": null,
+          "sub_name": null,
+          "type": "int",
+          "enum": null,
+          "default": -1,
+          "show": 1,
+          "condition_inner": true,
+          "condition_field": "need_run",
+          "condition_value": true,
+          "component": "Input"
+      },
+      {
+          "order": 4,
+          "key": "scale_names",
+          "name": "指定分箱的列、字符串列表",
+          "sub_key": null,
+          "sub_name": null,
+          "type": "json",
+          "enum": null,
+          "default": null,
+          "show": 1,
+          "condition_inner": true,
+          "condition_field": "need_run",
+          "condition_value": true,
+          "component": "Input"
+      }
+  ]
+}
