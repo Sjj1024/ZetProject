@@ -98,22 +98,6 @@
             "condition_field": "need_run",
             "condition_value": true,
             "component": "Input"
-        },
-        {
-            "order": 7,
-            "key": "bin_width",
-            "name": "bin_width",
-            "sub_key": null,
-            "sub_name": null,
-            "type": "int",
-            "enum": null,
-            "options": [],
-            "default": 50,
-            "show": 1,
-            "condition_inner": true,
-            "condition_field": "need_run",
-            "condition_value": true,
-            "component": "Input"
         }
     ]
 }
