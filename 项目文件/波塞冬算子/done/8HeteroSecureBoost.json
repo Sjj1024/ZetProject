@@ -1,0 +1,68 @@
+{
+  "module": "HeteroSecureBoost",
+  "needConfig": true,
+  "roles": ["common"],
+  "param":[
+    {
+        "key":"task_type",
+        "name":"任务类型",
+        "sub_key":null,
+        "sub_name":null,
+        "type":"str",
+        "enum":[
+            "classification",
+            "regression"
+        ],
+        "default":"classification",
+        "show":1
+    },
+    {
+        "key":"objective_param",
+        "name":"目标参数",
+        "sub_key":"objective",
+        "sub_name":"目标",
+        "type":"str",
+        "enum":[
+            "cross_entropy",
+            "lse",
+            "lae",
+            "log_cosh",
+            "tweedie",
+            "fair",
+            "huber"
+        ],
+        "default":"cross_entropy",
+        "show":1
+    },
+    {
+        "key":"learning_rate",
+        "name":"学习率",
+        "sub_key":null,
+        "sub_name":null,
+        "type":"float",
+        "enum":null,
+        "default":0.3,
+        "show":1
+    },
+    {
+        "key":"num_trees",
+        "name":"要构建的最大树数",
+        "sub_key":null,
+        "sub_name":null,
+        "type":"int",
+        "enum":null,
+        "default":3,
+        "show":1
+    },
+    {
+        "key":"n_iter_no_change",
+        "name":"是否停止树构建过程",
+        "sub_key":null,
+        "sub_name":null,
+        "type":"bool",
+        "enum":null,
+        "default":false,
+        "show":1
+    }
+]
+}

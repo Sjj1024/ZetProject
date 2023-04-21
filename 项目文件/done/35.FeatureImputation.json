@@ -1,0 +1,71 @@
+{
+    "module": "FeatureImputation",
+    "needConfig": true,
+    "roles": ["common"],
+    "param": [
+        {
+            "order": 1,
+            "key": "missing_fill_method",
+            "name": "替换缺失值的方式",
+            "sub_key": null,
+            "sub_name": null,
+            "type": "str",
+            "enum": ["null", "min", "max", "mean", "designated"],
+            "options": ["null", "min", "max", "mean", "designated"],
+            "default": "",
+            "show": 1,
+            "condition_inner": true,
+            "condition_field": "",
+            "condition_value": "",
+            "component": "Select"
+        },
+        {
+            "order": 2,
+            "key": "default_value",
+            "name": "替换缺失值的默认值",
+            "sub_key": null,
+            "sub_name": null,
+            "type": "list",
+            "enum": null,
+            "options": [],
+            "default": 0,
+            "show": 1,
+            "condition_inner": true,
+            "condition_field": "missing_fill_method",
+            "condition_value": "designated",
+            "component": "Input"
+        },
+        {
+            "order": 3,
+            "key": "col_missing_fill_method",
+            "name": "每一列替换缺失值的方式",
+            "sub_key": null,
+            "sub_name": null,
+            "type": "json",
+            "enum": null,
+            "options": [],
+            "default": null,
+            "show": 1,
+            "condition_inner": true,
+            "condition_field": "",
+            "condition_value": "",
+            "component": "Input"
+        },
+        {
+            "order": 4,
+            "key": "missing_impute",
+            "name": "被定义缺失值",
+            "sub_key": null,
+            "sub_name": null,
+            "type": "list",
+            "enum": null,
+            "options": [],
+            "default": null,
+            "show": 1,
+            "condition_inner": true,
+            "condition_field": "",
+            "condition_value": "",
+            "component": "Input"
+        }
+    ]
+}

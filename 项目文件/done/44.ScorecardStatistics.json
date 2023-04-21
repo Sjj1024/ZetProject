@@ -1,0 +1,39 @@
+{
+  "module": "ScorecardStatistics",
+  "needConfig": true,
+  "roles": ["guest", "host"],
+  "param": [
+      {
+          "order": 1,
+          "key": "need_run",
+          "name": "是否需要运行",
+          "sub_key": null,
+          "sub_name": null,
+          "type": "bool",
+          "enum": null,
+          "options": [],
+          "default": true,
+          "show": 1,
+          "condition_inner": true,
+          "condition_field": "",
+          "condition_value": "",
+          "component": "Radio"
+      },
+      {
+          "order": 2,
+          "key": "bin_width",
+          "name": "bin_width",
+          "sub_key": null,
+          "sub_name": null,
+          "type": "int",
+          "enum": null,
+          "options": [],
+          "default": 50,
+          "show": 1,
+          "condition_inner": true,
+          "condition_field": "need_run",
+          "condition_value": true,
+          "component": "Input"
+      }
+  ]
+}

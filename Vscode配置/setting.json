@@ -1,0 +1,105 @@
+{
+    "editor.fontSize": 16,
+    "editor.linkedEditing": true,
+    "editor.unicodeHighlight.ambiguousCharacters": false,
+    "extensions.ignoreRecommendations": true,
+    "editor.unicodeHighlight.invisibleCharacters": false,
+    "explorer.confirmDragAndDrop": false,
+    "editor.formatOnSave": true,
+    "editor.formatOnType": true,
+    "css.hover.references": false,
+    "editor.hover.enabled": false,
+    "html.hover.references": false,
+    "explorer.confirmDelete": false,
+    "security.workspace.trust.untrustedFiles": "open",
+    "cssrem.rootFontSize": 80,
+    "liveServer.settings.donotShowInfoMsg": true,
+    "terminal.integrated.fontSize": 15,
+    "liveServer.settings.donotVerifyTags": true,
+    "vetur.validation.template": false,
+    "vetur.validation.script": false,
+    "eslint.enable": false,
+    "gitlens.advanced.messages": {
+      "suppressLineUncommittedWarning": true
+    },
+    "tabnine.experimentalAutoImports": true,
+    "editor.suggestSelection": "first",
+    "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+    "workbench.iconTheme": "vscode-icons",
+    "bracket-pair-colorizer-2.depreciation-notice": false,
+    "workbench.colorTheme": "One Dark Pro Flat",
+    "terminal.external.osxExec": "iTerm.app",
+    "workbench.startupEditor": "none",
+    "path-intellisense.mappings": {
+      "@": "${workspaceRoot}/src"
+    },
+    // eslint配置项，保存时自动修复错误
+    "editor.codeActionsOnSave": {
+      "source.fixAll": true
+    },
+    "vetur.ignoreProjectWarning": true,
+    // 让vetur使用vs自带的js格式化工具
+    // uni-app和vue 项目使用
+    "vetur.format.defaultFormatter.js": "vscode-typescript",
+    //  这个按用户自身习惯选择
+    // "vetur.format.defaultFormatter.html": "js-beautify-html",
+    // "vetur.format.defaultFormatter.html": "prettier",
+    "vetur.format.defaultFormatterOptions": {
+      // vue组件中html代码格式化样式
+      "js-beautify-html": {
+        // 对属性进行换行。
+        // - auto: 仅在超出行长度时才对属性进行换行。
+        // - force: 对除第一个属性外的其他每个属性进行换行。
+        // - force-aligned: 对除第一个属性外的其他每个属性进行换行，并保持对齐。
+        // - force-expand-multiline: 对每个属性进行换行。
+        // - aligned-multiple: 当超出折行长度时，将属性进行垂直对齐。
+        "wrap_attributes": "force-expand-multiline",
+        "indent_size": 2
+      },
+      "prettyhtml": {
+        "wrapAttributes": true
+      }
+      // "prettier": {
+      //   "semi": false,
+      //   "singleQuote": true,
+      //   "trailingComma": "none"
+      // }
+    },
+    "javascript.format.semicolons": "remove",
+    // // 指定 *.vue 文件的格式化工具为vetur
+    "[vue]": {
+      "editor.defaultFormatter": "octref.vetur"
+    },
+    // // 指定 *.js 文件的格式化工具为vscode自带
+    "[javascript]": {
+      "editor.defaultFormatter": "vscode.typescript-language-features"
+    },
+    // // 默认使用prettier格式化支持的文件
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    // "prettier.jsxBracketSameLine": true,
+    // 函数前面加个空格
+    "javascript.format.insertSpaceBeforeFunctionParenthesis": false,
+    "prettier.singleQuote": true,
+    "prettier.semi": false,
+    // eslint end
+    // react
+    // 当按tab键的时候，会自动提示
+    "emmet.triggerExpansionOnTab": true,
+    "emmet.showAbbreviationSuggestions": true,
+    "emmet.includeLanguages": {
+      // jsx的提示
+      "javascript": "javascriptreact",
+      "vue-html": "html",
+      "vue": "html",
+      "wxml": "html"
+    },
+    "files.associations": {
+      // 让jsx中的标签自动换行
+      "*.js": "javascriptreact"
+    },
+    // end
+    "vsicons.dontShowNewVersionMessage": true,
+    "typescript.locale": "zh-CN",
+    "code-runner.defaultLanguage": "javascript"
+  }
+  

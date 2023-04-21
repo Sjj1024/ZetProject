@@ -1,0 +1,174 @@
+{
+    "dsl_version": 2,
+    "initiator": {
+        "role": "guest",
+        "party_id": 1000
+    },
+    "role": {
+        "host": [1100],
+        "guest": [1000]
+    },
+    "job_parameters": {
+        "common": {
+            "job_type": "train",
+            "backend": 0,
+            "work_mode": 1,
+            "task_cores": 4,
+            "spark_run": {
+                "executor-memory": "2g",
+                "total-executor-cores": 2
+            }
+        }
+    },
+    "component_parameters": {
+        "common": {
+            "hetero_secure_boost_0": {
+                "task_type": "classification",
+                "tree_param": {
+                    "max_depth": 3,
+                    "min_sample_split": 2,
+                    "min_child_weight": 0,
+                    "min_leaf_node": 1,
+                    "use_missing": false,
+                    "zero_as_missing": false
+                },
+                "objective_param": {
+                    "objective": "cross_entropy"
+                },
+                "learning_rate": 0.3,
+                "num_trees": 5,
+                "subsample_feature_rate": 1,
+                "random_seed": 100,
+                "n_iter_no_change": true,
+                "encrypt_param": {
+                    "method": "Paillier",
+                    "key_length": 1024
+                },
+                "bin_num": 10,
+                "encrypted_mode_calculator_param": {
+                    "mode": "strict",
+                    "re_encrypted_rate": 1
+                },
+                "use_missing": false,
+                "zero_as_missing": false,
+                "early_stopping_rounds": null
+            },
+            "evaluation_0": {
+                "eval_type": "binary",
+                "unfold_multi_result": false
+            },
+            "intersection_0": {
+                "intersect_method": "rsa",
+                "rsa_params": {
+                    "salt": "",
+                    "hash_method": "sha256",
+                    "key_length": 1024,
+                    "final_hash_method": "sha256",
+                    "split_calculation": false,
+                    "random_base_fraction": 0.11,
+                    "random_bit": 128
+                },
+                "dh_params": {
+                    "salt": "",
+                    "hash_method": "sha256",
+                    "key_length": 1024
+                },
+                "only_output_key": false,
+                "sync_intersect_ids": true
+            }
+        },
+        "role": {
+            "guest": {
+                "0": {
+                    "reader_0": {
+                        "table": {
+                            "name": "6333562924509958144",
+                            "namespace": "6333562206730326016"
+                        }
+                    },
+                    "data_transform_0": {
+                        "need_run": true,
+                        "data_type": "float64",
+                        "exclusive_data_type": {
+                            "default": "str",
+                            "housing": "str",
+                            "loan": "str"
+                        },
+                        "label_name": "y",
+                        "label_type": "str",
+                        "with_label": true
+                    },
+                    "label_transform_0": {
+                        "need_run": true,
+                        "label_encoder": {
+                            "yes": 1,
+                            "no": 0
+                        },
+                        "label_list": ["yse", "no"]
+                    },
+                    "onehot_encoder_0": {
+                        "need_run": true,
+                        "transform_col_indexes": -1,
+                        "transform_col_names": [2, 3, 4]
+                    },
+                    "scorecard_0": {
+                        "need_run": true,
+                        "offset": 500,
+                        "factor": 50,
+                        "factor_base": 2,
+                        "upper_limit_ratio": 3,
+                        "lower_limit_value": 0,
+                        "bin_width": 50
+                    }
+                }
+            },
+            "host": {
+                "0": {
+                    "reader_0": {
+                        "table": {
+                            "name": "6333563304346128384",
+                            "namespace": "6333562206730326016"
+                        }
+                    },
+                    "data_transform_0": {
+                        "need_run": false,
+                        "data_type": "float64",
+                        "delimitor": ",",
+                        "exclusive_data_type": {},
+                        "default_value": "0",
+                        "missing_fill_method": null,
+                        "missing_fill": false,
+                        "outlier_replace_value": "0",
+                        "outlier_replace_method": null,
+                        "outlier_replace": false,
+                        "label_name": "y",
+                        "label_type": "int",
+                        "with_label": false
+                    },
+                    "label_transform_0": {
+                        "need_run": false,
+                        "label_encoder": {
+                            "Yes": 1,
+                            "No": 0
+                        },
+                        "label_list": ["Yes", "No"]
+                    },
+                    "onehot_encoder_0": {
+                        "need_run": false,
+                        "transform_col_indexes": -1,
+                        "transform_col_names": []
+                    },
+                    "scorecard_0": {
+                        "need_run": false,
+                        "offset": 500,
+                        "factor": 50,
+                        "factor_base": 2,
+                        "upper_limit_ratio": 3,
+                        "lower_limit_value": 0,
+                        "bin_width": 50
+                    }
+                }
+            }
+        }
+    }
+}

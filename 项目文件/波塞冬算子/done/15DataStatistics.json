@@ -1,0 +1,71 @@
+{
+  "module": "DataStatistics",
+  "needConfig": true,
+  "roles": ["guest", "host"],
+  "param": [
+      {
+          "order": 1,
+          "key": "need_run",
+          "name": "是否需要运行",
+          "sub_key": null,
+          "sub_name": null,
+          "type": "bool",
+          "enum": null,
+          "options": [],
+          "default": true,
+          "show": 1,
+          "condition_inner": true,
+          "condition_field": "",
+          "condition_value": "",
+          "component": "Radio"
+      },
+      {
+          "order": 2,
+          "key": "statistics",
+          "name": "统计",
+          "sub_key": null,
+          "sub_name": null,
+          "type": "list",
+          "enum": null,
+          "options": [],
+          "default": "summary",
+          "show": 1,
+          "condition_inner": true,
+          "condition_field": "need_run",
+          "condition_value": true,
+          "component": "Input"
+      },
+      {
+          "order": 3,
+          "key": "column_names",
+          "name": "列名",
+          "sub_key": null,
+          "sub_name": null,
+          "type": "list",
+          "enum": null,
+          "options": [],
+          "default": null,
+          "show": 1,
+          "condition_inner": true,
+          "condition_field": "need_run",
+          "condition_value": true,
+          "component": "Input"
+      },
+      {
+          "order": 4,
+          "key": "column_indexes",
+          "name": "列索引",
+          "sub_key": null,
+          "sub_name": null,
+          "type": "list",
+          "enum": null,
+          "options": [],
+          "default": -1,
+          "show": 1,
+          "condition_inner": true,
+          "condition_field": "need_run",
+          "condition_value": true,
+          "component": "Input"
+      }
+  ]
+}

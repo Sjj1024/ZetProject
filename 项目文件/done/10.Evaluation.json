@@ -1,0 +1,39 @@
+{
+    "module": "Evaluation",
+    "needConfig": true,
+    "roles": ["common"],
+    "param": [
+        {
+            "order": 1,
+            "key": "eval_type",
+            "name": "eval_type",
+            "sub_key": null,
+            "sub_name": null,
+            "type": "str",
+            "enum": ["binary", "regression", "multi"],
+            "options": ["binary", "regression", "multi"],
+            "default": "binary",
+            "show": 1,
+            "condition_inner": true,
+            "condition_field": "",
+            "condition_value": "",
+            "component": "Select"
+        },
+        {
+            "order": 2,
+            "key": "unfold_multi_result",
+            "name": "是否开启收集二进制结果",
+            "sub_key": null,
+            "sub_name": null,
+            "type": "bool",
+            "enum": null,
+            "options": [],
+            "default": false,
+            "show": 1,
+            "condition_inner": true,
+            "condition_field": "",
+            "condition_value": "",
+            "component": "Radio"
+        }
+    ]
+}

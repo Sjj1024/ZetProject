@@ -1,0 +1,71 @@
+{
+    "module": "FederatedSample",
+    "needConfig": true,
+    "roles": ["common"],
+    "param": [
+        {
+            "order": 1,
+            "key": "mode",
+            "name": "采样方式",
+            "sub_key": null,
+            "sub_name": null,
+            "type": "str",
+            "enum": ["random", "stratified"],
+            "options": ["random", "stratified"],
+            "default": "random",
+            "show": 1,
+            "condition_inner": true,
+            "condition_field": "",
+            "condition_value": "",
+            "component": "Select"
+        },
+        {
+            "order": 2,
+            "key": "method",
+            "name": "采样方法",
+            "sub_key": null,
+            "sub_name": null,
+            "type": "str",
+            "enum": ["downsample", "upsample"],
+            "options": ["downsample", "upsample"],
+            "default": "downsample",
+            "show": 1,
+            "condition_inner": true,
+            "condition_field": "",
+            "condition_value": "",
+            "component": "Select"
+        },
+        {
+            "order": 3,
+            "key": "fractions",
+            "name": "分数",
+            "sub_key": null,
+            "sub_name": null,
+            "type": "list",
+            "enum": null,
+            "options": null,
+            "default": null,
+            "show": 1,
+            "condition_inner": true,
+            "condition_field": "",
+            "condition_value": "",
+            "component": "Input"
+        },
+        {
+            "order": 4,
+            "key": "random_state",
+            "name": "random_state",
+            "sub_key": null,
+            "sub_name": null,
+            "type": "int",
+            "enum": null,
+            "options": null,
+            "default": null,
+            "show": 1,
+            "condition_inner": true,
+            "condition_field": "",
+            "condition_value": "",
+            "component": "Input"
+        }
+    ]
+}

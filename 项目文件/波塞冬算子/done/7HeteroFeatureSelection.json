@@ -1,0 +1,53 @@
+{
+  "module": "HeteroFeatureSelection",
+  "needConfig": true,
+  "roles": ["common"],
+  "param": [
+      {
+          "order": 1,
+          "key": "filter_methods",
+          "name": "特征选择的过滤方法",
+          "sub_key": null,
+          "sub_name": null,
+          "type": "list",
+          "enum": [
+              ["iv_filter"],
+              ["iv_value_thres"],
+              ["iv_top_k"],
+              ["hetero_sbt_filter"],
+              ["vif_filter"],
+              ["correlation_filter"]
+          ],
+          "options": [
+              "[\"iv_filter\"]",
+              ["iv_value_thres"],
+              "[\"iv_top_k\"]",
+              "[\"hetero_sbt_filter\"]",
+              "[\"vif_filter\"]",
+              "[\"correlation_filter\"]"
+          ],
+          "default": ["iv_value_thres"],
+          "show": 1,
+          "condition_inner": true,
+          "condition_field": "",
+          "condition_value": "",
+          "component": "Select"
+      },
+      {
+          "order": 2,
+          "key": "iv_value_param",
+          "name": "iv_value_param",
+          "sub_key": "value_threshold",
+          "sub_name": "value_threshold",
+          "type": "float",
+          "enum": null,
+          "options": [],
+          "default": 0.1,
+          "show": 1,
+          "condition_inner": false,
+          "condition_field": "filter_methods",
+          "condition_value": "[\"iv_value_thres\"]",
+          "component": "Input"
+      }
+  ]
+}

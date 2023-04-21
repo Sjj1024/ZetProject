@@ -1,0 +1,8 @@
+name: "songjj"
+
+environment:
+  sdk: '>=2.10.0 <3.0.0'
+
+dependencies:
+  http: ^0.13.5
+  time: "^2.1.3"

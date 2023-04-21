@@ -1,0 +1,53 @@
+{
+    "module": "OneHotEncoder",
+    "needConfig": true,
+    "roles": ["guest", "host"],
+    "param": [
+        {
+            "order": 1,
+            "key": "need_run",
+            "name": "是否运行",
+            "sub_key": null,
+            "sub_name": null,
+            "type": "bool",
+            "enum": [],
+            "options": [],
+            "default": true,
+            "show": 1,
+            "condition_inner": true,
+            "condition_field": "",
+            "condition_value": "",
+            "component": "Radio"
+        },
+        {
+            "order": 2,
+            "key": "transform_col_indexes",
+            "name": "需要计算的列索引。输入值示例:[1,2]",
+            "sub_key": null,
+            "sub_name": null,
+            "type": "list",
+            "enum": null,
+            "default": null,
+            "show": 1,
+            "condition_inner": true,
+            "condition_field": "need_run",
+            "condition_value": true,
+            "component": "Input"
+        },
+        {
+            "order": 3,
+            "key": "transform_col_names",
+            "name": "需要计算的列名",
+            "sub_key": null,
+            "sub_name": null,
+            "type": "list",
+            "enum": null,
+            "default": null,
+            "show": 1,
+            "condition_inner": true,
+            "condition_field": "need_run",
+            "condition_value": true,
+            "component": "Input"
+        }
+    ]
+}
