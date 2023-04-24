@@ -31,5 +31,7 @@ Git云：https://1024huijia.github.io/TestSome/sources/1024%E5%9B%9E%E5%AE%B6Chr
 5.然后再点击一下这个图标，就可以使用了：  
 ![](C:\Users\song\AppData\Roaming\Typora\typora-user-images\image-20230421142015238.png)
 
-更多推荐页面：  
+
+
+6.更多推荐页面：  
 ![](C:\Users\song\AppData\Roaming\Typora\typora-user-images\image-20230421142025953.png)

@@ -29,3 +29,9 @@ Git云：https://1024huijia.github.io/TestSome/sources/1024%E5%9B%9E%E5%AE%B6mac
 
 
 第四步：点击打开即可![image-20230421143831470](C:\Users\song\AppData\Roaming\Typora\typora-user-images\image-20230421143831470.png)
+
+
+
+第五步：打开之后的界面
+
+![image-20230424185423732](C:\Users\song\AppData\Roaming\Typora\typora-user-images\image-20230424185423732.png)
