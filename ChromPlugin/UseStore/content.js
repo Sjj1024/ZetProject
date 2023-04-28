@@ -58,6 +58,11 @@ chrome.runtime.onMessage.addListener(
   }
 );
 
+// 98堂一键评分
+function postPingFen(){
+  console.log("一件评分送上---");
+}
+
 // 抖音关注列表下一页
 function douyinGuanNextPage() {
   console.log('关注列表滚动到下一页');

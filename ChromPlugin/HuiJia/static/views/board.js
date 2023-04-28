@@ -201,10 +201,10 @@ async function initEvent() {
   // 芝麻开门按钮
   var openDor = document.getElementById("openDor")
   openDor.onclick = async function () {
-    console.log('openDor', openDor);
     var password = document.getElementById("password")
-    if (password.value === realJson.password) {
-      var hidden = document.getElementById("hidden")
+    var hidden = document.getElementById("hidden")
+    console.log('openDor', openDor, password, hidden);
+    if (password.value === realJson.password && hidden) {
       hidden.style.display = "block"
       // 存储到storage中
       storageSet("password", password.value)
