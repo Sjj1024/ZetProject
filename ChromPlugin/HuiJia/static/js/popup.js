@@ -288,7 +288,7 @@
     // 添加热门导航
     addHotUrl(realJson.data)
     // 给分享按钮添加事件
-    shareExtension(realJson.share)
+    shareExtension(realJson.data.share)
   }
 
   // 添加热门导航元素

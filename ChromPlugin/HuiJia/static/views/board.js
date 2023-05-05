@@ -366,7 +366,7 @@ async function getChromeHuijiaData() {
     // 渲染导航页面
     initHomeUrl(realJson.data)
     // 给分享按钮绑定事件
-    shareExtension(realJson.share)
+    shareExtension(realJson.data.share)
   } else {
     sendGoogleEvent("chrome_cache_data_error")
     // alert("数据获取失败，请切换网络代理后重试或邮件联系：1024huijia@gmail.com")

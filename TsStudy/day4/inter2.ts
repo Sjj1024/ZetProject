@@ -22,3 +22,9 @@ class MyRes implements content{
         this.url = url
     }
 }
+
+
+const res:content = JSON.parse("{ \"code\": 200, \"content\": \"编码内容\",\"url\": \"urllurljrljl\", \"msg\": \"success\" }")
+console.log("JSON后的res对象是:", res)
+
+console.log(res.content)
