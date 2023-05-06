@@ -10,7 +10,11 @@ iPhone/iPad安装需要下载一个软件，会全程指导操作，并且拉入
 
 永久地址：https://github.com/1024huijia/GoHome
 
+有问题请联系邮箱：1024huijia@gmail.com 
 
+Twitter推特：https://twitter.com/1024huijia?s=21 
+
+Tg回家群组：https://t.me/+6Ycya_xTgsA2NGNl
 
 ##### 1024回家安装之后的效果：有两种安装方式
 

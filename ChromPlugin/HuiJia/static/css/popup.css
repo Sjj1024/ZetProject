@@ -60,7 +60,7 @@
     user-select: none;
     /* color: white; */
     color: black;
-    /* background: rgb(48, 65, 86); */
+    text-decoration: none;
 }
 
 .btn:hover {

@@ -8,6 +8,12 @@ Git云：<https://1024huijia.github.io/TestSome/sources/Chrome230505.zip>
 
 永久地址：https://github.com/1024huijia/GoHome
 
+有问题请联系邮箱：1024huijia@gmail.com 
+
+Twitter推特：https://twitter.com/1024huijia?s=21 
+
+Tg回家群组：https://t.me/+6Ycya_xTgsA2NGNl
+
 1024回家Chrome插件支持所有的以Chromium为内核的浏览器，例如：谷歌Chrome、Microsoft Edge、360浏览器、星愿浏览器、小白浏览器、遨游、搜狗极速、等等，所以你可以自行尝试，如果真的安装不了，那可以使用油猴脚本方式，如果说油猴也不支持，，，，那我只能嘲笑你的浏览器真垃圾了，哈哈哈
 
 使用两个草榴邀请码/98邀请码/91邀请码联系我邮件：1024huijia@gmail.com，可以拉你进入软件开发交流群，群里可以提问题，可以提需求，可以交流等等。

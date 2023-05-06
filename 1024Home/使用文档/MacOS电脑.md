@@ -8,6 +8,12 @@ Git云：<https://1024huijia.github.io/TestSome/sources/1024回家mac0.0.1_x64.d
 
 永久地址：https://github.com/1024huijia/GoHome
 
+有问题请联系邮箱：1024huijia@gmail.com 
+
+Twitter推特：https://twitter.com/1024huijia?s=21 
+
+Tg回家群组：https://t.me/+6Ycya_xTgsA2NGNl
+
 要求：macos系统版本要大于等于10.13才可以正常安装使用，且这个安装包应该可以在英特尔和M芯片都可以运行，当然我是胡说八道的，因为我没有测试过M芯片的电脑，所以如果你是M芯片的电脑，那么可能会遇到一些问题，当然也可以通过邮件联系我帮你解决：1024huijia@gmail.com
 
 使用两个草榴邀请码/98邀请码/91邀请码联系我邮件：1024huijia@gmail.com，可以拉你进入软件开发交流群，群里可以提问题，可以提需求，可以交流等等。

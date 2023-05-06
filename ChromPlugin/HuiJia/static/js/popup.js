@@ -12,7 +12,7 @@
   // bokeyuan:https://www.cnblogs.com/sdfasdf/p/15115801.html
   // csdnblog:
   var sourceUrl = [
-    "https://api.github.com/repos/1024dasehn/TestSome/contents/.github/hubsql/chromHuijia.txt",
+    "https://api.github.com/repos/1024huijia/TestSome/contents/.github/hubsql/chromHuijia.txt",
     "https://www.cnblogs.com/sdfasdf/p/15115801.html",
     "https://xiaoshen.blog.csdn.net/article/details/129345827"
   ]

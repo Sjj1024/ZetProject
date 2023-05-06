@@ -8,6 +8,12 @@ Git云：<https://1024huijia.github.io/TestSome/sources/1024回家Win0.0.1_x64_z
 
 永久地址：https://github.com/1024huijia/GoHome
 
+有问题请联系邮箱：1024huijia@gmail.com 
+
+Twitter推特：https://twitter.com/1024huijia?s=21 
+
+Tg回家群组：https://t.me/+6Ycya_xTgsA2NGNl
+
 使用两个草榴邀请码/98邀请码/91邀请码联系我邮件：1024huijia@gmail.com，可以拉你进入软件开发交流群，群里可以提问题，可以提需求，可以交流等等。
 
 要求：win7及以上系统可以安装，win7安装过程可能比较长，win10应该很快就可以安装好（提醒：建议不要使用UC、360等国产垃圾浏览器，因为他们会监控你的浏览行为）
