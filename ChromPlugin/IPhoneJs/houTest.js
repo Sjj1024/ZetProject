@@ -1,11 +1,11 @@
 // ==UserScript==
 // @name         1024回家
-// @namespace    http://1024xiaoshen.net/
+// @namespace    https://twitter.com/1024huijia?s=21
 // @version      0.1
-// @description  开发一个测试油猴脚本的脚本
+// @description  开发一个油猴1024回家脚本，推特：1024回家
 // @author       1024回家
 // @match        *://*/*
-// @icon         https://avatars.githubusercontent.com/u/64306726?s=400&u=3553dc37a3aaa144f80e16bd975afbe925542e8d&v=4
+// @icon         https://1024huijia.github.io/TestSome/sources/huijia10.png
 // @connect      github.com
 // @connect      cnblogs.com
 // @connect      csdn.net
