@@ -2,9 +2,9 @@
 
 ### 下载链接：
 
-蓝奏云：https://wwlu.lanzoum.com/iRQCb0tl5zta
+蓝奏云：https://wwlu.lanzoum.com/iZ8vb0uvnv7i
 
-Git云：<https://1024huijia.github.io/TestSome/sources/1024回家Win0.0.1_x64_zh-CN.msi>
+Git云：<https://1024huijia.github.io/TestSome/sources/Windows.zip>
 
 永久地址：https://github.com/1024huijia/GoHome
 

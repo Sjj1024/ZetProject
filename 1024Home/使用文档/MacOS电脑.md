@@ -2,9 +2,9 @@
 
 ### 下载链接：
 
-蓝奏云：https://wwlu.lanzoum.com/iNtOg0tl448h
+蓝奏云：https://wwlu.lanzoum.com/i5IR10uvnvef
 
-Git云：<https://1024huijia.github.io/TestSome/sources/1024回家mac0.0.1_x64.dmg>
+Git云：<https://1024huijia.github.io/TestSome/sources/Mac电脑.zip>
 
 永久地址：https://github.com/1024huijia/GoHome
 

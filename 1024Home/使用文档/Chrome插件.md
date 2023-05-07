@@ -2,9 +2,9 @@
 
 ### 下载链接：
 
-蓝奏云：https://wwlu.lanzoum.com/i9Ps60urhudi
+蓝奏云：<https://wwlu.lanzoum.com/ico8q0uuoo1a>  
 
-Git云：<https://1024huijia.github.io/TestSome/sources/Chrome230505.zip>
+Git云：<https://1024huijia.github.io/TestSome/sources/浏览器插件.zip>
 
 永久地址：https://github.com/1024huijia/GoHome
 
