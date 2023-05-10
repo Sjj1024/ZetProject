@@ -2,11 +2,13 @@
 
 ### 下载链接：
 
-蓝奏云：https://wwlu.lanzoum.com/i5IR10uvnvef
+1024回家所有客户端集合(安卓/苹果iPhone/Windows/Mac/浏览器插件/油猴脚本等)：<https://1024huijia.github.io/TestSome/sources/1024回家V1.0.zip>
 
-Git云：<https://1024huijia.github.io/TestSome/sources/Mac电脑.zip>
+Mac电脑蓝奏云：https://wwlu.lanzoum.com/i5IR10uvnvef
 
-永久地址：https://github.com/1024huijia/GoHome
+Mac电脑Git云：<https://1024huijia.github.io/TestSome/sources/Mac电脑.zip>
+
+永久回家地址：https://github.com/1024huijia/GoHome
 
 有问题请联系邮箱：1024huijia@gmail.com 
 
@@ -45,3 +47,7 @@ Tg回家群组：https://t.me/+6Ycya_xTgsA2NGNl
 第五步：打开之后的界面
 
 ![image-20230424185423732](C:\Users\song\AppData\Roaming\Typora\typora-user-images\image-20230424185423732.png)
+
+
+
+安装后免费使用chatgpt：![](https://1024huijia.github.io/TestSome/sources/chatgpt2.png)

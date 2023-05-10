@@ -3,7 +3,8 @@
     "module": "es2015",
     "target": "es5",
     "sourceMap": true,
-    "strict": true
+    "strict": true,
+    "noEmitOnError": true
   },
   "include": [
     "./day3/**/*"

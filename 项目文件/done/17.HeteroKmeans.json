@@ -6,7 +6,7 @@
         {
             "order": 1,
             "key": "k",
-            "name": "聚类数目。输入2-99之间的整数",
+            "name": "聚类数量。输入2-99之间的整数",
             "sub_key": null,
             "sub_name": null,
             "type": "int",
